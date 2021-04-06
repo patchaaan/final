@@ -1,0 +1,654 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ICARUSDBModelStoreContainer" CdmEntityContainer="ICARUSDBEntities">
+    <EntitySetMapping Name="tblAdmissions">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAdmission">
+        <MappingFragment StoreEntitySet="tblAdmission">
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+          <ScalarProperty Name="TerminationDate" ColumnName="TerminationDate" />
+          <ScalarProperty Name="TreatmentFee" ColumnName="TreatmentFee" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="TotalBilling" ColumnName="TotalBilling" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="OverallBalance" ColumnName="OverallBalance" />
+          <ScalarProperty Name="StopTFBilling" ColumnName="StopTFBilling" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IDRank" ColumnName="IDRank" />
+          <ScalarProperty Name="Phase" ColumnName="Phase" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAdmissionAttachments">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAdmissionAttachment">
+        <MappingFragment StoreEntitySet="tblAdmissionAttachment">
+          <ScalarProperty Name="IDAdmAttachment" ColumnName="IDAdmAttachment" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="UploadedFile" ColumnName="UploadedFile" />
+          <ScalarProperty Name="IDAttachmentType" ColumnName="IDAttachmentType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAdmissionAttachmentTypes">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAdmissionAttachmentType">
+        <MappingFragment StoreEntitySet="tblAdmissionAttachmentType">
+          <ScalarProperty Name="IDAttachmentType" ColumnName="IDAttachmentType" />
+          <ScalarProperty Name="AttachmentType" ColumnName="AttachmentType" />
+          <ScalarProperty Name="AccountGroupName" ColumnName="AccountGroupName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAdmissionBillings">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAdmissionBilling">
+        <MappingFragment StoreEntitySet="tblAdmissionBilling">
+          <ScalarProperty Name="IDAdmissionBilling" ColumnName="IDAdmissionBilling" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="BillingDate" ColumnName="BillingDate" />
+          <ScalarProperty Name="GeneratedDate" ColumnName="GeneratedDate" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="GeneratedBy" ColumnName="GeneratedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAdmissionCommLogs">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAdmissionCommLog">
+        <MappingFragment StoreEntitySet="tblAdmissionCommLog">
+          <ScalarProperty Name="IDAdmissionCommLog" ColumnName="IDAdmissionCommLog" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+          <ScalarProperty Name="Details" ColumnName="Details" />
+          <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAdmissionVitalSigns">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAdmissionVitalSign">
+        <MappingFragment StoreEntitySet="tblAdmissionVitalSigns">
+          <ScalarProperty Name="IDVitalSign" ColumnName="IDVitalSign" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="Performed" ColumnName="Performed" />
+          <ScalarProperty Name="BloodPressure" ColumnName="BloodPressure" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="PulseRate" ColumnName="PulseRate" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAssertions">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAssertion">
+        <MappingFragment StoreEntitySet="tblAssertion">
+          <ScalarProperty Name="IDAssertion" ColumnName="IDAssertion" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="AssertionDate" ColumnName="AssertionDate" />
+          <ScalarProperty Name="IDAssertionCategory" ColumnName="IDAssertionCategory" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Markup" ColumnName="Markup" />
+          <ScalarProperty Name="MarkupValue" ColumnName="MarkupValue" />
+          <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IDChargeToCodep" ColumnName="IDChargeToCodep" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAssertionCategories">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAssertionCategory">
+        <MappingFragment StoreEntitySet="tblAssertionCategory">
+          <ScalarProperty Name="IDAssertionCategory" ColumnName="IDAssertionCategory" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAttachments">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblAttachment">
+        <MappingFragment StoreEntitySet="tblAttachments">
+          <ScalarProperty Name="IDAttachment" ColumnName="IDAttachment" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="UploadedFile" ColumnName="UploadedFile" />
+          <ScalarProperty Name="IDReference" ColumnName="IDReference" />
+          <ScalarProperty Name="TableName" ColumnName="TableName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCashAdvances">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblCashAdvance">
+        <MappingFragment StoreEntitySet="tblCashAdvance">
+          <ScalarProperty Name="IDCA" ColumnName="IDCA" />
+          <ScalarProperty Name="DateCA" ColumnName="DateCA" />
+          <ScalarProperty Name="IDStaff" ColumnName="IDStaff" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCashAdvancePayments">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblCashAdvancePayment">
+        <MappingFragment StoreEntitySet="tblCashAdvancePayment">
+          <ScalarProperty Name="IDPayment" ColumnName="IDPayment" />
+          <ScalarProperty Name="IDCA" ColumnName="IDCA" />
+          <ScalarProperty Name="AmountPaid" ColumnName="AmountPaid" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="DatePaid" ColumnName="DatePaid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCodepUpdates">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblCodepUpdate">
+        <MappingFragment StoreEntitySet="tblCodepUpdates">
+          <ScalarProperty Name="IDUpdate" ColumnName="IDUpdate" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="DateLog" ColumnName="DateLog" />
+          <ScalarProperty Name="UpdateType" ColumnName="UpdateType" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdateSummary" ColumnName="UpdateSummary" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblExpenses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblExpens">
+        <MappingFragment StoreEntitySet="tblExpenses">
+          <ScalarProperty Name="IDExpense" ColumnName="IDExpense" />
+          <ScalarProperty Name="DatePosted" ColumnName="DatePosted" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="ORNumber" ColumnName="ORNumber" />
+          <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+          <ScalarProperty Name="Particulars" ColumnName="Particulars" />
+          <ScalarProperty Name="WithReceipt" ColumnName="WithReceipt" />
+          <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
+          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="ChargeToCodep" ColumnName="ChargeToCodep" />
+          <ScalarProperty Name="VATSales" ColumnName="VATSales" />
+          <ScalarProperty Name="VATAmount" ColumnName="VATAmount" />
+          <ScalarProperty Name="VATExempt" ColumnName="VATExempt" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="ChargedToCodep" ColumnName="ChargedToCodep" />
+          <ScalarProperty Name="TIN" ColumnName="TIN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblExpensesChartOfAccounts">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblExpensesChartOfAccount">
+        <MappingFragment StoreEntitySet="tblExpensesChartOfAccount">
+          <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
+          <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblExpensesForAssertions">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblExpensesForAssertion">
+        <MappingFragment StoreEntitySet="tblExpensesForAssertion">
+          <ScalarProperty Name="IDChargeToCodep" ColumnName="IDChargeToCodep" />
+          <ScalarProperty Name="ChargeDate" ColumnName="ChargeDate" />
+          <ScalarProperty Name="IDAssertionCategory" ColumnName="IDAssertionCategory" />
+          <ScalarProperty Name="IDExpense" ColumnName="IDExpense" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFacilityReports">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblFacilityReport">
+        <MappingFragment StoreEntitySet="tblFacilityReport">
+          <ScalarProperty Name="IDFacilityReport" ColumnName="IDFacilityReport" />
+          <ScalarProperty Name="ReportDate" ColumnName="ReportDate" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+          <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInquiries">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblInquiry">
+        <MappingFragment StoreEntitySet="tblInquiry">
+          <ScalarProperty Name="IDInquiry" ColumnName="IDInquiry" />
+          <ScalarProperty Name="InquiryDate" ColumnName="InquiryDate" />
+          <ScalarProperty Name="Codep" ColumnName="Codep" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="Prospect" ColumnName="Prospect" />
+          <ScalarProperty Name="Details" ColumnName="Details" />
+          <ScalarProperty Name="FollowupOn" ColumnName="FollowupOn" />
+          <ScalarProperty Name="IDInquiryStatus" ColumnName="IDInquiryStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInquiryCommLogs">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblInquiryCommLog">
+        <MappingFragment StoreEntitySet="tblInquiryCommLog">
+          <ScalarProperty Name="IDInquiryCommLog" ColumnName="IDInquiryCommLog" />
+          <ScalarProperty Name="IDInquiry" ColumnName="IDInquiry" />
+          <ScalarProperty Name="CommDate" ColumnName="CommDate" />
+          <ScalarProperty Name="InitiatedBy" ColumnName="InitiatedBy" />
+          <ScalarProperty Name="CommDetails" ColumnName="CommDetails" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInquiryStatus">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblInquiryStatu">
+        <MappingFragment StoreEntitySet="tblInquiryStatus">
+          <ScalarProperty Name="IDInquiryStatus" ColumnName="IDInquiryStatus" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPayments">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblPayment">
+        <MappingFragment StoreEntitySet="tblPayment">
+          <ScalarProperty Name="IDPayment" ColumnName="IDPayment" />
+          <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="IDPaymentMethod" ColumnName="IDPaymentMethod" />
+          <ScalarProperty Name="Bank" ColumnName="Bank" />
+          <ScalarProperty Name="CheckNo" ColumnName="CheckNo" />
+          <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPaymentMethods">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblPaymentMethod">
+        <MappingFragment StoreEntitySet="tblPaymentMethod">
+          <ScalarProperty Name="IDPaymentMethod" ColumnName="IDPaymentMethod" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRanks">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblRank">
+        <MappingFragment StoreEntitySet="tblRank">
+          <ScalarProperty Name="IDRank" ColumnName="IDRank" />
+          <ScalarProperty Name="Rank" ColumnName="Rank" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRequests">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblRequest">
+        <MappingFragment StoreEntitySet="tblRequest">
+          <ScalarProperty Name="IDRequest" ColumnName="IDRequest" />
+          <ScalarProperty Name="DateRequest" ColumnName="DateRequest" />
+          <ScalarProperty Name="DateNeeded" ColumnName="DateNeeded" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="Request" ColumnName="Request" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="IDRequestStatus" ColumnName="IDRequestStatus" />
+          <ScalarProperty Name="ApproverNotes" ColumnName="ApproverNotes" />
+          <ScalarProperty Name="DateApproved" ColumnName="DateApproved" />
+          <ScalarProperty Name="RequestorEmail" ColumnName="RequestorEmail" />
+          <ScalarProperty Name="DateAcc" ColumnName="DateAcc" />
+          <ScalarProperty Name="RequestorNotes" ColumnName="RequestorNotes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblRequestStatus">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblRequestStatu">
+        <MappingFragment StoreEntitySet="tblRequestStatus">
+          <ScalarProperty Name="IDRequestStatus" ColumnName="IDRequestStatus" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblResidents">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblResident">
+        <MappingFragment StoreEntitySet="tblResident">
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="Middlename" ColumnName="Middlename" />
+          <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+          <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Codep" ColumnName="Codep" />
+          <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblResidentActivities">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblResidentActivity">
+        <MappingFragment StoreEntitySet="tblResidentActivity">
+          <ScalarProperty Name="IDResidentActivityLog" ColumnName="IDResidentActivityLog" />
+          <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+          <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStaffs">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblStaff">
+        <MappingFragment StoreEntitySet="tblStaff">
+          <ScalarProperty Name="isAAG" ColumnName="isAAG" />
+          <ScalarProperty Name="isPG" ColumnName="isPG" />
+          <ScalarProperty Name="isEDG" ColumnName="isEDG" />
+          <ScalarProperty Name="isADG" ColumnName="isADG" />
+          <ScalarProperty Name="IDStaff" ColumnName="IDStaff" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+          <ScalarProperty Name="DateHired" ColumnName="DateHired" />
+          <ScalarProperty Name="DateTerminated" ColumnName="DateTerminated" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblVendors">
+      <EntityTypeMapping TypeName="ICARUSDBModel.tblVendor">
+        <MappingFragment StoreEntitySet="tblVendor">
+          <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+          <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="TIN" ColumnName="TIN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vAdmissionBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vAdmissionBrowse">
+        <MappingFragment StoreEntitySet="vAdmissionBrowse">
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+          <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+          <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+          <ScalarProperty Name="TerminationDate" ColumnName="TerminationDate" />
+          <ScalarProperty Name="TreatmentFee" ColumnName="TreatmentFee" />
+          <ScalarProperty Name="TotalBilling" ColumnName="TotalBilling" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="OverallBalance" ColumnName="OverallBalance" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="LastPaymentInfo" ColumnName="LastPaymentInfo" />
+          <ScalarProperty Name="StopTFBilling" ColumnName="StopTFBilling" />
+          <ScalarProperty Name="rank" ColumnName="rank" />
+          <ScalarProperty Name="Phase" ColumnName="Phase" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vCashAdvanceBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vCashAdvanceBrowse">
+        <MappingFragment StoreEntitySet="vCashAdvanceBrowse">
+          <ScalarProperty Name="IDCA" ColumnName="IDCA" />
+          <ScalarProperty Name="DateCA" ColumnName="DateCA" />
+          <ScalarProperty Name="IDStaff" ColumnName="IDStaff" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vCashAdvancePaymentBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vCashAdvancePaymentBrowse">
+        <MappingFragment StoreEntitySet="vCashAdvancePaymentBrowse">
+          <ScalarProperty Name="IDPayment" ColumnName="IDPayment" />
+          <ScalarProperty Name="IDCA" ColumnName="IDCA" />
+          <ScalarProperty Name="AmountPaid" ColumnName="AmountPaid" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="DatePaid" ColumnName="DatePaid" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vExpensesBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vExpensesBrowse">
+        <MappingFragment StoreEntitySet="vExpensesBrowse">
+          <ScalarProperty Name="IDExpense" ColumnName="IDExpense" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="DatePosted" ColumnName="DatePosted" />
+          <ScalarProperty Name="ORNumber" ColumnName="ORNumber" />
+          <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="Particulars" ColumnName="Particulars" />
+          <ScalarProperty Name="WithReceipt" ColumnName="WithReceipt" />
+          <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
+          <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="ChargeToCodep" ColumnName="ChargeToCodep" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ChargedToCodep" ColumnName="ChargedToCodep" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="TIN" ColumnName="TIN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vPaymentBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vPaymentBrowse">
+        <MappingFragment StoreEntitySet="vPaymentBrowse">
+          <ScalarProperty Name="IDPayment" ColumnName="IDPayment" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="IDPaymentMethod" ColumnName="IDPaymentMethod" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+          <ScalarProperty Name="Bank" ColumnName="Bank" />
+          <ScalarProperty Name="CheckNo" ColumnName="CheckNo" />
+          <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vResidentActivityBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vResidentActivityBrowse">
+        <MappingFragment StoreEntitySet="vResidentActivityBrowse">
+          <ScalarProperty Name="IDResidentActivityLog" ColumnName="IDResidentActivityLog" />
+          <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+          <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vrptAssertionSummaries">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vrptAssertionSummary">
+        <MappingFragment StoreEntitySet="vrptAssertionSummary">
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+          <ScalarProperty Name="AssertionDate" ColumnName="AssertionDate" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+          <ScalarProperty Name="Markup" ColumnName="Markup" />
+          <ScalarProperty Name="MarkupValue" ColumnName="MarkupValue" />
+          <ScalarProperty Name="Margin" ColumnName="Margin" />
+          <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vrptCollectibles">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vrptCollectible">
+        <MappingFragment StoreEntitySet="vrptCollectibles">
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+          <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+          <ScalarProperty Name="TerminationDate" ColumnName="TerminationDate" />
+          <ScalarProperty Name="TreatmentFee" ColumnName="TreatmentFee" />
+          <ScalarProperty Name="TotalBilling" ColumnName="TotalBilling" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="OverallBalance" ColumnName="OverallBalance" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="LastPaymentInfo" ColumnName="LastPaymentInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vrptExpenses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vrptExpens">
+        <MappingFragment StoreEntitySet="vrptExpenses">
+          <ScalarProperty Name="IDExpense" ColumnName="IDExpense" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="ORNumber" ColumnName="ORNumber" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="Particulars" ColumnName="Particulars" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
+          <ScalarProperty Name="ChargeToCodep" ColumnName="ChargeToCodep" />
+          <ScalarProperty Name="VATSales" ColumnName="VATSales" />
+          <ScalarProperty Name="VATAmount" ColumnName="VATAmount" />
+          <ScalarProperty Name="VATExempt" ColumnName="VATExempt" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vrptPayments">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vrptPayment">
+        <MappingFragment StoreEntitySet="vrptPayment">
+          <ScalarProperty Name="IDPayment" ColumnName="IDPayment" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="IDPaymentMethod" ColumnName="IDPaymentMethod" />
+          <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+          <ScalarProperty Name="PayDetails" ColumnName="PayDetails" />
+          <ScalarProperty Name="Bank" ColumnName="Bank" />
+          <ScalarProperty Name="CheckNo" ColumnName="CheckNo" />
+          <ScalarProperty Name="CheckDate" ColumnName="CheckDate" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vrptUnderChargedExpenses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vrptUnderChargedExpens">
+        <MappingFragment StoreEntitySet="vrptUnderChargedExpenses">
+          <ScalarProperty Name="IDExpense" ColumnName="IDExpense" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="ORNumber" ColumnName="ORNumber" />
+          <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="Particulars" ColumnName="Particulars" />
+          <ScalarProperty Name="WithReceipt" ColumnName="WithReceipt" />
+          <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
+          <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="ChargeToCodep" ColumnName="ChargeToCodep" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ChargedToCodep" ColumnName="ChargedToCodep" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vRSCodepUpdates">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vRSCodepUpdate">
+        <MappingFragment StoreEntitySet="vRSCodepUpdates">
+          <ScalarProperty Name="IDUpdate" ColumnName="IDUpdate" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="DateLog" ColumnName="DateLog" />
+          <ScalarProperty Name="UpdateType" ColumnName="UpdateType" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdateSummary" ColumnName="UpdateSummary" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vRSCollectibles">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vRSCollectible">
+        <MappingFragment StoreEntitySet="vRSCollectibles">
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="IDResident" ColumnName="IDResident" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+          <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+          <ScalarProperty Name="TerminationDate" ColumnName="TerminationDate" />
+          <ScalarProperty Name="TreatmentFee" ColumnName="TreatmentFee" />
+          <ScalarProperty Name="TotalBilling" ColumnName="TotalBilling" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="OverallBalance" ColumnName="OverallBalance" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="LastPaymentInfo" ColumnName="LastPaymentInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vRSExpensesDailies">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vRSExpensesDaily">
+        <MappingFragment StoreEntitySet="vRSExpensesDaily">
+          <ScalarProperty Name="IDExpense" ColumnName="IDExpense" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="ORNumber" ColumnName="ORNumber" />
+          <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+          <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+          <ScalarProperty Name="Particulars" ColumnName="Particulars" />
+          <ScalarProperty Name="WithReceipt" ColumnName="WithReceipt" />
+          <ScalarProperty Name="IDAccount" ColumnName="IDAccount" />
+          <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="ChargeToCodep" ColumnName="ChargeToCodep" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ChargedToCodep" ColumnName="ChargedToCodep" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vselCodepUpdateBrowses">
+      <EntityTypeMapping TypeName="ICARUSDBModel.vselCodepUpdateBrowse">
+        <MappingFragment StoreEntitySet="vselCodepUpdateBrowse">
+          <ScalarProperty Name="IDUpdate" ColumnName="IDUpdate" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="DateLog" ColumnName="DateLog" />
+          <ScalarProperty Name="UpdateType" ColumnName="UpdateType" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdateSummary" ColumnName="UpdateSummary" />
+          <ScalarProperty Name="IDAdmission" ColumnName="IDAdmission" />
+          <ScalarProperty Name="Resident" ColumnName="Resident" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spBackup" FunctionName="ICARUSDBModel.Store.spBackup" />
+    <FunctionImportMapping FunctionImportName="spBackupCloud" FunctionName="ICARUSDBModel.Store.spBackupCloud" />
+    <FunctionImportMapping FunctionImportName="spCalculateExpensesChargedToCodep" FunctionName="ICARUSDBModel.Store.spCalculateExpensesChargedToCodep" />
+    <FunctionImportMapping FunctionImportName="spGenerateTreatmentFee" FunctionName="ICARUSDBModel.Store.spGenerateTreatmentFee" />
+    <FunctionImportMapping FunctionImportName="spJobGenerateTreatmentFee" FunctionName="ICARUSDBModel.Store.spJobGenerateTreatmentFee" />
+    <FunctionImportMapping FunctionImportName="spRecalcAdmissionBalance" FunctionName="ICARUSDBModel.Store.spRecalcAdmissionBalance" />
+    <FunctionImportMapping FunctionImportName="spSendNotification" FunctionName="ICARUSDBModel.Store.spSendNotification" />
+    <FunctionImportMapping FunctionImportName="spSendReport" FunctionName="ICARUSDBModel.Store.spSendReport" />
+    <FunctionImportMapping FunctionImportName="spSendReportCodepUpdates" FunctionName="ICARUSDBModel.Store.spSendReportCodepUpdates" />
+    <FunctionImportMapping FunctionImportName="spSendReportCollectibles" FunctionName="ICARUSDBModel.Store.spSendReportCollectibles" />
+    <FunctionImportMapping FunctionImportName="spSendReportExpensesDaily" FunctionName="ICARUSDBModel.Store.spSendReportExpensesDaily" />
+    <FunctionImportMapping FunctionImportName="spSendReportRecentPayments" FunctionName="ICARUSDBModel.Store.spSendReportRecentPayments" />
+  </EntityContainerMapping>
+</Mapping>

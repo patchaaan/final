@@ -1,0 +1,75 @@
+﻿@model Icarus.Models.tblInquiry
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblInquiry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InquiryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InquiryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Codep)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Codep)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prospect)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prospect)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Details)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FollowupOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FollowupOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDInquiryStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDInquiryStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDInquiry }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

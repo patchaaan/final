@@ -1,0 +1,76 @@
+﻿@model Icarus.Models.AdmissionDetails
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col col-sm-4 pr-0">
+        <div>
+            @Html.Partial("_PartialAdmissionDetails", Model.Admissions)
+        </div>
+    </div>
+    <div class="col col-sm-8 pl-0">
+        <nav class="navbar" style="background-color: #444D8E;">
+            <div>
+                <button class="btn btn-sm treatmentfee navs id1" target="1" style="color:white;">Treatment Fee</button>
+                <button class="btn btn-sm assertions navs id2" target="2" style="color:white;">Assertions</button>
+                <button class="btn btn-sm paymenthistory navs id3" target="3" style="color:white;">Payment History</button>
+                <button class="btn btn-sm attachments navs id4" target="4" style="color:white;">Attachments</button>
+                <button class="btn btn-sm vitalsigns navs id5" target="5" style="color:white;">Vital Signs</button>
+                <button class="btn btn-sm commlog navs id6" target="6" style="color:white;">Comm Log</button>
+            </div>
+        </nav>
+        <div class="div1 col-sm-12">
+            @Html.Partial("_TreatmentFee", Model.admissiongBillingNew)
+        </div>
+        <div class="div2">
+            @Html.Partial("_Assertions", Model.Assertion)
+        </div>
+        <div class="div3">
+            @Html.Partial("_PaymentHistory", Model.Payments)
+        </div>
+        <div class="div4">
+            @Html.Partial("_Attachments", Model.Attachments)
+        </div>
+        <div class="div5">
+            @Html.Partial("_VitalSigns", Model.VitalSigns)
+        </div>
+        <div class="div6">
+            @Html.Partial("_CommLog", Model.CommLog)
+        </div>
+
+        <br>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        document.title = "Admission Details";
+        var buttons = ["id1", "id2", "id3", "id4", "id5", "id6"];
+        var divs = ["div1", "div2", "div3", "div4", "div5", "div6"];
+        $("." + buttons[0]).prop('disabled', true);
+
+        for (var i = 1; i < divs.length; i++) {
+            $("." + divs[i]).hide();
+        }
+        $(".navs").on('click', function () {
+            var temp = $(this).attr('target');
+            console.log(temp)
+            var temp1 = "div" + temp
+            console.log(temp1)
+            for (var i = 0; i < buttons.length; i++) {
+                if (divs[i] === temp1) {
+                    $("." + buttons[i]).prop('disabled', true);
+                    $("." + divs[temp - 1]).show();
+                }
+                else {
+                    console.log("READ")
+                    $("." + buttons[i]).prop('disabled', false);
+                    $("." + divs[i]).hide();
+                }
+            }
+        });
+    });
+
+</script>

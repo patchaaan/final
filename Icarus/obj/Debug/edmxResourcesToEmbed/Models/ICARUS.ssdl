@@ -1,0 +1,1026 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ICARUSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblAdmission">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+    </Key>
+    <Property Name="IDAdmission" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDResident" Type="int" />
+    <Property Name="AdmissionDate" Type="datetime" Nullable="false" />
+    <Property Name="TerminationDate" Type="datetime" />
+    <Property Name="TreatmentFee" Type="money" Nullable="false" />
+    <Property Name="IsActive" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="TotalBilling" Type="money" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="OverallBalance" Type="money" Nullable="false" />
+    <Property Name="StopTFBilling" Type="varchar" MaxLength="1" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+    <Property Name="IDRank" Type="tinyint" Nullable="false" />
+    <Property Name="Phase" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblAdmissionAttachment">
+    <Key>
+      <PropertyRef Name="IDAdmAttachment" />
+    </Key>
+    <Property Name="IDAdmAttachment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+    <Property Name="Filename" Type="varchar" MaxLength="50" />
+    <Property Name="UploadedFile" Type="varbinary(max)" />
+    <Property Name="IDAttachmentType" Type="smallint" />
+  </EntityType>
+  <EntityType Name="tblAdmissionAttachmentType">
+    <Key>
+      <PropertyRef Name="IDAttachmentType" />
+    </Key>
+    <Property Name="IDAttachmentType" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AttachmentType" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AccountGroupName" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblAdmissionBilling">
+    <Key>
+      <PropertyRef Name="IDAdmissionBilling" />
+    </Key>
+    <Property Name="IDAdmissionBilling" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="BillingDate" Type="datetime" Nullable="false" />
+    <Property Name="GeneratedDate" Type="datetime" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+    <Property Name="GeneratedBy" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblAdmissionCommLog">
+    <Key>
+      <PropertyRef Name="IDAdmissionCommLog" />
+    </Key>
+    <Property Name="IDAdmissionCommLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="LogDate" Type="datetime" Nullable="false" />
+    <Property Name="Details" Type="varchar" MaxLength="1000" Nullable="false" />
+    <Property Name="PostedBy" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblAdmissionVitalSigns">
+    <Key>
+      <PropertyRef Name="IDVitalSign" />
+    </Key>
+    <Property Name="IDVitalSign" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="Performed" Type="datetime" Nullable="false" />
+    <Property Name="BloodPressure" Type="varchar" MaxLength="50" />
+    <Property Name="Temperature" Type="varchar" MaxLength="50" />
+    <Property Name="PulseRate" Type="varchar" MaxLength="5" />
+    <Property Name="Weight" Type="varchar" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="tblAssertion">
+    <Key>
+      <PropertyRef Name="IDAssertion" />
+    </Key>
+    <Property Name="IDAssertion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="AssertionDate" Type="datetime" Nullable="false" />
+    <Property Name="IDAssertionCategory" Type="int" Nullable="false" />
+    <Property Name="Qty" Type="money" Nullable="false" />
+    <Property Name="Price" Type="money" Nullable="false" />
+    <Property Name="Markup" Type="money" Nullable="false" />
+    <Property Name="MarkupValue" Type="money" Nullable="false" />
+    <Property Name="SubTotal" Type="money" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IDChargeToCodep" Type="int" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblAssertionCategory">
+    <Key>
+      <PropertyRef Name="IDAssertionCategory" />
+    </Key>
+    <Property Name="IDAssertionCategory" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Category" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblAttachments">
+    <Key>
+      <PropertyRef Name="IDAttachment" />
+    </Key>
+    <Property Name="IDAttachment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+    <Property Name="Filename" Type="varchar" MaxLength="50" />
+    <Property Name="UploadedFile" Type="varbinary(max)" />
+    <Property Name="IDReference" Type="int" />
+    <Property Name="TableName" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblCashAdvance">
+    <Key>
+      <PropertyRef Name="IDCA" />
+    </Key>
+    <Property Name="IDCA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateCA" Type="datetime" Nullable="false" />
+    <Property Name="IDStaff" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsPaid" Type="varchar" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblCashAdvancePayment">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+    </Key>
+    <Property Name="IDPayment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDCA" Type="int" Nullable="false" />
+    <Property Name="AmountPaid" Type="money" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="DatePaid" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblCodepUpdates">
+    <Key>
+      <PropertyRef Name="IDUpdate" />
+    </Key>
+    <Property Name="IDUpdate" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateUpdate" Type="datetime" Nullable="false" />
+    <Property Name="DateLog" Type="datetime" Nullable="false" />
+    <Property Name="UpdateType" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdateSummary" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblExpenses">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+    </Key>
+    <Property Name="IDExpense" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DatePosted" Type="datetime" />
+    <Property Name="ExpenseDate" Type="datetime" />
+    <Property Name="ORNumber" Type="varchar" MaxLength="50" />
+    <Property Name="IDVendor" Type="int" Nullable="false" />
+    <Property Name="Particulars" Type="varchar" MaxLength="50" />
+    <Property Name="WithReceipt" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="IDAccount" Type="int" Nullable="false" />
+    <Property Name="EncodedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="VATSales" Type="money" />
+    <Property Name="VATAmount" Type="money" />
+    <Property Name="VATExempt" Type="money" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="money" Nullable="false" />
+    <Property Name="TIN" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblExpensesChartOfAccount">
+    <Key>
+      <PropertyRef Name="IDAccount" />
+    </Key>
+    <Property Name="IDAccount" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Account" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblExpensesForAssertion">
+    <Key>
+      <PropertyRef Name="IDChargeToCodep" />
+    </Key>
+    <Property Name="IDChargeToCodep" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChargeDate" Type="datetime" />
+    <Property Name="IDAssertionCategory" Type="int" />
+    <Property Name="IDExpense" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblFacilityReport">
+    <Key>
+      <PropertyRef Name="IDFacilityReport" />
+    </Key>
+    <Property Name="IDFacilityReport" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReportDate" Type="datetime" Nullable="false" />
+    <Property Name="Activity" Type="varchar" MaxLength="1000" Nullable="false" />
+    <Property Name="PostedBy" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInquiry">
+    <Key>
+      <PropertyRef Name="IDInquiry" />
+    </Key>
+    <Property Name="IDInquiry" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="InquiryDate" Type="datetime" />
+    <Property Name="Codep" Type="varchar" MaxLength="50" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="50" />
+    <Property Name="Prospect" Type="varchar" MaxLength="50" />
+    <Property Name="Details" Type="varchar" MaxLength="1000" />
+    <Property Name="FollowupOn" Type="datetime" />
+    <Property Name="IDInquiryStatus" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInquiryCommLog">
+    <Key>
+      <PropertyRef Name="IDInquiryCommLog" />
+    </Key>
+    <Property Name="IDInquiryCommLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDInquiry" Type="int" Nullable="false" />
+    <Property Name="CommDate" Type="datetime" Nullable="false" />
+    <Property Name="InitiatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CommDetails" Type="varchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInquiryStatus">
+    <Key>
+      <PropertyRef Name="IDInquiryStatus" />
+    </Key>
+    <Property Name="IDInquiryStatus" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblPayment">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+    </Key>
+    <Property Name="IDPayment" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PaidDate" Type="datetime" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="IDPaymentMethod" Type="smallint" />
+    <Property Name="Bank" Type="varchar" MaxLength="50" />
+    <Property Name="CheckNo" Type="varchar" MaxLength="50" />
+    <Property Name="CheckDate" Type="datetime" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblPaymentMethod">
+    <Key>
+      <PropertyRef Name="IDPaymentMethod" />
+    </Key>
+    <Property Name="IDPaymentMethod" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PaymentMethod" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblRank">
+    <Key>
+      <PropertyRef Name="IDRank" />
+    </Key>
+    <Property Name="IDRank" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Rank" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblRequest">
+    <Key>
+      <PropertyRef Name="IDRequest" />
+    </Key>
+    <Property Name="IDRequest" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DateRequest" Type="datetime" Nullable="false" />
+    <Property Name="DateNeeded" Type="datetime" />
+    <Property Name="RequestedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Request" Type="varchar" MaxLength="500" />
+    <Property Name="Budget" Type="money" Nullable="false" />
+    <Property Name="ApprovedBy" Type="varchar" MaxLength="50" />
+    <Property Name="IDRequestStatus" Type="smallint" Nullable="false" />
+    <Property Name="ApproverNotes" Type="varchar" MaxLength="300" />
+    <Property Name="DateApproved" Type="datetime" />
+    <Property Name="RequestorEmail" Type="varchar" MaxLength="100" />
+    <Property Name="DateAcc" Type="datetime" />
+    <Property Name="RequestorNotes" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblRequestStatus">
+    <Key>
+      <PropertyRef Name="IDRequestStatus" />
+    </Key>
+    <Property Name="IDRequestStatus" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblResident">
+    <Key>
+      <PropertyRef Name="IDResident" />
+    </Key>
+    <Property Name="IDResident" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Lastname" Type="varchar" MaxLength="50" />
+    <Property Name="Firstname" Type="varchar" MaxLength="50" />
+    <Property Name="Middlename" Type="varchar" MaxLength="50" />
+    <Property Name="Nickname" Type="varchar" MaxLength="50" />
+    <Property Name="Birthdate" Type="datetime" />
+    <Property Name="Age" Type="int" />
+    <Property Name="Sex" Type="varchar" MaxLength="50" />
+    <Property Name="Codep" Type="varchar" MaxLength="50" />
+    <Property Name="Relationship" Type="varchar" MaxLength="50" />
+    <Property Name="ContactNumber" Type="varchar" MaxLength="50" />
+    <Property Name="EmailAddress" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblResidentActivity">
+    <Key>
+      <PropertyRef Name="IDResidentActivityLog" />
+    </Key>
+    <Property Name="IDResidentActivityLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LogDate" Type="datetime" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="Position" Type="varchar" MaxLength="50" />
+    <Property Name="Activity" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="PostedBy" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblStaff">
+    <Key>
+      <PropertyRef Name="IDStaff" />
+    </Key>
+    <Property Name="IDStaff" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Lastname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Firstname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="50" />
+    <Property Name="DateHired" Type="datetime" />
+    <Property Name="DateTerminated" Type="datetime" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="Username" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="isADG" Type="varchar" MaxLength="10" />
+    <Property Name="isEDG" Type="varchar" MaxLength="10" />
+    <Property Name="isPG" Type="varchar" MaxLength="10" />
+    <Property Name="isAAG" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="tblVendor">
+    <Key>
+      <PropertyRef Name="IDVendor" />
+    </Key>
+    <Property Name="IDVendor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Vendor" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactPerson" Type="varchar" MaxLength="50" />
+    <Property Name="ContactNumber" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsActive" Type="varchar" MaxLength="1" />
+    <Property Name="TIN" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vAdmissionBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vAdmissionBrowse">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="AdmissionDate" />
+      <PropertyRef Name="TreatmentFee" />
+      <PropertyRef Name="TotalBilling" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="OverallBalance" />
+      <PropertyRef Name="IsActive" />
+      <PropertyRef Name="LastPaymentInfo" />
+    </Key>
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="IDResident" Type="int" />
+    <Property Name="Resident" Type="varchar" MaxLength="154" />
+    <Property Name="Nickname" Type="varchar" MaxLength="50" />
+    <Property Name="AdmissionDate" Type="datetime" Nullable="false" />
+    <Property Name="TerminationDate" Type="datetime" />
+    <Property Name="TreatmentFee" Type="money" Nullable="false" />
+    <Property Name="TotalBilling" Type="money" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="OverallBalance" Type="money" Nullable="false" />
+    <Property Name="IsActive" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="LastPaymentInfo" Type="varchar" MaxLength="63" Nullable="false" />
+    <Property Name="StopTFBilling" Type="varchar" MaxLength="1" />
+    <Property Name="rank" Type="varchar" MaxLength="50" />
+    <Property Name="Phase" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vCashAdvanceBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vCashAdvanceBrowse">
+    <Key>
+      <PropertyRef Name="IDCA" />
+      <PropertyRef Name="DateCA" />
+      <PropertyRef Name="IDStaff" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="IsPaid" />
+      <PropertyRef Name="Lastname" />
+      <PropertyRef Name="Firstname" />
+      <PropertyRef Name="TotalPaid" />
+    </Key>
+    <Property Name="IDCA" Type="int" Nullable="false" />
+    <Property Name="DateCA" Type="datetime" Nullable="false" />
+    <Property Name="IDStaff" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsPaid" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="Lastname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Firstname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="Balance" Type="money" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vCashAdvancePaymentBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vCashAdvancePaymentBrowse">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+      <PropertyRef Name="IDCA" />
+      <PropertyRef Name="AmountPaid" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="DatePaid" />
+      <PropertyRef Name="Lastname" />
+      <PropertyRef Name="Firstname" />
+    </Key>
+    <Property Name="IDPayment" Type="int" Nullable="false" />
+    <Property Name="IDCA" Type="int" Nullable="false" />
+    <Property Name="AmountPaid" Type="money" Nullable="false" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="DatePaid" Type="datetime" Nullable="false" />
+    <Property Name="Lastname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Firstname" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vExpensesBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vExpensesBrowse">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="IDVendor" />
+      <PropertyRef Name="WithReceipt" />
+      <PropertyRef Name="IDAccount" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="ChargedToCodep" />
+      <PropertyRef Name="PostedDate" />
+    </Key>
+    <Property Name="IDExpense" Type="int" Nullable="false" />
+    <Property Name="ExpenseDate" Type="datetime" />
+    <Property Name="DatePosted" Type="datetime" />
+    <Property Name="ORNumber" Type="varchar" MaxLength="50" />
+    <Property Name="IDVendor" Type="int" Nullable="false" />
+    <Property Name="Vendor" Type="varchar" MaxLength="50" />
+    <Property Name="Particulars" Type="varchar" MaxLength="50" />
+    <Property Name="WithReceipt" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="IDAccount" Type="int" Nullable="false" />
+    <Property Name="AccountCode" Type="varchar" MaxLength="50" />
+    <Property Name="Account" Type="varchar" MaxLength="50" />
+    <Property Name="EncodedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="money" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+    <Property Name="TIN" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vPaymentBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vPaymentBrowse">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+      <PropertyRef Name="PostedDate" />
+      <PropertyRef Name="IDResident" />
+      <PropertyRef Name="PaidDate" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="PaymentMethod" />
+    </Key>
+    <Property Name="IDPayment" Type="int" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+    <Property Name="Resident" Type="varchar" MaxLength="154" />
+    <Property Name="IDResident" Type="int" Nullable="false" />
+    <Property Name="PaidDate" Type="datetime" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="IDPaymentMethod" Type="smallint" />
+    <Property Name="PaymentMethod" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Bank" Type="varchar" MaxLength="50" />
+    <Property Name="CheckNo" Type="varchar" MaxLength="50" />
+    <Property Name="CheckDate" Type="datetime" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vResidentActivityBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vResidentActivityBrowse">
+    <Key>
+      <PropertyRef Name="IDResidentActivityLog" />
+      <PropertyRef Name="LogDate" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="Activity" />
+      <PropertyRef Name="PostedBy" />
+    </Key>
+    <Property Name="IDResidentActivityLog" Type="int" Nullable="false" />
+    <Property Name="LogDate" Type="datetime" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="Nickname" Type="varchar" MaxLength="50" />
+    <Property Name="Position" Type="varchar" MaxLength="50" />
+    <Property Name="Activity" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="PostedBy" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vrptAssertionSummary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vrptAssertionSummary">
+    <Key>
+      <PropertyRef Name="AssertionDate" />
+      <PropertyRef Name="PostedDate" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Qty" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="Markup" />
+      <PropertyRef Name="MarkupValue" />
+      <PropertyRef Name="SubTotal" />
+    </Key>
+    <Property Name="Resident" Type="varchar" MaxLength="101" />
+    <Property Name="AssertionDate" Type="datetime" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Category" Type="varchar" MaxLength="50" />
+    <Property Name="Qty" Type="money" Nullable="false" />
+    <Property Name="Price" Type="money" Nullable="false" />
+    <Property Name="Cost" Type="money" />
+    <Property Name="Markup" Type="money" Nullable="false" />
+    <Property Name="MarkupValue" Type="money" Nullable="false" />
+    <Property Name="Margin" Type="money" />
+    <Property Name="SubTotal" Type="money" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vrptCollectibles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vrptCollectibles">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="AdmissionDate" />
+      <PropertyRef Name="TreatmentFee" />
+      <PropertyRef Name="TotalBilling" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="OverallBalance" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="IDResident" Type="int" />
+    <Property Name="Resident" Type="varchar" MaxLength="154" />
+    <Property Name="AdmissionDate" Type="datetime" Nullable="false" />
+    <Property Name="TerminationDate" Type="datetime" />
+    <Property Name="TreatmentFee" Type="money" Nullable="false" />
+    <Property Name="TotalBilling" Type="money" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="OverallBalance" Type="money" Nullable="false" />
+    <Property Name="IsActive" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="LastPaymentInfo" Type="varchar" MaxLength="63" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vrptExpenses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vrptExpenses">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="Vendor" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+    </Key>
+    <Property Name="IDExpense" Type="int" Nullable="false" />
+    <Property Name="ExpenseDate" Type="datetime" />
+    <Property Name="ORNumber" Type="varchar" MaxLength="50" />
+    <Property Name="Vendor" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Particulars" Type="varchar" MaxLength="50" />
+    <Property Name="Account" Type="varchar" MaxLength="50" />
+    <Property Name="EncodedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="VATSales" Type="money" />
+    <Property Name="VATAmount" Type="money" />
+    <Property Name="VATExempt" Type="money" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vrptPayment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vrptPayment">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+      <PropertyRef Name="IDResident" />
+      <PropertyRef Name="PaidDate" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="PayDetails" />
+      <PropertyRef Name="PostedDate" />
+    </Key>
+    <Property Name="IDPayment" Type="int" Nullable="false" />
+    <Property Name="Resident" Type="varchar" MaxLength="101" />
+    <Property Name="IDResident" Type="int" Nullable="false" />
+    <Property Name="PaidDate" Type="datetime" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="IDPaymentMethod" Type="smallint" />
+    <Property Name="PaymentMethod" Type="varchar" MaxLength="50" />
+    <Property Name="PayDetails" Type="varchar" MaxLength="101" Nullable="false" />
+    <Property Name="Bank" Type="varchar" MaxLength="50" />
+    <Property Name="CheckNo" Type="varchar" MaxLength="50" />
+    <Property Name="CheckDate" Type="datetime" />
+    <Property Name="Notes" Type="varchar" MaxLength="50" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vrptUnderChargedExpenses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vrptUnderChargedExpenses">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="IDVendor" />
+      <PropertyRef Name="Vendor" />
+      <PropertyRef Name="WithReceipt" />
+      <PropertyRef Name="IDAccount" />
+      <PropertyRef Name="AccountCode" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="ChargedToCodep" />
+    </Key>
+    <Property Name="IDExpense" Type="int" Nullable="false" />
+    <Property Name="ExpenseDate" Type="datetime" />
+    <Property Name="ORNumber" Type="varchar" MaxLength="50" />
+    <Property Name="IDVendor" Type="int" Nullable="false" />
+    <Property Name="Vendor" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Particulars" Type="varchar" MaxLength="50" />
+    <Property Name="WithReceipt" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="IDAccount" Type="int" Nullable="false" />
+    <Property Name="AccountCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Account" Type="varchar" MaxLength="50" />
+    <Property Name="EncodedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="money" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vRSCodepUpdates' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vRSCodepUpdates">
+    <Key>
+      <PropertyRef Name="IDUpdate" />
+      <PropertyRef Name="DateUpdate" />
+      <PropertyRef Name="DateLog" />
+      <PropertyRef Name="UpdateType" />
+      <PropertyRef Name="UpdatedBy" />
+      <PropertyRef Name="UpdateSummary" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="Resident" />
+    </Key>
+    <Property Name="IDUpdate" Type="int" Nullable="false" />
+    <Property Name="DateUpdate" Type="datetime" Nullable="false" />
+    <Property Name="DateLog" Type="datetime" Nullable="false" />
+    <Property Name="UpdateType" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdateSummary" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="Resident" Type="varchar" MaxLength="154" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vRSCollectibles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vRSCollectibles">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="AdmissionDate" />
+      <PropertyRef Name="TreatmentFee" />
+      <PropertyRef Name="TotalBilling" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="OverallBalance" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="IDResident" Type="int" />
+    <Property Name="Resident" Type="varchar" MaxLength="101" />
+    <Property Name="AdmissionDate" Type="datetime" Nullable="false" />
+    <Property Name="TerminationDate" Type="datetime" />
+    <Property Name="TreatmentFee" Type="money" Nullable="false" />
+    <Property Name="TotalBilling" Type="money" Nullable="false" />
+    <Property Name="TotalPaid" Type="money" Nullable="false" />
+    <Property Name="OverallBalance" Type="money" Nullable="false" />
+    <Property Name="IsActive" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="LastPaymentInfo" Type="varchar" MaxLength="63" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vRSExpensesDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vRSExpensesDaily">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="IDVendor" />
+      <PropertyRef Name="Vendor" />
+      <PropertyRef Name="WithReceipt" />
+      <PropertyRef Name="IDAccount" />
+      <PropertyRef Name="AccountCode" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="ChargedToCodep" />
+      <PropertyRef Name="PostedDate" />
+    </Key>
+    <Property Name="IDExpense" Type="int" Nullable="false" />
+    <Property Name="ExpenseDate" Type="datetime" />
+    <Property Name="ORNumber" Type="varchar" MaxLength="50" />
+    <Property Name="IDVendor" Type="int" Nullable="false" />
+    <Property Name="Vendor" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Particulars" Type="varchar" MaxLength="50" />
+    <Property Name="WithReceipt" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="IDAccount" Type="int" Nullable="false" />
+    <Property Name="AccountCode" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Account" Type="varchar" MaxLength="50" />
+    <Property Name="EncodedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsVerified" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="money" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ICARUSDB.dbo.vselCodepUpdateBrowse' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vselCodepUpdateBrowse">
+    <Key>
+      <PropertyRef Name="IDUpdate" />
+      <PropertyRef Name="DateUpdate" />
+      <PropertyRef Name="DateLog" />
+      <PropertyRef Name="UpdateType" />
+      <PropertyRef Name="UpdatedBy" />
+      <PropertyRef Name="UpdateSummary" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="Resident" />
+    </Key>
+    <Property Name="IDUpdate" Type="int" Nullable="false" />
+    <Property Name="DateUpdate" Type="datetime" Nullable="false" />
+    <Property Name="DateLog" Type="datetime" Nullable="false" />
+    <Property Name="UpdateType" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UpdateSummary" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="IDAdmission" Type="int" Nullable="false" />
+    <Property Name="Resident" Type="varchar" MaxLength="154" Nullable="false" />
+  </EntityType>
+  <Function Name="GenPass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar" />
+  <Function Name="spBackup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spBackupCloud" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spCalculateExpensesChargedToCodep" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="IDExpense" Type="int" Mode="In" />
+    <Parameter Name="IDChargeToCodep" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spGenerateTreatmentFee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="IDAdmission" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spJobGenerateTreatmentFee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spRecalcAdmissionBalance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="IDAdmission" Type="int" Mode="In" />
+  </Function>
+  <Function Name="spSendNotification" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="profilename" Type="varchar" Mode="In" />
+    <Parameter Name="recipients" Type="varchar" Mode="In" />
+    <Parameter Name="subject" Type="varchar" Mode="In" />
+    <Parameter Name="body" Type="varchar" Mode="In" />
+    <Parameter Name="Bodyformat" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="spSendReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spSendReportCodepUpdates" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spSendReportCollectibles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spSendReportExpensesDaily" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spSendReportRecentPayments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="ICARUSDBModelStoreContainer">
+    <EntitySet Name="tblAdmission" EntityType="Self.tblAdmission" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAdmissionAttachment" EntityType="Self.tblAdmissionAttachment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAdmissionAttachmentType" EntityType="Self.tblAdmissionAttachmentType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAdmissionBilling" EntityType="Self.tblAdmissionBilling" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAdmissionCommLog" EntityType="Self.tblAdmissionCommLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAdmissionVitalSigns" EntityType="Self.tblAdmissionVitalSigns" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAssertion" EntityType="Self.tblAssertion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAssertionCategory" EntityType="Self.tblAssertionCategory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblAttachments" EntityType="Self.tblAttachments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCashAdvance" EntityType="Self.tblCashAdvance" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCashAdvancePayment" EntityType="Self.tblCashAdvancePayment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCodepUpdates" EntityType="Self.tblCodepUpdates" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblExpenses" EntityType="Self.tblExpenses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblExpensesChartOfAccount" EntityType="Self.tblExpensesChartOfAccount" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblExpensesForAssertion" EntityType="Self.tblExpensesForAssertion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblFacilityReport" EntityType="Self.tblFacilityReport" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInquiry" EntityType="Self.tblInquiry" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInquiryCommLog" EntityType="Self.tblInquiryCommLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblInquiryStatus" EntityType="Self.tblInquiryStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblPayment" EntityType="Self.tblPayment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblPaymentMethod" EntityType="Self.tblPaymentMethod" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblRank" EntityType="Self.tblRank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblRequest" EntityType="Self.tblRequest" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblRequestStatus" EntityType="Self.tblRequestStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblResident" EntityType="Self.tblResident" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblResidentActivity" EntityType="Self.tblResidentActivity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStaff" EntityType="Self.tblStaff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblVendor" EntityType="Self.tblVendor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="vAdmissionBrowse" EntityType="Self.vAdmissionBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vAdmissionBrowse].[IDAdmission] AS [IDAdmission], 
+    [vAdmissionBrowse].[IDResident] AS [IDResident], 
+    [vAdmissionBrowse].[Resident] AS [Resident], 
+    [vAdmissionBrowse].[Nickname] AS [Nickname], 
+    [vAdmissionBrowse].[AdmissionDate] AS [AdmissionDate], 
+    [vAdmissionBrowse].[TerminationDate] AS [TerminationDate], 
+    [vAdmissionBrowse].[TreatmentFee] AS [TreatmentFee], 
+    [vAdmissionBrowse].[TotalBilling] AS [TotalBilling], 
+    [vAdmissionBrowse].[TotalPaid] AS [TotalPaid], 
+    [vAdmissionBrowse].[OverallBalance] AS [OverallBalance], 
+    [vAdmissionBrowse].[IsActive] AS [IsActive], 
+    [vAdmissionBrowse].[LastPaymentInfo] AS [LastPaymentInfo], 
+    [vAdmissionBrowse].[StopTFBilling] AS [StopTFBilling], 
+    [vAdmissionBrowse].[rank] AS [rank], 
+    [vAdmissionBrowse].[Phase] AS [Phase]
+    FROM [dbo].[vAdmissionBrowse] AS [vAdmissionBrowse]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vCashAdvanceBrowse" EntityType="Self.vCashAdvanceBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vCashAdvanceBrowse].[IDCA] AS [IDCA], 
+    [vCashAdvanceBrowse].[DateCA] AS [DateCA], 
+    [vCashAdvanceBrowse].[IDStaff] AS [IDStaff], 
+    [vCashAdvanceBrowse].[Amount] AS [Amount], 
+    [vCashAdvanceBrowse].[Notes] AS [Notes], 
+    [vCashAdvanceBrowse].[IsPaid] AS [IsPaid], 
+    [vCashAdvanceBrowse].[Lastname] AS [Lastname], 
+    [vCashAdvanceBrowse].[Firstname] AS [Firstname], 
+    [vCashAdvanceBrowse].[TotalPaid] AS [TotalPaid], 
+    [vCashAdvanceBrowse].[Balance] AS [Balance]
+    FROM [dbo].[vCashAdvanceBrowse] AS [vCashAdvanceBrowse]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vCashAdvancePaymentBrowse" EntityType="Self.vCashAdvancePaymentBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vCashAdvancePaymentBrowse].[IDPayment] AS [IDPayment], 
+    [vCashAdvancePaymentBrowse].[IDCA] AS [IDCA], 
+    [vCashAdvancePaymentBrowse].[AmountPaid] AS [AmountPaid], 
+    [vCashAdvancePaymentBrowse].[Notes] AS [Notes], 
+    [vCashAdvancePaymentBrowse].[IsVerified] AS [IsVerified], 
+    [vCashAdvancePaymentBrowse].[DatePaid] AS [DatePaid], 
+    [vCashAdvancePaymentBrowse].[Lastname] AS [Lastname], 
+    [vCashAdvancePaymentBrowse].[Firstname] AS [Firstname]
+    FROM [dbo].[vCashAdvancePaymentBrowse] AS [vCashAdvancePaymentBrowse]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vExpensesBrowse" EntityType="Self.vExpensesBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vExpensesBrowse].[IDExpense] AS [IDExpense], 
+    [vExpensesBrowse].[ExpenseDate] AS [ExpenseDate], 
+    [vExpensesBrowse].[DatePosted] AS [DatePosted], 
+    [vExpensesBrowse].[ORNumber] AS [ORNumber], 
+    [vExpensesBrowse].[IDVendor] AS [IDVendor], 
+    [vExpensesBrowse].[Vendor] AS [Vendor], 
+    [vExpensesBrowse].[Particulars] AS [Particulars], 
+    [vExpensesBrowse].[WithReceipt] AS [WithReceipt], 
+    [vExpensesBrowse].[IDAccount] AS [IDAccount], 
+    [vExpensesBrowse].[AccountCode] AS [AccountCode], 
+    [vExpensesBrowse].[Account] AS [Account], 
+    [vExpensesBrowse].[EncodedBy] AS [EncodedBy], 
+    [vExpensesBrowse].[IsVerified] AS [IsVerified], 
+    [vExpensesBrowse].[ChargeToCodep] AS [ChargeToCodep], 
+    [vExpensesBrowse].[Amount] AS [Amount], 
+    [vExpensesBrowse].[ChargedToCodep] AS [ChargedToCodep], 
+    [vExpensesBrowse].[PostedDate] AS [PostedDate], 
+    [vExpensesBrowse].[TIN] AS [TIN]
+    FROM [dbo].[vExpensesBrowse] AS [vExpensesBrowse]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vPaymentBrowse" EntityType="Self.vPaymentBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vPaymentBrowse].[IDPayment] AS [IDPayment], 
+    [vPaymentBrowse].[PostedDate] AS [PostedDate], 
+    [vPaymentBrowse].[Resident] AS [Resident], 
+    [vPaymentBrowse].[IDResident] AS [IDResident], 
+    [vPaymentBrowse].[PaidDate] AS [PaidDate], 
+    [vPaymentBrowse].[IDAdmission] AS [IDAdmission], 
+    [vPaymentBrowse].[TotalPaid] AS [TotalPaid], 
+    [vPaymentBrowse].[IDPaymentMethod] AS [IDPaymentMethod], 
+    [vPaymentBrowse].[PaymentMethod] AS [PaymentMethod], 
+    [vPaymentBrowse].[Bank] AS [Bank], 
+    [vPaymentBrowse].[CheckNo] AS [CheckNo], 
+    [vPaymentBrowse].[CheckDate] AS [CheckDate], 
+    [vPaymentBrowse].[Notes] AS [Notes], 
+    [vPaymentBrowse].[IsVerified] AS [IsVerified]
+    FROM [dbo].[vPaymentBrowse] AS [vPaymentBrowse]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vResidentActivityBrowse" EntityType="Self.vResidentActivityBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vResidentActivityBrowse].[IDResidentActivityLog] AS [IDResidentActivityLog], 
+    [vResidentActivityBrowse].[LogDate] AS [LogDate], 
+    [vResidentActivityBrowse].[IDAdmission] AS [IDAdmission], 
+    [vResidentActivityBrowse].[Nickname] AS [Nickname], 
+    [vResidentActivityBrowse].[Position] AS [Position], 
+    [vResidentActivityBrowse].[Activity] AS [Activity], 
+    [vResidentActivityBrowse].[PostedBy] AS [PostedBy]
+    FROM [dbo].[vResidentActivityBrowse] AS [vResidentActivityBrowse]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vrptAssertionSummary" EntityType="Self.vrptAssertionSummary" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vrptAssertionSummary].[Resident] AS [Resident], 
+    [vrptAssertionSummary].[AssertionDate] AS [AssertionDate], 
+    [vrptAssertionSummary].[PostedDate] AS [PostedDate], 
+    [vrptAssertionSummary].[Description] AS [Description], 
+    [vrptAssertionSummary].[Category] AS [Category], 
+    [vrptAssertionSummary].[Qty] AS [Qty], 
+    [vrptAssertionSummary].[Price] AS [Price], 
+    [vrptAssertionSummary].[Cost] AS [Cost], 
+    [vrptAssertionSummary].[Markup] AS [Markup], 
+    [vrptAssertionSummary].[MarkupValue] AS [MarkupValue], 
+    [vrptAssertionSummary].[Margin] AS [Margin], 
+    [vrptAssertionSummary].[SubTotal] AS [SubTotal]
+    FROM [dbo].[vrptAssertionSummary] AS [vrptAssertionSummary]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vrptCollectibles" EntityType="Self.vrptCollectibles" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vrptCollectibles].[IDAdmission] AS [IDAdmission], 
+    [vrptCollectibles].[IDResident] AS [IDResident], 
+    [vrptCollectibles].[Resident] AS [Resident], 
+    [vrptCollectibles].[AdmissionDate] AS [AdmissionDate], 
+    [vrptCollectibles].[TerminationDate] AS [TerminationDate], 
+    [vrptCollectibles].[TreatmentFee] AS [TreatmentFee], 
+    [vrptCollectibles].[TotalBilling] AS [TotalBilling], 
+    [vrptCollectibles].[TotalPaid] AS [TotalPaid], 
+    [vrptCollectibles].[OverallBalance] AS [OverallBalance], 
+    [vrptCollectibles].[IsActive] AS [IsActive], 
+    [vrptCollectibles].[LastPaymentInfo] AS [LastPaymentInfo]
+    FROM [dbo].[vrptCollectibles] AS [vrptCollectibles]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vrptExpenses" EntityType="Self.vrptExpenses" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vrptExpenses].[IDExpense] AS [IDExpense], 
+    [vrptExpenses].[ExpenseDate] AS [ExpenseDate], 
+    [vrptExpenses].[ORNumber] AS [ORNumber], 
+    [vrptExpenses].[Vendor] AS [Vendor], 
+    [vrptExpenses].[Particulars] AS [Particulars], 
+    [vrptExpenses].[Account] AS [Account], 
+    [vrptExpenses].[EncodedBy] AS [EncodedBy], 
+    [vrptExpenses].[ChargeToCodep] AS [ChargeToCodep], 
+    [vrptExpenses].[VATSales] AS [VATSales], 
+    [vrptExpenses].[VATAmount] AS [VATAmount], 
+    [vrptExpenses].[VATExempt] AS [VATExempt], 
+    [vrptExpenses].[Amount] AS [Amount]
+    FROM [dbo].[vrptExpenses] AS [vrptExpenses]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vrptPayment" EntityType="Self.vrptPayment" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vrptPayment].[IDPayment] AS [IDPayment], 
+    [vrptPayment].[Resident] AS [Resident], 
+    [vrptPayment].[IDResident] AS [IDResident], 
+    [vrptPayment].[PaidDate] AS [PaidDate], 
+    [vrptPayment].[IDAdmission] AS [IDAdmission], 
+    [vrptPayment].[TotalPaid] AS [TotalPaid], 
+    [vrptPayment].[IDPaymentMethod] AS [IDPaymentMethod], 
+    [vrptPayment].[PaymentMethod] AS [PaymentMethod], 
+    [vrptPayment].[PayDetails] AS [PayDetails], 
+    [vrptPayment].[Bank] AS [Bank], 
+    [vrptPayment].[CheckNo] AS [CheckNo], 
+    [vrptPayment].[CheckDate] AS [CheckDate], 
+    [vrptPayment].[Notes] AS [Notes], 
+    [vrptPayment].[IsVerified] AS [IsVerified], 
+    [vrptPayment].[PostedDate] AS [PostedDate]
+    FROM [dbo].[vrptPayment] AS [vrptPayment]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vrptUnderChargedExpenses" EntityType="Self.vrptUnderChargedExpenses" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vrptUnderChargedExpenses].[IDExpense] AS [IDExpense], 
+    [vrptUnderChargedExpenses].[ExpenseDate] AS [ExpenseDate], 
+    [vrptUnderChargedExpenses].[ORNumber] AS [ORNumber], 
+    [vrptUnderChargedExpenses].[IDVendor] AS [IDVendor], 
+    [vrptUnderChargedExpenses].[Vendor] AS [Vendor], 
+    [vrptUnderChargedExpenses].[Particulars] AS [Particulars], 
+    [vrptUnderChargedExpenses].[WithReceipt] AS [WithReceipt], 
+    [vrptUnderChargedExpenses].[IDAccount] AS [IDAccount], 
+    [vrptUnderChargedExpenses].[AccountCode] AS [AccountCode], 
+    [vrptUnderChargedExpenses].[Account] AS [Account], 
+    [vrptUnderChargedExpenses].[EncodedBy] AS [EncodedBy], 
+    [vrptUnderChargedExpenses].[IsVerified] AS [IsVerified], 
+    [vrptUnderChargedExpenses].[ChargeToCodep] AS [ChargeToCodep], 
+    [vrptUnderChargedExpenses].[Amount] AS [Amount], 
+    [vrptUnderChargedExpenses].[ChargedToCodep] AS [ChargedToCodep]
+    FROM [dbo].[vrptUnderChargedExpenses] AS [vrptUnderChargedExpenses]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vRSCodepUpdates" EntityType="Self.vRSCodepUpdates" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vRSCodepUpdates].[IDUpdate] AS [IDUpdate], 
+    [vRSCodepUpdates].[DateUpdate] AS [DateUpdate], 
+    [vRSCodepUpdates].[DateLog] AS [DateLog], 
+    [vRSCodepUpdates].[UpdateType] AS [UpdateType], 
+    [vRSCodepUpdates].[UpdatedBy] AS [UpdatedBy], 
+    [vRSCodepUpdates].[UpdateSummary] AS [UpdateSummary], 
+    [vRSCodepUpdates].[IDAdmission] AS [IDAdmission], 
+    [vRSCodepUpdates].[Resident] AS [Resident]
+    FROM [dbo].[vRSCodepUpdates] AS [vRSCodepUpdates]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vRSCollectibles" EntityType="Self.vRSCollectibles" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vRSCollectibles].[IDAdmission] AS [IDAdmission], 
+    [vRSCollectibles].[IDResident] AS [IDResident], 
+    [vRSCollectibles].[Resident] AS [Resident], 
+    [vRSCollectibles].[AdmissionDate] AS [AdmissionDate], 
+    [vRSCollectibles].[TerminationDate] AS [TerminationDate], 
+    [vRSCollectibles].[TreatmentFee] AS [TreatmentFee], 
+    [vRSCollectibles].[TotalBilling] AS [TotalBilling], 
+    [vRSCollectibles].[TotalPaid] AS [TotalPaid], 
+    [vRSCollectibles].[OverallBalance] AS [OverallBalance], 
+    [vRSCollectibles].[IsActive] AS [IsActive], 
+    [vRSCollectibles].[LastPaymentInfo] AS [LastPaymentInfo]
+    FROM [dbo].[vRSCollectibles] AS [vRSCollectibles]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vRSExpensesDaily" EntityType="Self.vRSExpensesDaily" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vRSExpensesDaily].[IDExpense] AS [IDExpense], 
+    [vRSExpensesDaily].[ExpenseDate] AS [ExpenseDate], 
+    [vRSExpensesDaily].[ORNumber] AS [ORNumber], 
+    [vRSExpensesDaily].[IDVendor] AS [IDVendor], 
+    [vRSExpensesDaily].[Vendor] AS [Vendor], 
+    [vRSExpensesDaily].[Particulars] AS [Particulars], 
+    [vRSExpensesDaily].[WithReceipt] AS [WithReceipt], 
+    [vRSExpensesDaily].[IDAccount] AS [IDAccount], 
+    [vRSExpensesDaily].[AccountCode] AS [AccountCode], 
+    [vRSExpensesDaily].[Account] AS [Account], 
+    [vRSExpensesDaily].[EncodedBy] AS [EncodedBy], 
+    [vRSExpensesDaily].[IsVerified] AS [IsVerified], 
+    [vRSExpensesDaily].[ChargeToCodep] AS [ChargeToCodep], 
+    [vRSExpensesDaily].[Amount] AS [Amount], 
+    [vRSExpensesDaily].[ChargedToCodep] AS [ChargedToCodep], 
+    [vRSExpensesDaily].[PostedDate] AS [PostedDate]
+    FROM [dbo].[vRSExpensesDaily] AS [vRSExpensesDaily]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vselCodepUpdateBrowse" EntityType="Self.vselCodepUpdateBrowse" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vselCodepUpdateBrowse].[IDUpdate] AS [IDUpdate], 
+    [vselCodepUpdateBrowse].[DateUpdate] AS [DateUpdate], 
+    [vselCodepUpdateBrowse].[DateLog] AS [DateLog], 
+    [vselCodepUpdateBrowse].[UpdateType] AS [UpdateType], 
+    [vselCodepUpdateBrowse].[UpdatedBy] AS [UpdatedBy], 
+    [vselCodepUpdateBrowse].[UpdateSummary] AS [UpdateSummary], 
+    [vselCodepUpdateBrowse].[IDAdmission] AS [IDAdmission], 
+    [vselCodepUpdateBrowse].[Resident] AS [Resident]
+    FROM [dbo].[vselCodepUpdateBrowse] AS [vselCodepUpdateBrowse]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

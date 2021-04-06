@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Icarus.Models.tblRequest>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pl-5 pr-5">
+    <div class="d-flex mb-2 mt-2 justify-content-between">
+        <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
+        <div>
+            <a class="btn" style="background-color:#4E58A2;color:white;" href="#">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>&nbsp;Add Request</span>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <table class="table table-striped table-hover table-borderless">
+        <thead style="background-color: #6C7AE0; color: white;">
+            <tr>
+                <th class="tableheadleft" scope="col">IDRequest</th>
+                <th scope="col">DateRequest</th>
+                <th scope="col">DateNeeded</th>
+                <th scope="col">RequestedBy</th>
+                <th scope="col">Request</th>
+                <th scope="col">ApprovedNotes</th>
+                <th scope="col">Budget</th>
+                <th scope="col">ApprovedBy</th>
+                <th scope="col">DateApproved</th>
+                <th scope="col">DateDelivered</th>
+                <th scope="col">Status</th>
+                <th class="tableheadright" scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">
+                        @Html.ActionLink(
+                            linkText: item.IDRequest.ToString(),
+                            actionName: "Details",
+                            controllerName: "Requests",
+                            routeValues: new { id = item.IDRequest },
+                            htmlAttributes: null
+                        )
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateRequest)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateNeeded)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Request)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApproverNotes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Budget)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApprovedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateApproved)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateAcc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IDRequestStatus)
+                    </td>
+                    <td style="display:flex;">
+                        <a class="btn btn-warning btn-sm mr-1" href="/Requests/Edit/@item.IDRequest">Edit</a>
+                        <a class="btn btn-danger btn-sm ml-1" href="/Requests/Delete/@item.IDRequest">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Requests Browse';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

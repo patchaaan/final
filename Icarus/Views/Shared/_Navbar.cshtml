@@ -1,0 +1,154 @@
+﻿<div class="">
+    <nav id="navColor" class="navbar navbar-expand-md pb-0 mb-0" style="background-color:#444D8E;">
+        <a class="navbar-brand" href="/Residents">Icarus</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admission
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Admissions">Admission Browse</a>
+                        <a class="dropdown-item" href="/Residents">Resident Browse</a>
+                        <a class="dropdown-item" href="/Inquiries">Inquiry Logs</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Expenses
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Expense Browse</a>
+                        <a class="dropdown-item" href="#">Vendors</a>
+                        <a class="dropdown-item" href="/Requests">Request</a>
+                        <a class="dropdown-item" href="/AssertionCategories">Assertion Category</a>
+                        <a class="dropdown-item" href="#">Chart of Accounts</a>
+                    </div>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Payments</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Reports
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Reports Browse</a>
+                        <a class="dropdown-item" href="#">Resident Activity</a>
+                        <a class="dropdown-item" href="#">Facility Report</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/Staffs/Index">Staffs</a>
+                        <a class="dropdown-item">Change Password</a>
+                        <!--@@Html.ActionLink("Logout", "Logout", "Login", protocol: null, hostName: null, fragment: "Logout", routeValues: null, htmlAttributes: null)-->
+                        <!--<a href="@@Url.Action("Logout","Logout","Login")">Logout</a>-->
+                        @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                        @Html.AntiForgeryToken()
+                            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                        }
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<br>
+<script>
+    var $dropdown = $(".dropdown");
+    var $dropdownToggle = $(".dropdown-toggle");
+    var $dropdownMenu = $(".dropdown-menu");
+    var showClass = "show";
+
+    $(window).on("load resize", function () {
+        if (this.matchMedia("(min-width: 768px)").matches) {
+            $dropdown.hover(
+                function () {
+                    var $this = $(this);
+                    $this.addClass(showClass);
+                    $this.find($dropdownToggle).attr("aria-expanded", "true");
+                    $this.find($dropdownMenu).addClass(showClass);
+                },
+                function () {
+                    var $this = $(this);
+                    $this.removeClass(showClass);
+                    $this.find($dropdownToggle).attr("aria-expanded", "false");
+                    $this.find($dropdownMenu).removeClass(showClass);
+                }
+            );
+        } else {
+            $dropdown.off("mouseenter mouseleave");
+        }
+    });
+</script>
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px;
+    }
+
+    #navbarSupportedContent {
+        margin-left: 48%;
+    }
+
+    #navColor {
+        color: white;
+    }
+
+    .navbar .nav-item:not(:last-child) {
+        margin-right: 35px;
+    }
+
+    .dropdown-toggle::after {
+        transition: transform 0.15s linear;
+    }
+
+    .show.dropdown .dropdown-toggle::after {
+        transform: translateY(3px);
+    }
+
+    .dropdown-menu {
+        margin-top: 0;
+    }
+
+    #tableName {
+        text-align: center
+    }
+
+    .navbar-brand {
+        color: white;
+    }
+
+    .navbar-expand-md .navbar-nav .nav-link {
+        color: white;
+    }
+
+    .search {
+        margin-left: 90%;
+        border-radius: 5px;
+        padding-right: 90px;
+    }
+
+    .isearch {
+        border-radius: 5px;
+    }
+
+</style>

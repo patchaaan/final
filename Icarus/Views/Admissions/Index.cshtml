@@ -1,0 +1,144 @@
+﻿@model IEnumerable<Icarus.Models.vAdmissionBrowse>
+
+@{
+    ViewBag.Title = "Admission Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pl-5 pr-5">
+    <div class="d-flex mb-2 mt-2 justify-content-between">
+        <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
+        <div>
+            <a class="btn" style="background-color:#4E58A2;color:white;">
+                <span>Generate Billing</span>
+            </a>
+            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Admissions/Create">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>&nbsp;Add Admission</span>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <table class="table table-responsive table-striped table-hover table-borderless" style="overflow-x: inherit;">
+            <thead style="background-color: #6C7AE0; color: white;">
+                <tr>
+                    <th class="tableheadleft" scope="col">
+                        @Html.DisplayNameFor(model => model.IDAdmission)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Resident)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Phase)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.rank)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.AdmissionDate)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.TerminationDate)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.TreatmentFee)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.TotalBilling)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.TotalPaid)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.OverallBalance)
+                    </th>
+                    <th scope="col" class="tableheadright">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    var id = item.IDAdmission;
+                <tr>
+                    <td scope="row">
+                        @Html.ActionLink(
+                            linkText: item.IDAdmission.ToString(),
+                            actionName: "Details",
+                            controllerName: "Admissions",
+                            routeValues: new { id = id },
+                            htmlAttributes: null
+                        )
+                    </td>
+                    <td>
+                        @Html.ActionLink(
+                            linkText: item.Resident.ToString(),
+                            actionName: "Details",
+                            controllerName: "Residents",
+                            routeValues: new { id = item.IDResident },
+                            htmlAttributes: null
+                        )
+                        
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rank)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AdmissionDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TerminationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TreatmentFee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalBilling)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPaid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OverallBalance)
+                    </td>
+                    <td style="display:flex;">
+                        <a class="btn btn-warning btn-sm mr-1" href="/Admissions/Edit/@item.IDAdmission">Edit</a>
+                        <a class="btn btn-danger btn-sm ml-1" href="/Admissions/Delete/@item.IDAdmission">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Admission Browse';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

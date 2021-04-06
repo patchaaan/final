@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Icarus.Models.tblResident>
+
+@{
+    ViewBag.Title = "Resident Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+<div class="pl-5 pr-5">
+    <div class="d-flex mb-2 mt-2 justify-content-between">
+        <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
+        <div>
+            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Residents/Create">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>&nbsp;Add Resident</span>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <table class="table table-striped table-hover table-borderless">
+            <thead style="background-color: #6C7AE0; color: white;">
+                <tr>
+                    <th class="tableheadleft" scope="col">@Html.DisplayNameFor(model => model.IDResident)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Lastname)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Firstname)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Middlename)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Birthdate)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Age)</th>
+                    <th scope="col">@Html.DisplayNameFor(model => model.Sex)</th>
+                    <th class="tableheadright text-center" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    var id = item.IDResident;
+                    <tr>
+                        <td scope="row">
+                            @Html.ActionLink(
+                                linkText: id.ToString(),
+                                actionName: "Details",
+                                controllerName: "Residents",
+                                routeValues: new { id = id },
+                                htmlAttributes: null
+                            )
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lastname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Middlename)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Birthdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Age)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sex)
+                        </td>
+                        <td>
+                            <center>
+                                <a class="btn btn-sm btn-warning" href="/Residents/Edit/@item.IDResident">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="/Residents/Delete/@item.IDResident">Delete</a>
+                            </center>
+                            <!--@@Html.ActionLink("Edit", "Edit", new { id = item.IDResident })
+                            @@Html.ActionLink("Delete", "Delete", new { id = item.IDResident })-->
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Resident Browse';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
