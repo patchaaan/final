@@ -1,0 +1,130 @@
+﻿@model IEnumerable<Icarus.Models.tblExpens>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DatePosted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExpenseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ORNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDVendor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Particulars)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WithReceipt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EncodedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChargeToCodep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VATSales)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VATAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VATExempt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChargedToCodep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TIN)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DatePosted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpenseDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ORNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDVendor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Particulars)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WithReceipt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDAccount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EncodedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsVerified)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChargeToCodep)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VATSales)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VATAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VATExempt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChargedToCodep)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TIN)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IDExpense }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IDExpense }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IDExpense })
+        </td>
+    </tr>
+}
+
+</table>

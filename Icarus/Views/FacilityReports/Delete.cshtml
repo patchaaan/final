@@ -1,0 +1,76 @@
+﻿@model Icarus.Models.tblFacilityReport
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h2>Are you sure you want to delete this ?</h2>
+    <div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.ReportDate)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.ReportDate)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Activity)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Activity)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.PostedBy)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.PostedBy)
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col  mt-2 text-center">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-actions">
+                            <a class="btn btn-sm btn-warning" href="/FacilityReports/Index">Go back to lists</a>
+                            <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        document.title = 'Delete Resident';
+    });
+</script>
