@@ -129,18 +129,35 @@
                                     @Html.EditorFor(model => model.assertion.MarkupValue, new { htmlAttributes = new { @type = "number", @class = "form-control markUpValue" } })
                                 </div>
                                 <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.assertion.SubTotal)
+                                    @Html.EditorFor(model => model.assertion.SubTotal, new { htmlAttributes = new { @type = "number", @class = "form-control subTotal" } })
 
                                 </div>
                                 <div class="form-group col-sm-4">
-
+                                    @Html.LabelFor(model => model.assertion.PostedDate)
+                                    @Html.TextBoxFor(model => model.assertion.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.assertion.IDChargeToCodep)
+                                    @Html.EditorFor(model => model.assertion.IDChargeToCodep, new { htmlAttributes = new { @type = "number", @class = "form-control markUpValue" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.assertion.Description)
+                                    @Html.TextAreaFor(model => model.assertion.Description, new { @class = "form-control", @rows = 5 })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.assertion.Notes)
+                                    @Html.TextAreaFor(model => model.assertion.Notes, new { @class = "form-control", @rows = 5 })
                                 </div>
                             </div>
                         </form>
                     }
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-primary">Add</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Add</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

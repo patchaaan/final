@@ -15,6 +15,7 @@ namespace Icarus.Controllers
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
         // GET: Staffs
+        [Route("Staffs/")]
         public ActionResult Index()
         {
             if (Session["Username"] != null)
@@ -69,7 +70,7 @@ namespace Icarus.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password")] tblStaff tblStaff)
+        public ActionResult Create([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password,isADG,isEDG,isPG,isAAG")] tblStaff tblStaff)
         {
             if (Session["Username"] != null)
             {
@@ -117,7 +118,7 @@ namespace Icarus.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password")] tblStaff tblStaff)
+        public ActionResult Edit([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password,isADG,isEDG,isPG,isAAG")] tblStaff tblStaff)
         {
             if (Session["Username"] != null)
             {

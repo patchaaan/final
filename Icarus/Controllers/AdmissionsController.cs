@@ -48,6 +48,8 @@ namespace Icarus.Controllers
                 IEnumerable<tblAdmissionAttachment> attachments = db.tblAdmissionAttachments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmAttachment).ToList();
                 tblRank rank = db.tblRanks.SingleOrDefault(x => x.IDRank == admission.IDRank);
                 IEnumerable<tblRank> rankLists = db.tblRanks.ToList();
+                IEnumerable<tblAdmissionAttachmentType> attachmentTypes = db.tblAdmissionAttachmentTypes.ToList();
+                IEnumerable<tblPaymentMethod> paymentMethods = db.tblPaymentMethods.ToList();
 
                 AdmissionNew adm = new AdmissionNew();
                 adm.adm = admission;
@@ -62,18 +64,36 @@ namespace Icarus.Controllers
                 assertionNew.admission = admission;
                 assertionNew.assertionLists = assertion;
 
+                PaymentHistoryNew paymentNew = new PaymentHistoryNew();
+                paymentNew.admission = admission;
+                paymentNew.paymentLists = payments;
+
+                VitalSignsNew vsn = new VitalSignsNew();
+                vsn.admission = admission;
+                vsn.vitalSignsLists = vitalSigns;
+
+                CommLogNew cln = new CommLogNew();
+                cln.admission = admission;
+                cln.commLogLists = commLog;
+
+                AttachmentNew an = new AttachmentNew();
+                an.admission = admission;
+                an.attachmentLists = attachments;
+                an.attachmentTypes = attachmentTypes;
+
 
                 ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
                 ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
 
                 AdmissionDetails ad = new AdmissionDetails();
                 ad.Admissions = adm;
                 ad.admissiongBillingNew = admBilling;
                 ad.Assertion = assertionNew;
-                ad.VitalSigns = vitalSigns;
-                ad.CommLog = commLog;
-                ad.Payments = payments;
-                ad.Attachments = attachments;
+                ad.VitalSigns = vsn;
+                ad.CommLog = cln;
+                ad.Payments = paymentNew;
+                ad.Attachments = an;
                 ad.Rank = Rank;
                 ad.rankLists = rankLists;
 

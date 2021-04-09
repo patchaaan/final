@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<Icarus.Models.tblPayment>
+﻿@model Icarus.Models.PaymentHistoryNew
 
 @{
     ViewBag.Title = "Admission Browse";
@@ -16,55 +15,60 @@
         </div>
     </div>
     <hr>
-    <table class="table table-striped table-hover table-borderless assertionTable">
-        <thead style="background-color: #6C7AE0; color: white;">
-            <tr>
-                <th class="tableheadleft" scope="col">
-                    ID Payment
-                </th>
-                <th scope="col">
-                    Paid Date
-                </th>
-                <th scope="col">
-                    Paid Amount
-                </th>
-                <th scope="col">
-                    Payment Method
-                </th>
-                <th scope="col">
-                    Bank
-                </th>
-                <th scope="col">
-                    Notes
-                </th>
-                <th scope="col">
-                    Check Number
-                </th>
-                <th scope="col">
-                    Check Date
-                </th>
-                <th class="tableheadright" scope="col">
-                    Verified
-                </th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            @foreach (var item in Model)
-            {
+    @if (!Model.paymentLists.Any() || Model.paymentLists == null) {
+
+    }
+    else {
+        <table class="table table-striped table-hover table-borderless assertionTable">
+            <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <td>@item.IDPayment</td>
-                    <td>@item.PaidDate</td>
-                    <td>@item.TotalPaid</td>
-                    <td>@item.IDPaymentMethod</td>
-                    <td>@item.Bank</td>
-                    <td>@item.Notes</td>
-                    <td>@item.CheckNo</td>
-                    <td>@item.CheckDate</td>
-                    <td>@item.IsVerified</td>
+                    <th class="tableheadleft" scope="col">
+                        ID Payment
+                    </th>
+                    <th scope="col">
+                        Paid Date
+                    </th>
+                    <th scope="col">
+                        Paid Amount
+                    </th>
+                    <th scope="col">
+                        Payment Method
+                    </th>
+                    <th scope="col">
+                        Bank
+                    </th>
+                    <th scope="col">
+                        Notes
+                    </th>
+                    <th scope="col">
+                        Check Number
+                    </th>
+                    <th scope="col">
+                        Check Date
+                    </th>
+                    <th class="tableheadright" scope="col">
+                        Verified
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="tableBody">
+                @foreach (var item in Model.paymentLists)
+                {
+                    <tr>
+                        <td>@item.IDPayment</td>
+                        <td>@item.PaidDate</td>
+                        <td>@item.TotalPaid</td>
+                        <td>@item.IDPaymentMethod</td>
+                        <td>@item.Bank</td>
+                        <td>@item.Notes</td>
+                        <td>@item.CheckNo</td>
+                        <td>@item.CheckDate</td>
+                        <td>@item.IsVerified</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -73,11 +77,68 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
-                </div>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.IDAdmission)
+                                    @Html.EditorFor(model => model.payments.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.admission.IDAdmission, disabled = true } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.IDPaymentMethod)
+                                    @Html.DropDownListFor(model => model.payments.IDPaymentMethod, ViewBag.paymentMethods as SelectList, "", new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.Bank)
+                                    @Html.EditorFor(model => model.payments.Bank, new { htmlAttributes = new { @class = "form-control"} })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.PaidDate)
+                                    @Html.TextBoxFor(model => model.payments.PaidDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.PostedDate)
+                                    @Html.TextBoxFor(model => model.payments.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker"})
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.CheckDate)
+                                    @Html.TextBoxFor(model => model.payments.CheckDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.TotalPaid)
+                                    @Html.EditorFor(model => model.payments.TotalPaid, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.CheckNo)
+                                    @Html.EditorFor(model => model.payments.CheckNo, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.DropDownListFor(modelItem => modelItem.payments.IsVerified,
+                                    (
+                                        new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                        new SelectListItem { Text = "N", Value = "N" }
+                                    }),
+                                    new { @class = "form-control",})
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.payments.Notes)
+                                    @Html.TextAreaFor(model => model.payments.Notes, new { @class = "form-control", @rows = 5 })
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

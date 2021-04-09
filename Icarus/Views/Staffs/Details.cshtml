@@ -5,95 +5,218 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>tblStaff</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Lastname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Lastname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Firstname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Firstname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactNo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ContactNo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateHired)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateHired)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateTerminated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateTerminated)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-    </dl>
+<div class="container">
+    <h2>Staff Details</h2>
+    <div>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Lastname)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Lastname)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Firstname)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Firstname)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.ContactNo)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.ContactNo)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.DateHired)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.DateHired)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.DateTerminated)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.DateTerminated)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Status)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Username)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Username)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Email)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.Password)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Password)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Admin Director Group
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.isADG)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Executive Director Group
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.isEDG)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Program Group
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.isPG)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Admin Assistant Group
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.isAAG)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Notes
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Notes)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mt-2 text-center">
+                    <a class="btn btn-sm btn-warning" href="javascript:history.back()">Go back to lists</a>
+                    <a class="btn btn-sm btn-primary" href="/Staffs/Edit/@Model.IDStaff">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDStaff }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<script>
+    $(document).ready(function () {
+        document.title = 'Staff Details';
+    });
+</script>

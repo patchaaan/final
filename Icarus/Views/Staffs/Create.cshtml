@@ -109,7 +109,7 @@
                 <div class="col">
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @type="email", @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col">
@@ -127,11 +127,15 @@
             <div class="row">
                 <div class="col">
                     @Html.LabelFor(model => model.isAAG, htmlAttributes: new { @class = "control-label col-md-2" })
-
                 </div>
                 <div class="col">
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.isAAG, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownListFor(modelItem => modelItem.isAAG,
+                                (
+                                    new[] { new SelectListItem { Text = "N", Value = "N" },
+                                    new SelectListItem { Text = "Y", Value = "Y" }
+                                }),
+                                new { @class = "form-control stopTF" })
                         @Html.ValidationMessageFor(model => model.isAAG, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -140,7 +144,12 @@
                 </div>
                 <div class="col">
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.isADG, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(modelItem => modelItem.isADG,
+                                (
+                                    new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                    new SelectListItem { Text = "N", Value = "N" }
+                                }),
+                                new { @class = "form-control stopTF" })
                         @Html.ValidationMessageFor(model => model.isADG, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -153,7 +162,12 @@
                 </div>
                 <div class="col">
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.isEDG, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(modelItem => modelItem.isEDG,
+                                (
+                                    new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                    new SelectListItem { Text = "N", Value = "N" }
+                                }),
+                                new { @class = "form-control stopTF" })
                         @Html.ValidationMessageFor(model => model.isEDG, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -162,7 +176,12 @@
                 </div>
                 <div class="col">
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.isPG, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(modelItem => modelItem.isPG,
+                                 (
+                                     new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                     new SelectListItem { Text = "N", Value = "N" }
+                                 }),
+                                 new { @class = "form-control stopTF" })
                         @Html.ValidationMessageFor(model => model.isPG, "", new { @class = "text-danger" })
                     </div>
                 </div>

@@ -53,13 +53,13 @@
                         Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/Staffs/Index">Staffs</a>
-                        <a class="dropdown-item">Change Password</a>
+                        <a class="dropdown-item" href="/Staffs">Staffs</a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#changePassword" style="cursor:pointer;">Change Password</a>
                         <!--@@Html.ActionLink("Logout", "Logout", "Login", protocol: null, hostName: null, fragment: "Logout", routeValues: null, htmlAttributes: null)-->
                         <!--<a href="@@Url.Action("Logout","Logout","Login")">Logout</a>-->
                         @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm" }))
                         {
-                        @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
                             <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
                         }
                     </div>
@@ -67,6 +67,46 @@
             </ul>
         </div>
     </nav>
+    <div class="modal fade" id="changePassword" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" ">
+                    <h4 class="modal-title">Change Password</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label>Old Password:</label>
+                                    <input name="oldPassword" class="form-control" type="password"/>
+                                </div>                                
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label>New Password:</label>
+                                    <input name="NewPassword" class="form-control" type="password" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label>Re-type New Password:</label>
+                                    <input name="RetypeNewPassword" type="password" class="form-control" />
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
 <br>
 <script>

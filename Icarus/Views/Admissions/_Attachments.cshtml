@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Icarus.Models.tblAdmissionAttachment>
+﻿@model Icarus.Models.AttachmentNew
 
 @{
     ViewBag.Title = "Admission Browse";
@@ -9,10 +9,10 @@
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" style="visibility:hidden;" placeholder="Search" aria-label="Search">
         <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="">
+            <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#attachmentModal">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>&nbsp;Add Attachments</span>
-            </a>
+            </button>
         </div>
     </div>
     <hr>
@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody id="myTable">
-            @foreach (var item in Model)
+            @foreach (var item in Model.attachmentLists)
             {
                 <tr>
                     <td>@item.IDAdmAttachment</td>
@@ -45,6 +45,37 @@
             }
         </tbody>
     </table>
+    <div class="modal fade" id="attachmentModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" ">
+                    <h4 class="modal-title">Add Payment History</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.attachment.IDAdmission)
+                                    @Html.EditorFor(model => model.attachment.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.admission.IDAdmission, disabled = true } })
+                                </div>
+                                <div class="form-group col-sm-4">
+
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
 <style>
     .assertionTable {
