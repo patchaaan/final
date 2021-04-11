@@ -1,4 +1,4 @@
-﻿@model Icarus.Models.CommLogNew
+﻿@model Icarus.Models.tblAdmissionCommLog
 
 @{
     ViewBag.Title = "Admission Browse";
@@ -7,7 +7,14 @@
 
 <div class="col-sm-12 pl-3 pr-3">
     <div class="d-flex mb-2 mt-2 justify-content-between">
-        <input class="form-control col-sm-4" id="myInput" type="search" style="visibility:hidden;" placeholder="Search" aria-label="Search">
+        @if (ViewBag.commLogCheck == false)
+        {
+            <p>No commlog records to search yet.</p>
+        }
+        else
+        {
+            <input class="form-control col-sm-4" id="commLogInput" type="search" placeholder="Search" aria-label="Search">
+        }
         <div>
             <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#modalCommLog">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -16,7 +23,7 @@
         </div>
     </div>
     <hr>
-    @if (!Model.commLogLists.Any() || Model.commLogLists == null)
+    @if (ViewBag.commLogCheck == false)
     {
         <div>No CommLog Records yet</div>
     }
@@ -39,8 +46,8 @@
                     </th>
                 </tr>
             </thead>
-            <tbody id="myTable">
-                @foreach (var item in Model.commLogLists)
+            <tbody id="commLogTable">
+                @foreach (var item in ViewBag.CommLogLists)
                 {
                     <tr>
                         <td>@item.IDAdmissionCommLog</td>
@@ -55,42 +62,46 @@
     <div class="modal fade" id="modalCommLog" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header" ">
+                <div class="modal-header">
                     <h4 class="modal-title">Add CommLog</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.commLog.IDAdmission)
-                                    @Html.EditorFor(model => model.commLog.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.admission.IDAdmission, disabled = true } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.commLog.LogDate)
-                                    @Html.TextBoxFor(model => model.commLog.LogDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.commLog.PostedBy)
-                                    @Html.EditorFor(model => model.commLog.PostedBy, new { htmlAttributes = new { @class = "form-control", Value = Session["Username"], disabled = true } })
-                                </div>
+                @using (Html.BeginForm("CreateCommLog","Admissions", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.IDAdmission)
+                    @Html.HiddenFor(model => model.PostedBy)
+                <form>
+                    <div class="modal-body">
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.IDAdmission)
+                                @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.commLog.Details)
-                                    @Html.TextAreaFor(model => model.commLog.Details, new { @class = "form-control", @rows = 5 })
-                                </div>
+                            <div class="form-group col-sm-4">
+                                <label><b>Posted By:</b></label>
+                                @Html.EditorFor(model => model.PostedBy, new { htmlAttributes = new { @class = "form-control", Value = ViewBag.generatedBy, disabled = true } })
                             </div>
-                        </form>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div>
+                            <div class="form-group col-sm-4">
+                                <label><b>Log Date</b></label>
+                                @Html.TextBoxFor(model => model.LogDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.Details)
+                                @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                }
+                
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -113,9 +124,9 @@
 </style>
 <script>
     $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
+        $("#commLogInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
+            $("#commLogTable tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });

@@ -67,13 +67,8 @@
                     var id = item.IDAdmission;
                 <tr>
                     <td scope="row">
-                        @Html.ActionLink(
-                            linkText: item.IDAdmission.ToString(),
-                            actionName: "Details",
-                            controllerName: "Admissions",
-                            routeValues: new { id = id },
-                            htmlAttributes: null
-                        )
+                        <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                        
                     </td>
                     <td>
                         @Html.ActionLink(
@@ -113,7 +108,6 @@
                         @Html.DisplayFor(modelItem => item.OverallBalance)
                     </td>
                     <td style="display:flex;">
-                        <a class="btn btn-warning btn-sm mr-1" href="/Admissions/Edit/@item.IDAdmission">Edit</a>
                         <a class="btn btn-danger btn-sm ml-1" href="/Admissions/Delete/@item.IDAdmission">Delete</a>
                     </td>
                 </tr>

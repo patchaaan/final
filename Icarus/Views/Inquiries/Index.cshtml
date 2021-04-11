@@ -74,7 +74,25 @@
                     @Html.DisplayFor(modelItem => item.FollowupOn)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IDInquiryStatus)
+                    @if (item.IDInquiryStatus == 1)
+                    {
+                        <p>Open</p>
+                    }
+                    else if (item.IDInquiryStatus == 2)
+                    {
+                        <p>For Followup</p>
+
+                    }
+                    else if (item.IDInquiryStatus == 3)
+                    {
+                        <p>Closed - Converted</p>
+
+                    }
+                    else if (item.IDInquiryStatus == 4)
+                    {
+                        <p>Closed - Did Not Convert</p>
+
+                    }
                 </td>
                 <td>
                     <center>

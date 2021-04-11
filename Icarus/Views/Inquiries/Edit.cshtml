@@ -3,88 +3,159 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var inqDate = Model.InquiryDate;
 }
 
-<h2>Edit</h2>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
+<div class="container">
+    <h2>Edit Inquiry Log</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        <h4>tblInquiry</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.IDInquiry)
-
         <div class="form-group">
-            @Html.LabelFor(model => model.InquiryDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InquiryDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InquiryDate, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.InquiryDate, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.InquiryDate, new { htmlAttributes = new { @type = "datetime-local", @id="inquirydate", @class = "form-control inquirydate" } })
+                        @Html.ValidationMessageFor(model => model.InquiryDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Codep, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.Codep, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Prospect, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.Prospect, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Details, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Details, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.IDInquiryStatus, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(modelItem => modelItem.IDInquiryStatus,
+                                     (
+                                         new[] { new SelectListItem { Text = "Open", Value = "1" },
+                                         new SelectListItem { Text = "For Followup", Value = "2" },
+                                         new SelectListItem { Text = "Closed - Converted", Value = "3" },
+                                         new SelectListItem { Text = "Closed - Did Not Convert", Value = "4" }
+                                     }),
+                                     new { @class = "form-control", @Value = Model.IDInquiryStatus, Selected = true })
+                        @Html.ValidationMessageFor(model => model.IDInquiryStatus, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.FollowupOn, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FollowupOn, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FollowupOn, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.FollowupOn, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FollowupOn, new { htmlAttributes = new { @id="idfollowup", @type = "datetime-local", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FollowupOn, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.IDInquiryStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IDInquiryStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IDInquiryStatus, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.Details, htmlAttributes: new { @class = "control-label pl-3" })
+                </div>
+                <div class="col">
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(modelItem => modelItem.Details, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
         </div>
-
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="row">
+                <div class="col text-center">
+                    <a class="btn btn-warning btn-sm" href="/Inquiries">Go back to List</a>
+                    <button type="submit" value="Save" class="btn btn-sm btn-primary">Save</button>
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
+<script>
+    $(document).ready(function () {
+        
+        document.title = 'Edit Inquiry Log';
+        //var date = new Date('@@Model.InquiryDate');
+        //var d = new Date('@@Model.InquiryDate');
+        //d = new Date(d.getTime() - 3000000);
+        //var date_format_str = d.getFullYear().toString() + "-" + ((d.getMonth() + 1).toString().length == 2 ? (d.getMonth() + 1).toString() : "0" + (d.getMonth() + 1).toString()) + "-" + (d.getDate().toString().length == 2 ? d.getDate().toString() : "0" + d.getDate().toString()) + " " + (d.getHours().toString().length == 2 ? d.getHours().toString() : "0" + d.getHours().toString()) + ":" + ((parseInt(d.getMinutes() / 5) * 5).toString().length == 2 ? (parseInt(d.getMinutes() / 5) * 5).toString() : "0" + (parseInt(d.getMinutes() / 5) * 5).toString()) + ":00";
+        //var dateFormat = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        //document.getElementById('inquirydate').value = date_format_str
+        //var date = moment('@@Model.InquiryDate').format('YYYY-MM-DD HH:mm');
+        //console.log('[MODEL]', date);
+        $('#inquirydate').val(new Date('@Model.InquiryDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('#idfollowup').val(new Date('@Model.FollowupOn').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        
+    });
+    
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -139,12 +139,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdmissionBillingNew.cs" />
     <Compile Include="Models\AdmissionDetails.cs" />
-    <Compile Include="Models\AdmissionNew.cs" />
-    <Compile Include="Models\AssertionNew.cs" />
     <Compile Include="Models\AttachmentNew.cs" />
-    <Compile Include="Models\CommLogNew.cs" />
     <Compile Include="Models\ICARUS.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -160,7 +156,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ICARUS.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\PaymentHistoryNew.cs" />
     <Compile Include="Models\tblAdmission.cs">
       <DependentUpon>ICARUS.tt</DependentUpon>
     </Compile>
@@ -257,7 +252,6 @@
     <Compile Include="Models\vExpensesBrowse.cs">
       <DependentUpon>ICARUS.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\VitalSignsNew.cs" />
     <Compile Include="Models\vPaymentBrowse.cs">
       <DependentUpon>ICARUS.tt</DependentUpon>
     </Compile>

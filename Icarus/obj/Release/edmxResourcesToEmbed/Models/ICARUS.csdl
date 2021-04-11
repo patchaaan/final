@@ -1,0 +1,770 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ICARUSDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tblAdmission">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+    </Key>
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDResident" Type="Int32" />
+    <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TerminationDate" Type="DateTime" Precision="3" />
+    <Property Name="TreatmentFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IsActive" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TotalBilling" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="OverallBalance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="StopTFBilling" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDRank" Type="Byte" Nullable="false" />
+    <Property Name="Phase" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAdmissionAttachment">
+    <Key>
+      <PropertyRef Name="IDAdmAttachment" />
+    </Key>
+    <Property Name="IDAdmAttachment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Filename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UploadedFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="IDAttachmentType" Type="Int16" />
+  </EntityType>
+  <EntityType Name="tblAdmissionAttachmentType">
+    <Key>
+      <PropertyRef Name="IDAttachmentType" />
+    </Key>
+    <Property Name="IDAttachmentType" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AttachmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AccountGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAdmissionBilling">
+    <Key>
+      <PropertyRef Name="IDAdmissionBilling" />
+    </Key>
+    <Property Name="IDAdmissionBilling" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="BillingDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="GeneratedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="GeneratedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAdmissionCommLog">
+    <Key>
+      <PropertyRef Name="IDAdmissionCommLog" />
+    </Key>
+    <Property Name="IDAdmissionCommLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Details" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PostedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblAdmissionVitalSign">
+    <Key>
+      <PropertyRef Name="IDVitalSign" />
+    </Key>
+    <Property Name="IDVitalSign" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="Performed" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="BloodPressure" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Temperature" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PulseRate" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Weight" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAssertion">
+    <Key>
+      <PropertyRef Name="IDAssertion" />
+    </Key>
+    <Property Name="IDAssertion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="AssertionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDAssertionCategory" Type="Int32" Nullable="false" />
+    <Property Name="Qty" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Markup" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="MarkupValue" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="SubTotal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDChargeToCodep" Type="Int32" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblAssertionCategory">
+    <Key>
+      <PropertyRef Name="IDAssertionCategory" />
+    </Key>
+    <Property Name="IDAssertionCategory" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAttachment">
+    <Key>
+      <PropertyRef Name="IDAttachment" />
+    </Key>
+    <Property Name="IDAttachment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Filename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="UploadedFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="IDReference" Type="Int32" />
+    <Property Name="TableName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblCashAdvance">
+    <Key>
+      <PropertyRef Name="IDCA" />
+    </Key>
+    <Property Name="IDCA" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DateCA" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDStaff" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsPaid" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblCashAdvancePayment">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+    </Key>
+    <Property Name="IDPayment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDCA" Type="Int32" Nullable="false" />
+    <Property Name="AmountPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DatePaid" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblCodepUpdate">
+    <Key>
+      <PropertyRef Name="IDUpdate" />
+    </Key>
+    <Property Name="IDUpdate" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DateUpdate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DateLog" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdateType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UpdateSummary" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblExpens">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+    </Key>
+    <Property Name="IDExpense" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DatePosted" Type="DateTime" Precision="3" />
+    <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
+    <Property Name="ORNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDVendor" Type="Int32" Nullable="false" />
+    <Property Name="Particulars" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WithReceipt" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAccount" Type="Int32" Nullable="false" />
+    <Property Name="EncodedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VATSales" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="VATAmount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="VATExempt" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ChargedToCodep" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TIN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblExpensesChartOfAccount">
+    <Key>
+      <PropertyRef Name="IDAccount" />
+    </Key>
+    <Property Name="IDAccount" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblExpensesForAssertion">
+    <Key>
+      <PropertyRef Name="IDChargeToCodep" />
+    </Key>
+    <Property Name="IDChargeToCodep" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ChargeDate" Type="DateTime" Precision="3" />
+    <Property Name="IDAssertionCategory" Type="Int32" />
+    <Property Name="IDExpense" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblFacilityReport">
+    <Key>
+      <PropertyRef Name="IDFacilityReport" />
+    </Key>
+    <Property Name="IDFacilityReport" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ReportDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Activity" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PostedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInquiry">
+    <Key>
+      <PropertyRef Name="IDInquiry" />
+    </Key>
+    <Property Name="IDInquiry" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="InquiryDate" Type="DateTime" Precision="3" />
+    <Property Name="Codep" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Prospect" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Details" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="FollowupOn" Type="DateTime" Precision="3" />
+    <Property Name="IDInquiryStatus" Type="Int16" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInquiryCommLog">
+    <Key>
+      <PropertyRef Name="IDInquiryCommLog" />
+    </Key>
+    <Property Name="IDInquiryCommLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDInquiry" Type="Int32" Nullable="false" />
+    <Property Name="CommDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="InitiatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CommDetails" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblInquiryStatu">
+    <Key>
+      <PropertyRef Name="IDInquiryStatus" />
+    </Key>
+    <Property Name="IDInquiryStatus" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblPayment">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+    </Key>
+    <Property Name="IDPayment" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaidDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IDPaymentMethod" Type="Int16" />
+    <Property Name="Bank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CheckNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CheckDate" Type="DateTime" Precision="3" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblPaymentMethod">
+    <Key>
+      <PropertyRef Name="IDPaymentMethod" />
+    </Key>
+    <Property Name="IDPaymentMethod" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblRank">
+    <Key>
+      <PropertyRef Name="IDRank" />
+    </Key>
+    <Property Name="IDRank" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Rank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblRequest">
+    <Key>
+      <PropertyRef Name="IDRequest" />
+    </Key>
+    <Property Name="IDRequest" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DateRequest" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DateNeeded" Type="DateTime" Precision="3" />
+    <Property Name="RequestedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Request" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Budget" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ApprovedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDRequestStatus" Type="Int16" Nullable="false" />
+    <Property Name="ApproverNotes" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="DateApproved" Type="DateTime" Precision="3" />
+    <Property Name="RequestorEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DateAcc" Type="DateTime" Precision="3" />
+    <Property Name="RequestorNotes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblRequestStatu">
+    <Key>
+      <PropertyRef Name="IDRequestStatus" />
+    </Key>
+    <Property Name="IDRequestStatus" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblResident">
+    <Key>
+      <PropertyRef Name="IDResident" />
+    </Key>
+    <Property Name="IDResident" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Middlename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Birthdate" Type="DateTime" Precision="3" />
+    <Property Name="Age" Type="Int32" />
+    <Property Name="Sex" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Codep" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Relationship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblResidentActivity">
+    <Key>
+      <PropertyRef Name="IDResidentActivityLog" />
+    </Key>
+    <Property Name="IDResidentActivityLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Activity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PostedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblStaff">
+    <Key>
+      <PropertyRef Name="IDStaff" />
+    </Key>
+    <Property Name="IDStaff" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DateHired" Type="DateTime" Precision="3" />
+    <Property Name="DateTerminated" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isADG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="isEDG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="isPG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="isAAG" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblVendor">
+    <Key>
+      <PropertyRef Name="IDVendor" />
+    </Key>
+    <Property Name="IDVendor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="TIN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vAdmissionBrowse">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="AdmissionDate" />
+      <PropertyRef Name="TreatmentFee" />
+      <PropertyRef Name="TotalBilling" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="OverallBalance" />
+      <PropertyRef Name="IsActive" />
+      <PropertyRef Name="LastPaymentInfo" />
+    </Key>
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="IDResident" Type="Int32" />
+    <Property Name="Resident" Type="String" MaxLength="154" FixedLength="false" Unicode="false" />
+    <Property Name="Nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TerminationDate" Type="DateTime" Precision="3" />
+    <Property Name="TreatmentFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalBilling" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="OverallBalance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IsActive" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastPaymentInfo" Type="String" MaxLength="63" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="StopTFBilling" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="rank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phase" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vCashAdvanceBrowse">
+    <Key>
+      <PropertyRef Name="IDCA" />
+      <PropertyRef Name="DateCA" />
+      <PropertyRef Name="IDStaff" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="IsPaid" />
+      <PropertyRef Name="Lastname" />
+      <PropertyRef Name="Firstname" />
+      <PropertyRef Name="TotalPaid" />
+    </Key>
+    <Property Name="IDCA" Type="Int32" Nullable="false" />
+    <Property Name="DateCA" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDStaff" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsPaid" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+  </EntityType>
+  <EntityType Name="vCashAdvancePaymentBrowse">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+      <PropertyRef Name="IDCA" />
+      <PropertyRef Name="AmountPaid" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="DatePaid" />
+      <PropertyRef Name="Lastname" />
+      <PropertyRef Name="Firstname" />
+    </Key>
+    <Property Name="IDPayment" Type="Int32" Nullable="false" />
+    <Property Name="IDCA" Type="Int32" Nullable="false" />
+    <Property Name="AmountPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DatePaid" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vExpensesBrowse">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="IDVendor" />
+      <PropertyRef Name="WithReceipt" />
+      <PropertyRef Name="IDAccount" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="ChargedToCodep" />
+      <PropertyRef Name="PostedDate" />
+    </Key>
+    <Property Name="IDExpense" Type="Int32" Nullable="false" />
+    <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
+    <Property Name="DatePosted" Type="DateTime" Precision="3" />
+    <Property Name="ORNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDVendor" Type="Int32" Nullable="false" />
+    <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Particulars" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WithReceipt" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAccount" Type="Int32" Nullable="false" />
+    <Property Name="AccountCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EncodedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TIN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vPaymentBrowse">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+      <PropertyRef Name="PostedDate" />
+      <PropertyRef Name="IDResident" />
+      <PropertyRef Name="PaidDate" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="PaymentMethod" />
+    </Key>
+    <Property Name="IDPayment" Type="Int32" Nullable="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Resident" Type="String" MaxLength="154" FixedLength="false" Unicode="false" />
+    <Property Name="IDResident" Type="Int32" Nullable="false" />
+    <Property Name="PaidDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IDPaymentMethod" Type="Int16" />
+    <Property Name="PaymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Bank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CheckNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CheckDate" Type="DateTime" Precision="3" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vResidentActivityBrowse">
+    <Key>
+      <PropertyRef Name="IDResidentActivityLog" />
+      <PropertyRef Name="LogDate" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="Activity" />
+      <PropertyRef Name="PostedBy" />
+    </Key>
+    <Property Name="IDResidentActivityLog" Type="Int32" Nullable="false" />
+    <Property Name="LogDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="Nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Activity" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PostedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vrptAssertionSummary">
+    <Key>
+      <PropertyRef Name="AssertionDate" />
+      <PropertyRef Name="PostedDate" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="Qty" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="Markup" />
+      <PropertyRef Name="MarkupValue" />
+      <PropertyRef Name="SubTotal" />
+    </Key>
+    <Property Name="Resident" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+    <Property Name="AssertionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Qty" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Cost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Markup" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="MarkupValue" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Margin" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="SubTotal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vrptCollectible">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="AdmissionDate" />
+      <PropertyRef Name="TreatmentFee" />
+      <PropertyRef Name="TotalBilling" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="OverallBalance" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="IDResident" Type="Int32" />
+    <Property Name="Resident" Type="String" MaxLength="154" FixedLength="false" Unicode="false" />
+    <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TerminationDate" Type="DateTime" Precision="3" />
+    <Property Name="TreatmentFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalBilling" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="OverallBalance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IsActive" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastPaymentInfo" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vrptExpens">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="Vendor" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+    </Key>
+    <Property Name="IDExpense" Type="Int32" Nullable="false" />
+    <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
+    <Property Name="ORNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Particulars" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EncodedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VATSales" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="VATAmount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="VATExempt" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vrptPayment">
+    <Key>
+      <PropertyRef Name="IDPayment" />
+      <PropertyRef Name="IDResident" />
+      <PropertyRef Name="PaidDate" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="PayDetails" />
+      <PropertyRef Name="PostedDate" />
+    </Key>
+    <Property Name="IDPayment" Type="Int32" Nullable="false" />
+    <Property Name="Resident" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+    <Property Name="IDResident" Type="Int32" Nullable="false" />
+    <Property Name="PaidDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IDPaymentMethod" Type="Int16" />
+    <Property Name="PaymentMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PayDetails" Type="String" MaxLength="101" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Bank" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CheckNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CheckDate" Type="DateTime" Precision="3" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="vrptUnderChargedExpens">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="IDVendor" />
+      <PropertyRef Name="Vendor" />
+      <PropertyRef Name="WithReceipt" />
+      <PropertyRef Name="IDAccount" />
+      <PropertyRef Name="AccountCode" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="ChargedToCodep" />
+    </Key>
+    <Property Name="IDExpense" Type="Int32" Nullable="false" />
+    <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
+    <Property Name="ORNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDVendor" Type="Int32" Nullable="false" />
+    <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Particulars" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WithReceipt" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAccount" Type="Int32" Nullable="false" />
+    <Property Name="AccountCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EncodedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vRSCodepUpdate">
+    <Key>
+      <PropertyRef Name="IDUpdate" />
+      <PropertyRef Name="DateUpdate" />
+      <PropertyRef Name="DateLog" />
+      <PropertyRef Name="UpdateType" />
+      <PropertyRef Name="UpdatedBy" />
+      <PropertyRef Name="UpdateSummary" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="Resident" />
+    </Key>
+    <Property Name="IDUpdate" Type="Int32" Nullable="false" />
+    <Property Name="DateUpdate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DateLog" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdateType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UpdateSummary" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="Resident" Type="String" MaxLength="154" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vRSCollectible">
+    <Key>
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="AdmissionDate" />
+      <PropertyRef Name="TreatmentFee" />
+      <PropertyRef Name="TotalBilling" />
+      <PropertyRef Name="TotalPaid" />
+      <PropertyRef Name="OverallBalance" />
+      <PropertyRef Name="IsActive" />
+    </Key>
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="IDResident" Type="Int32" />
+    <Property Name="Resident" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+    <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TerminationDate" Type="DateTime" Precision="3" />
+    <Property Name="TreatmentFee" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalBilling" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="TotalPaid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="OverallBalance" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="IsActive" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastPaymentInfo" Type="String" MaxLength="63" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vRSExpensesDaily">
+    <Key>
+      <PropertyRef Name="IDExpense" />
+      <PropertyRef Name="IDVendor" />
+      <PropertyRef Name="Vendor" />
+      <PropertyRef Name="WithReceipt" />
+      <PropertyRef Name="IDAccount" />
+      <PropertyRef Name="AccountCode" />
+      <PropertyRef Name="EncodedBy" />
+      <PropertyRef Name="IsVerified" />
+      <PropertyRef Name="ChargeToCodep" />
+      <PropertyRef Name="Amount" />
+      <PropertyRef Name="ChargedToCodep" />
+      <PropertyRef Name="PostedDate" />
+    </Key>
+    <Property Name="IDExpense" Type="Int32" Nullable="false" />
+    <Property Name="ExpenseDate" Type="DateTime" Precision="3" />
+    <Property Name="ORNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDVendor" Type="Int32" Nullable="false" />
+    <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Particulars" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WithReceipt" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAccount" Type="Int32" Nullable="false" />
+    <Property Name="AccountCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="EncodedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsVerified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ChargeToCodep" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ChargedToCodep" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="vselCodepUpdateBrowse">
+    <Key>
+      <PropertyRef Name="IDUpdate" />
+      <PropertyRef Name="DateUpdate" />
+      <PropertyRef Name="DateLog" />
+      <PropertyRef Name="UpdateType" />
+      <PropertyRef Name="UpdatedBy" />
+      <PropertyRef Name="UpdateSummary" />
+      <PropertyRef Name="IDAdmission" />
+      <PropertyRef Name="Resident" />
+    </Key>
+    <Property Name="IDUpdate" Type="Int32" Nullable="false" />
+    <Property Name="DateUpdate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DateLog" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdateType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UpdateSummary" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IDAdmission" Type="Int32" Nullable="false" />
+    <Property Name="Resident" Type="String" MaxLength="154" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="ICARUSDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblAdmissions" EntityType="Self.tblAdmission" />
+    <EntitySet Name="tblAdmissionAttachments" EntityType="Self.tblAdmissionAttachment" />
+    <EntitySet Name="tblAdmissionAttachmentTypes" EntityType="Self.tblAdmissionAttachmentType" />
+    <EntitySet Name="tblAdmissionBillings" EntityType="Self.tblAdmissionBilling" />
+    <EntitySet Name="tblAdmissionCommLogs" EntityType="Self.tblAdmissionCommLog" />
+    <EntitySet Name="tblAdmissionVitalSigns" EntityType="Self.tblAdmissionVitalSign" />
+    <EntitySet Name="tblAssertions" EntityType="Self.tblAssertion" />
+    <EntitySet Name="tblAssertionCategories" EntityType="Self.tblAssertionCategory" />
+    <EntitySet Name="tblAttachments" EntityType="Self.tblAttachment" />
+    <EntitySet Name="tblCashAdvances" EntityType="Self.tblCashAdvance" />
+    <EntitySet Name="tblCashAdvancePayments" EntityType="Self.tblCashAdvancePayment" />
+    <EntitySet Name="tblCodepUpdates" EntityType="Self.tblCodepUpdate" />
+    <EntitySet Name="tblExpenses" EntityType="Self.tblExpens" />
+    <EntitySet Name="tblExpensesChartOfAccounts" EntityType="Self.tblExpensesChartOfAccount" />
+    <EntitySet Name="tblExpensesForAssertions" EntityType="Self.tblExpensesForAssertion" />
+    <EntitySet Name="tblFacilityReports" EntityType="Self.tblFacilityReport" />
+    <EntitySet Name="tblInquiries" EntityType="Self.tblInquiry" />
+    <EntitySet Name="tblInquiryCommLogs" EntityType="Self.tblInquiryCommLog" />
+    <EntitySet Name="tblInquiryStatus" EntityType="Self.tblInquiryStatu" />
+    <EntitySet Name="tblPayments" EntityType="Self.tblPayment" />
+    <EntitySet Name="tblPaymentMethods" EntityType="Self.tblPaymentMethod" />
+    <EntitySet Name="tblRanks" EntityType="Self.tblRank" />
+    <EntitySet Name="tblRequests" EntityType="Self.tblRequest" />
+    <EntitySet Name="tblRequestStatus" EntityType="Self.tblRequestStatu" />
+    <EntitySet Name="tblResidents" EntityType="Self.tblResident" />
+    <EntitySet Name="tblResidentActivities" EntityType="Self.tblResidentActivity" />
+    <EntitySet Name="tblStaffs" EntityType="Self.tblStaff" />
+    <EntitySet Name="tblVendors" EntityType="Self.tblVendor" />
+    <EntitySet Name="vAdmissionBrowses" EntityType="Self.vAdmissionBrowse" />
+    <EntitySet Name="vCashAdvanceBrowses" EntityType="Self.vCashAdvanceBrowse" />
+    <EntitySet Name="vCashAdvancePaymentBrowses" EntityType="Self.vCashAdvancePaymentBrowse" />
+    <EntitySet Name="vExpensesBrowses" EntityType="Self.vExpensesBrowse" />
+    <EntitySet Name="vPaymentBrowses" EntityType="Self.vPaymentBrowse" />
+    <EntitySet Name="vResidentActivityBrowses" EntityType="Self.vResidentActivityBrowse" />
+    <EntitySet Name="vrptAssertionSummaries" EntityType="Self.vrptAssertionSummary" />
+    <EntitySet Name="vrptCollectibles" EntityType="Self.vrptCollectible" />
+    <EntitySet Name="vrptExpenses" EntityType="Self.vrptExpens" />
+    <EntitySet Name="vrptPayments" EntityType="Self.vrptPayment" />
+    <EntitySet Name="vrptUnderChargedExpenses" EntityType="Self.vrptUnderChargedExpens" />
+    <EntitySet Name="vRSCodepUpdates" EntityType="Self.vRSCodepUpdate" />
+    <EntitySet Name="vRSCollectibles" EntityType="Self.vRSCollectible" />
+    <EntitySet Name="vRSExpensesDailies" EntityType="Self.vRSExpensesDaily" />
+    <EntitySet Name="vselCodepUpdateBrowses" EntityType="Self.vselCodepUpdateBrowse" />
+    <FunctionImport Name="spBackup" />
+    <FunctionImport Name="spBackupCloud" />
+    <FunctionImport Name="spCalculateExpensesChargedToCodep">
+      <Parameter Name="IDExpense" Mode="In" Type="Int32" />
+      <Parameter Name="IDChargeToCodep" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGenerateTreatmentFee">
+      <Parameter Name="IDAdmission" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spJobGenerateTreatmentFee" />
+    <FunctionImport Name="spRecalcAdmissionBalance">
+      <Parameter Name="IDAdmission" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spSendNotification">
+      <Parameter Name="profilename" Mode="In" Type="String" />
+      <Parameter Name="recipients" Mode="In" Type="String" />
+      <Parameter Name="subject" Mode="In" Type="String" />
+      <Parameter Name="body" Mode="In" Type="String" />
+      <Parameter Name="Bodyformat" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spSendReport" />
+    <FunctionImport Name="spSendReportCodepUpdates" />
+    <FunctionImport Name="spSendReportCollectibles" />
+    <FunctionImport Name="spSendReportExpensesDaily" />
+    <FunctionImport Name="spSendReportRecentPayments" />
+  </EntityContainer>
+</Schema>

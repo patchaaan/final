@@ -1,4 +1,4 @@
-﻿@model Icarus.Models.VitalSignsNew
+﻿@model Icarus.Models.tblAdmissionVitalSign
 
 @{
     ViewBag.Title = "Admission Browse";
@@ -7,7 +7,14 @@
 
 <div class="col-sm-12 pl-3 pr-3">
     <div class="d-flex mb-2 mt-2 justify-content-between">
-        <input class="form-control col-sm-4" id="myInput" type="search" style="visibility:hidden;" placeholder="Search" aria-label="Search">
+        @if (ViewBag.vitalSignsLists == false)
+        {
+            <div>No Vital Signs to search yet.</div>
+        }
+        else
+        {
+            <input class="form-control col-sm-4" id="vitalInput" type="search" placeholder="Search" aria-label="Search">
+        }
         <div>
             <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#modalVitalSigns">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -16,7 +23,7 @@
         </div>
     </div>
     <hr>
-    @if (!Model.vitalSignsLists.Any() || Model.vitalSignsLists == null)
+    @if ( ViewBag.vitalSignsLists == false)
     {
         <div>No Vital Signs record yet.</div>
     }
@@ -45,8 +52,8 @@
                     </th>
                 </tr>
             </thead>
-            <tbody id="myTable">
-                @foreach (var item in Model.vitalSignsLists)
+            <tbody id="vitalTable">
+                @foreach (var item in ViewBag.vitalSigns)
                 {
                     <tr>
                         <td>@item.IDVitalSign</td>
@@ -67,46 +74,50 @@
                     <h4 class="modal-title">Add Vital Signs</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.vitalSigns.IDAdmission)
-                                    @Html.EditorFor(model => model.vitalSigns.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.admission.IDAdmission, disabled = true } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.vitalSigns.Performed)
-                                    @Html.TextBoxFor(model => model.vitalSigns.Performed, new { @type = "datetime-local", @class = "form-control datetimepicker" })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.vitalSigns.BloodPressure)
-                                    @Html.EditorFor(model => model.vitalSigns.BloodPressure, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
+                @using (Html.BeginForm("CreateVitalSigns","Admissions", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.IDAdmission)
+                <form>
+                    <div class="modal-body">
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.IDAdmission)
+                                @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.vitalSigns.Temperature)
-                                    @Html.EditorFor(model => model.vitalSigns.Temperature, new { htmlAttributes = new { @class = "form-control datetimepicker" } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.vitalSigns.PulseRate)
-                                    @Html.TextBoxFor(model => model.vitalSigns.PulseRate, new { @class = "form-control datetimepicker" })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.vitalSigns.Weight)
-                                    @Html.EditorFor(model => model.vitalSigns.Weight, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.Performed)
+                                @Html.TextBoxFor(model => model.Performed, new { @type = "datetime-local", @class = "form-control datetimepicker" })
                             </div>
-                        </form>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div>
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.BloodPressure)
+                                @Html.EditorFor(model => model.BloodPressure, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.Temperature)
+                                @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control datetimepicker" } })
+                            </div>
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.PulseRate)
+                                @Html.TextBoxFor(model => model.PulseRate, new { @class = "form-control datetimepicker" })
+                            </div>
+                            <div class="form-group col-sm-4">
+                                @Html.LabelFor(model => model.Weight)
+                                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+                }
+                
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -127,9 +138,9 @@
 </style>
 <script>
     $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
+        $("#vitalInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
+            $("#vitalTable tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });

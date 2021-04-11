@@ -7,14 +7,12 @@ namespace Icarus.Models
 {
     public class AdmissionDetails
     {
-        public AdmissionNew Admissions { get; set; }
-        public AdmissionBillingNew admissiongBillingNew { get; set; }
-        public AssertionNew Assertion { get; set; }
-        public VitalSignsNew VitalSigns { get; set; }
-        public CommLogNew CommLog { get; set; }
+        public tblAdmission Admissions { get; set; }
+        public tblAdmissionBilling AdmissionBilling { get; set; }
+        public tblAssertion Assertion { get; set; }
+        public tblAdmissionVitalSign VitalSigns { get; set; }
+        public tblAdmissionCommLog CommLog { get; set; }
         public AttachmentNew Attachments { get; set; }
-        public PaymentHistoryNew Payments { get; set; }
-        public tblRank Rank { get; set; }
-        public IEnumerable<tblRank> rankLists { get; set; }
+        public IEnumerable<tblPayment> Payments { get; set; }
     }
 }
