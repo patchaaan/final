@@ -74,11 +74,19 @@
                         @Html.DisplayFor(modelItem => item.DateAcc)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IDRequestStatus)
+                        @foreach (var status in ViewBag.requestStatus) {
+                            if (status.IDRequestStatus == item.IDRequest) {
+                                @status.Status
+                            }
+                        }
+                        @*@Html.DisplayFor(modelItem => item.IDRequestStatus)*@
                     </td>
                     <td style="display:flex;">
                         <a class="btn btn-warning btn-sm mr-1" href="/Requests/Edit/@item.IDRequest">Edit</a>
-                        <a class="btn btn-danger btn-sm ml-1" href="/Requests/Delete/@item.IDRequest">Delete</a>
+                        @if (Session["isADG"].ToString() == "Y")
+                        {
+                            <a class="btn btn-danger btn-sm ml-1" href="/Requests/Delete/@item.IDRequest">Delete</a>
+                        }
                     </td>
                 </tr>
             }

@@ -8,22 +8,24 @@
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="#">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Assertion Category</span>
-            </a>
-        </div>
+        @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+            <div>
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="#">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Assertion Category</span>
+                </a>
+            </div>
+        }
     </div>
     <hr>
-    <div>
-        <table class="table table-striped table-hover table-borderless">
+    <div class="d-flex align-items-center justify-content-center">
+        <table class="table table-hover table-striped table-borderless" style="width:50%;">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft" scope="col">
+                    <th class="tableheadleft text-center category" scope="col">
                         @Html.DisplayNameFor(model => model.Category)
                     </th>
-                    <th class="tableheadright" scope="col">
+                    <th class="tableheadright text-center action" scope="col">
                         Action
                     </th>
                 </tr>
@@ -31,15 +33,26 @@
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
-                    <tr>
+                <tr>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                    {
                         <td>
-                            @Html.DisplayFor(modelItem => item.Category)
+                            <center>
+                                <a class="btn btn-sm btn-warning" href="#">Edit</a>
+                                if (Session["isADG"].ToString() == "Y")
+                                {
+                                <a class="btn btn-sm btn-danger" href="#">Delete</a>
+                                }
+                            </center>
                         </td>
-                        <td>
-                            <a class="btn btn-sm btn-warning" href="#">Edit</a>
-                            <a class="btn btn-sm btn-danger" href="#">Delete</a>
-                        </td>
-                    </tr>
+                    }
+
+                </tr>
+
                 }
             </tbody>
         </table>
@@ -57,6 +70,15 @@
 <script>
     $(document).ready(function () {
         document.title = 'Assertion Category';
+        var aag = "@Session["isAAG"]";
+        var edg = "@Session["isEDG"]";
+        var adg = "@Session["isADG"]";
+        var pg = "@Session["isPG"]";
+        console.log(pg);
+        if (aag != "Y" && adg != "Y") {
+            $(".action").css("display", "none");
+            $(".category").attr("class", "category tableheadright tableheadleft text-center");
+        }
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {

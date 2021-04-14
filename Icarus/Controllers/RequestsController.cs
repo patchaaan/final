@@ -20,6 +20,9 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                IEnumerable<tblRequestStatu> tblRequestStatus = db.tblRequestStatus.ToList();
+                ViewData["requestStatus"] = tblRequestStatus;
+                ViewBag.RequestStatus = db.tblRequestStatus.ToList();
                 return View(db.tblRequests.ToList());
             }
             else {

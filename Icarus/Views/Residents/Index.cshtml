@@ -110,19 +110,6 @@
             $(".sexClass").attr("class", "sexClass tableheadright");
         }
 
-        @*console.log(@Session["isEDG"].ToString());
-        console.log(@Session["isPG"].ToString());
-        console.log(@Session["isADG"].ToString());*@
-        @*if (@Session["isAAG"] === "N") {
-            if (@Session["EDG"] === "N") {
-                if (@Session["ADG"] === "N") {
-                    console.log(@Session["isAAG"]);
-                    $(".action").css("display", "none");
-                    $(".sexClass").css("border-top-right-radius", "15px !important");
-                }
-            }
-            
-        }*@
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {

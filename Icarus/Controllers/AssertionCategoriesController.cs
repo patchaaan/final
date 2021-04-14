@@ -18,7 +18,14 @@ namespace Icarus.Controllers
         // GET: AssertionCategories
         public ActionResult Index()
         {
-            return View(db.tblAssertionCategories.ToList());
+            if (Session["Username"] != null)
+            {
+                return View(db.tblAssertionCategories.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
 
         // GET: AssertionCategories/Details/5
