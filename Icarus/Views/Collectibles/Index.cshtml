@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Icarus.Models.vrptCollectible>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDResident)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Resident)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TerminationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastPaymentInfo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDResident)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Resident)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TerminationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastPaymentInfo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
