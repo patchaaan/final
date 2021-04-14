@@ -8,15 +8,19 @@
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;">
-                <span>Generate Billing</span>
-            </a>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Admissions/Create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Admission</span>
-            </a>
-        </div>
+        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <a class="btn" style="background-color:#4E58A2;color:white;">
+                    <span>Generate Billing</span>
+                </a>
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="/Admissions/Create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Admission</span>
+                </a>
+            </div>
+        }
+
     </div>
     <hr>
     <div>
@@ -53,10 +57,10 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.TotalPaid)
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="overAllBalance">
                         @Html.DisplayNameFor(model => model.OverallBalance)
                     </th>
-                    <th scope="col" class="tableheadright">
+                    <th scope="col" class="tableheadright action">
                         Actions
                     </th>
                 </tr>
@@ -66,10 +70,19 @@
                 {
                     var id = item.IDAdmission;
                 <tr>
-                    <td scope="row">
-                        <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
-                        
-                    </td>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                    {
+                        <td scope="row">
+                            <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td scope="row">
+                            <span ondblclick="window.location='/Admissions/AdmissionDetails/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                        </td>
+                    }
+
                     <td>
                         @Html.ActionLink(
                             linkText: item.Resident.ToString(),
@@ -78,7 +91,7 @@
                             routeValues: new { id = item.IDResident },
                             htmlAttributes: null
                         )
-                        
+
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Phase)
@@ -107,9 +120,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.OverallBalance)
                     </td>
-                    <td style="display:flex;">
-                        <a class="btn btn-danger btn-sm ml-1" href="/Admissions/Delete/@item.IDAdmission">Delete</a>
-                    </td>
+                    @if (Session["isADG"].ToString() == "Y") {
+                        <td style="display:flex;">
+                            <a class="btn btn-danger btn-sm ml-1" href="/Admissions/Delete/@item.IDAdmission">Delete</a>
+                        </td>
+                    }
+
                 </tr>
                 }
             </tbody>
@@ -128,6 +144,16 @@
 <script>
     $(document).ready(function () {
         document.title = 'Admission Browse';
+        var aag = "@Session["isAAG"]";
+        var edg = "@Session["isEDG"]";
+        var adg = "@Session["isADG"]";
+        var pg = "@Session["isPG"]";
+        console.log(pg);
+        if (adg != "Y") {
+            $(".action").css("display", "none");
+            $(".overAllBalance").attr("class", "overAllBalance tableheadright");
+        }
+
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {

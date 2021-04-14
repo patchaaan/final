@@ -28,6 +28,27 @@ namespace Icarus.Controllers
             }
         }
 
+        public ActionResult AdmissionDetails(int? id)
+        {
+            if (Session["Username"] != null)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblAdmission tblAdmission = db.tblAdmissions.Find(id);
+                if (tblAdmission == null)
+                {
+                    return HttpNotFound();
+                }
+                return View("AdmissionDetails", tblAdmission);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
         // GET: Admissions/Details/5
         public ActionResult Details(int? id)
         {
@@ -62,20 +83,19 @@ namespace Icarus.Controllers
 
                 tblResident resident = db.tblResidents.SingleOrDefault(x => x.IDResident == admission.IDResident);
 
-                IEnumerable<tblAdmissionAttachment> attachments = db.tblAdmissionAttachments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmAttachment).ToList();
+                tblAdmissionAttachment attachments = new tblAdmissionAttachment();
+                attachments.IDAdmission = admission.IDAdmission;
+
+                IEnumerable<tblAdmissionAttachment> attachmentLists = db.tblAdmissionAttachments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmAttachment).ToList();
                 IEnumerable<tblAdmissionAttachmentType> attachmentTypes = db.tblAdmissionAttachmentTypes.ToList();
-
-
-                AttachmentNew an = new AttachmentNew();
-                an.admission = admission;
-                an.attachmentLists = attachments;
-                an.attachmentTypes = attachmentTypes;
 
                 ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
 
                 ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
 
                 ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+
+                ViewBag.attachmentType = new SelectList(db.tblAdmissionAttachmentTypes, "IDAttachmentType", "AttachmentType");
 
                 ViewBag.residentName = resident.Firstname + " " + resident.Nickname + " " + resident.Lastname;
 
@@ -87,14 +107,19 @@ namespace Icarus.Controllers
                 ViewData["AssertionsLists"] = assertionLists;
                 ViewData["vitalSigns"] = vitalSignsLists;
                 ViewData["CommLogLists"] = commLogList;
+                ViewData["AttachmentLists"] = attachmentLists;
 
                 ViewBag.admissionBillingLists = true;
                 ViewBag.assertionLists = true;
                 ViewBag.vitalSignsLists = true;
                 ViewBag.commLogCheck = true;
+                ViewBag.attachmentList = true;
 
 
-
+                if (!attachmentLists.Any() || attachmentLists == null)
+                {
+                    ViewBag.attachmentList = false;
+                }
 
                 if (!admissionBilling.Any() || admissionBilling == null)
                 {
@@ -127,7 +152,7 @@ namespace Icarus.Controllers
                 ad.VitalSigns = vitalSigns;
                 ad.CommLog = commLog;
                 ad.Payments = payments;
-                ad.Attachments = an;
+                ad.Attachments = attachments;
 
                 if (admission == null)
                 {
@@ -234,14 +259,15 @@ namespace Icarus.Controllers
                 {
                     db.tblPayments.Add(tblPayment);
                     db.SaveChanges();
-                    return RedirectToRoute("Admissions/Details/" + tblPayment.IDAdmission);
+                    return RedirectToAction("Details", "Admissions", new { id = tblPayment.IDAdmission });
                 }
             }
             else
             {
                 return RedirectToAction("Login", "Login");
             }
-            return RedirectToRoute("Admissions/Details/" + tblPayment.IDAdmission);
+            return RedirectToAction("Details", "Admissions", new { id = tblPayment.IDAdmission });
+
         }
 
         // GET: Admissions/Create
@@ -277,6 +303,29 @@ namespace Icarus.Controllers
             }
             
             return View(tblAdmission);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAttachment([Bind(Include = "IDAdmAttachment,IDAdmission,Description,Filename,UploadedFile,IDAttachmentType")] tblAdmissionAttachment tblAdmissionAttachment, HttpPostedFileBase file)
+        {
+            if (Session["Username"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.tblAdmissionAttachments.Add(tblAdmissionAttachment);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionAttachment.IDAdmission });
+
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+            return RedirectToAction("Details", "Admissions", new { id = tblAdmissionAttachment.IDAdmission });
         }
 
         // GET: Admissions/Edit/5

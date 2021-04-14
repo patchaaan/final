@@ -12,7 +12,7 @@ namespace Icarus.Models
         public tblAssertion Assertion { get; set; }
         public tblAdmissionVitalSign VitalSigns { get; set; }
         public tblAdmissionCommLog CommLog { get; set; }
-        public AttachmentNew Attachments { get; set; }
+        public tblAdmissionAttachment Attachments { get; set; }
         public IEnumerable<tblPayment> Payments { get; set; }
     }
 }

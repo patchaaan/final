@@ -3,19 +3,24 @@
 @{
     ViewBag.Title = "Resident Browse";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-
+    ViewBag.ADG = Session["ADG"];
+    ViewBag.EDG = Session["EDG"];
+    ViewBag.AAG = Session["AAG"];
+    ViewBag.PG = Session["PG"];
 }
 
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Residents/Create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Resident</span>
-            </a>
-        </div>
+        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="/Residents/Create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Resident</span>
+                </a>
+            </div>
+        }
     </div>
     <hr>
     <div>
@@ -28,51 +33,56 @@
                     <th scope="col">@Html.DisplayNameFor(model => model.Middlename)</th>
                     <th scope="col">@Html.DisplayNameFor(model => model.Birthdate)</th>
                     <th scope="col">@Html.DisplayNameFor(model => model.Age)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.Sex)</th>
-                    <th class="tableheadright text-center" scope="col">Action</th>
+                    <th scope="col" class="sexClass">@Html.DisplayNameFor(model => model.Sex)</th>
+                    <th class="tableheadright text-center action" scope="col">Action</th>
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
                     var id = item.IDResident;
-                    <tr>
-                        <td scope="row">
-                            @Html.ActionLink(
-                                linkText: id.ToString(),
-                                actionName: "Details",
-                                controllerName: "Residents",
-                                routeValues: new { id = id },
-                                htmlAttributes: null
-                            )
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Lastname)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Firstname)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Middlename)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Birthdate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Age)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Sex)
-                        </td>
+                <tr>
+                    <td scope="row">
+                        @Html.ActionLink(
+                            linkText: id.ToString(),
+                            actionName: "Details",
+                            controllerName: "Residents",
+                            routeValues: new { id = id },
+                            htmlAttributes: null
+                        )
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Lastname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Firstname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Middlename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Birthdate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sex)
+                    </td>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                    {
                         <td>
                             <center>
                                 <a class="btn btn-sm btn-warning" href="/Residents/Edit/@item.IDResident">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="/Residents/Delete/@item.IDResident">Delete</a>
+                                @if (Session["isADG"].ToString() == "Y")
+                                {
+                                    <a class="btn btn-sm btn-danger" href="/Residents/Delete/@item.IDResident">Delete</a>
+                                }
                             </center>
-                            <!--@@Html.ActionLink("Edit", "Edit", new { id = item.IDResident })
-                            @@Html.ActionLink("Delete", "Delete", new { id = item.IDResident })-->
                         </td>
-                    </tr>
+                    }
+
+                </tr>
                 }
             </tbody>
         </table>
@@ -90,6 +100,29 @@
 <script>
     $(document).ready(function () {
         document.title = 'Resident Browse';
+        var aag = "@Session["isAAG"]";
+        var edg = "@Session["isEDG"]";
+        var adg = "@Session["isADG"]";
+        var pg = "@Session["isPG"]";
+        console.log(pg);
+        if (aag != "Y" && edg != "Y" && adg != "Y") {
+            $(".action").css("display", "none");
+            $(".sexClass").attr("class", "sexClass tableheadright");
+        }
+
+        @*console.log(@Session["isEDG"].ToString());
+        console.log(@Session["isPG"].ToString());
+        console.log(@Session["isADG"].ToString());*@
+        @*if (@Session["isAAG"] === "N") {
+            if (@Session["EDG"] === "N") {
+                if (@Session["ADG"] === "N") {
+                    console.log(@Session["isAAG"]);
+                    $(".action").css("display", "none");
+                    $(".sexClass").css("border-top-right-radius", "15px !important");
+                }
+            }
+            
+        }*@
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {

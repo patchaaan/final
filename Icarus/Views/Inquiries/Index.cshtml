@@ -97,7 +97,10 @@
                 <td>
                     <center>
                         <a class="btn btn-sm btn-warning" href="/Inquiries/Edit/@item.IDInquiry">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="/Inquiries/Delete/@item.IDInquiry">Delete</a>
+                        @if (Session["isADG"].ToString() == "Y")
+                        {
+                            <a class="btn btn-sm btn-danger" href="/Inquiries/Delete/@item.IDInquiry">Delete</a>
+                        }
                     </center>
                 </td>
             </tr>

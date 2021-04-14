@@ -215,25 +215,56 @@
             });
         });
 
+        $(".markupPercent").on("keyup", function () {
+            var price = $(".price").val();
+            var qty = $(".qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(this).val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markUpValue").val(markUpValue);
+                $(".subTotal").val(subTotal);
+            }
+            else {
+                console.log("Reading")
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
+            
+        })
+
         $(".price").on("keyup", function () {
             var price = $(this).val();
             var qty = $(".qty").val();
             var totalPrice = price * qty;
             var markUpPercent = $(".markupPercent").val();
-            var markUpValue = ((totalPrice * markUpPercent) / 100);
-            var subTotal = totalPrice + markUpValue;
-            $(".markUpValue").val(markUpValue);
-            $(".subTotal").val(subTotal);
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markUpValue").val(markUpValue);
+                $(".subTotal").val(subTotal);
+            }
+            else {
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
         });
         $(".qty").on("keyup", function () {
             var price = $(".price").val();
             var qty = $(this).val();
             var totalPrice = price * qty;
             var markUpPercent = $(".markupPercent").val();
-            var markUpValue = ((totalPrice * markUpPercent) / 100);
-            var subTotal = totalPrice + markUpValue;
-            $(".markUpValue").val(markUpValue);
-            $(".subTotal").val(subTotal);
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markUpValue").val(markUpValue);
+                $(".subTotal").val(subTotal);
+            }
+            else {
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
         });
     });
 </script>

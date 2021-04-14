@@ -8,12 +8,15 @@
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Staffs/Create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Staff</span>
-            </a>
-        </div>
+        @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="/Staffs/Create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Staff</span>
+                </a>
+            </div>
+        }
     </div>
     <hr>
     <div>
@@ -47,10 +50,10 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.Email)
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="staffPassword">
                         @Html.DisplayNameFor(model => model.Password)
                     </th>
-                    <th class="tableheadright text-center" scope="col">
+                    <th class="tableheadright text-center action" scope="col">
                         Action
                     </th>
                 </tr>
@@ -58,50 +61,65 @@
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td scope="row">
-                            @Html.ActionLink(
-                                linkText: item.Lastname.ToString(),
-                                actionName: "Details",
-                                controllerName: "Staffs",
-                                routeValues: new { id = item.IDStaff },
-                                htmlAttributes: null
-                            )
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Firstname)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ContactNo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateHired)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateTerminated)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Notes)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Username)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
+                <tr>
+                    <td scope="row">
+                        @Html.ActionLink(
+                            linkText: item.Lastname.ToString(),
+                            actionName: "Details",
+                            controllerName: "Staffs",
+                            routeValues: new { id = item.IDStaff },
+                            htmlAttributes: null
+                        )
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Firstname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateHired)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTerminated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @if (item.Password != null)
+                        {
+                            <p>********</p>
+                        }
+                        else
+                        {
                             @Html.DisplayFor(modelItem => item.Password)
-                        </td>
-                        <td>
-                            <center>
-                                <a class="btn btn-sm btn-warning" href="/Staffs/Edit/@item.IDStaff">Edit</a>
+                        }
+                    </td>
+                    @if(Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                    {
+                    <td>
+                        <center>
+                            <a class="btn btn-sm btn-warning" href="/Staffs/Edit/@item.IDStaff">Edit</a>
+                            @if (Session["isADG"].ToString() == "Y")
+                            {
                                 <a class="btn btn-sm btn-danger" href="/Staffs/Delete/@item.IDStaff">Delete</a>
-                            </center>
-                        </td>
-                    </tr>
+
+                            }
+                        </center>
+                    </td>
+                    }
+
+                </tr>
                 }
             </tbody>
         </table>
@@ -119,6 +137,15 @@
 <script>
     $(document).ready(function () {
         document.title = 'Staffs Browse';
+        var aag = "@Session["isAAG"]";
+        var edg = "@Session["isEDG"]";
+        var adg = "@Session["isADG"]";
+        var pg = "@Session["isPG"]";
+        console.log(pg);
+        if (aag != "Y" && edg != "Y" && adg != "Y") {
+            $(".action").css("display", "none");
+            $(".staffPassword").attr("class", "staffPassword tableheadright");
+        }
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {

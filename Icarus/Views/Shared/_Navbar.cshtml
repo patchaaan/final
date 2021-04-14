@@ -42,7 +42,10 @@
                         Reports
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Reports Browse</a>
+                        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                        {
+                            <a class="dropdown-item" href="#">Reports Browse</a>
+                        }
                         <a class="dropdown-item" href="#">Resident Activity</a>
                         <a class="dropdown-item" href="#">Facility Report</a>
                     </div>
@@ -55,8 +58,6 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/Staffs">Staffs</a>
                         <a class="dropdown-item" data-toggle="modal" data-target="#changePassword" style="cursor:pointer;">Change Password</a>
-                        <!--@@Html.ActionLink("Logout", "Logout", "Login", protocol: null, hostName: null, fragment: "Logout", routeValues: null, htmlAttributes: null)-->
-                        <!--<a href="@@Url.Action("Logout","Logout","Login")">Logout</a>-->
                         @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm" }))
                         {
                             @Html.AntiForgeryToken()
