@@ -1,0 +1,135 @@
+﻿@model Icarus.Models.tblVendor
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Create Vendors</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.IDVendor, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.IDVendor, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.IDVendor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.Vendor, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Vendor, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Vendor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.ContactPerson, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.ContactNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.TIN, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TIN, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label ml-4" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label ml-4" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col text-center">
+                        <a class="btn btn-warning btn-sm" href="javascript:history.back()">Go back</a>
+                        <input type="submit" value="Create" class="btn btn-sm btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        document.title = 'Create Resident';
+    });
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
