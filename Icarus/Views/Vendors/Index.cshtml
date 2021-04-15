@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Icarus.Models.tblVendor>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pl-5 pr-5">
+    <div class="d-flex mb-2 mt-2 justify-content-between">
+        <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
+        <div>
+            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Vendors/Create">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>&nbsp;Add Vendors</span>
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <table class="table table-responsive table-striped table-hover table-borderless" style="overflow-x: inherit;">
+            <thead style="background-color: #6C7AE0; color: white;">
+                <tr>
+                    <th class="tableheadleft" scope="col">
+                        @Html.DisplayNameFor(model => model.IDVendor)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Vendor)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ContactNumber)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ContactPerson)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Notes)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.TIN)
+                    </th>
+                    <th scope="col" class="tableheadright">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IDVendor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Vendor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactPerson)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TIN)
+                        </td>
+                        <td style="display:flex;">
+                            <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
+                            <a class="btn btn-danger btn-sm ml-1" href="/Vendors/Delete/@item.IDVendor">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Admission Browse';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

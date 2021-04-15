@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<div>
+    <div id="content">
+        <div id="left">
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="">Assertion Summary</a>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-sm btn btn-warning" href="/Collectibles/PrintViewToPdf">Collectibles</a>
+            </div>
+            <div class="form-group"> 
+                <a type="button" class="btn btn-sm btn btn-warning" href=""> Expenses Date Range</a>
+            </div>
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="/UnbilledtoCodep/PrintViewToPdf">Expenses unbilled to Codep</a>
+            </div>
+        </div>
+
+        <div id="right">
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="">Expenses Per Month</a>
+            </div>
+            <div class="form-group">
+                <a type="" class="btn btn-sm btn btn-warning" href="">Payments Collected Date Range </a>
+            </div>
+            <div class="form-group">
+                <a type="" class="btn btn-sm btn btn-warning" href="">Payments Per Month</a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #content {
+        background-color: rgba(210, 210, 210, 0.5);
+        border: 1px solid #000;
+        padding: 0.5rem;
+        display: flex;
+    }
+
+    #left,
+    #right {
+        border: 1px solid #fff;
+        padding: 0.5rem;
+        flex-grow: 1;
+        color: #fff;
+    }
+</style>
