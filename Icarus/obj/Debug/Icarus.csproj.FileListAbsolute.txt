@@ -78,3 +78,4 @@ C:\Users\capstonestudent\Desktop\Final\Icarus\Icarus\bin\EntityFramework.SqlServ
 C:\Users\capstonestudent\Desktop\Final\Icarus\Icarus\bin\EntityFramework.xml
 C:\Users\capstonestudent\Desktop\Final\Icarus\Icarus\bin\EntityFramework.SqlServer.xml
 C:\Users\capstonestudent\Desktop\Final\Icarus\Icarus\obj\Debug\Icarus.csprojAssemblyReference.cache
+C:\Users\capstonestudent\Desktop\Final\Icarus\Icarus\bin\Rotativa.dll

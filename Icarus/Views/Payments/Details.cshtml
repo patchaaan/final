@@ -1,0 +1,99 @@
+﻿@model Icarus.Models.tblPayment
+
+@{
+    ViewBag.Title = "Payment Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblPayment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaidDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaidDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDAdmission)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDAdmission)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPaid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalPaid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IDPaymentMethod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDPaymentMethod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bank)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bank)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CheckDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CheckDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsVerified)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PostedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PostedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDPayment }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -98,20 +98,6 @@
                 <div class="col">
                     <p>
                         <b>
-                            @Html.DisplayNameFor(model => model.Username)
-                        </b>
-                    </p>
-                </div>
-                <div class="col">
-                    <p>
-                        @Html.DisplayFor(model => model.Username)
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <b>
                             @Html.DisplayNameFor(model => model.Email)
                         </b>
                     </p>
@@ -122,76 +108,94 @@
                     </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <b>
-                            @Html.DisplayNameFor(model => model.Password)
-                        </b>
-                    </p>
+            @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+            {
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            <b>
+                                @Html.DisplayNameFor(model => model.Username)
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>
+                            @Html.DisplayFor(model => model.Username)
+                        </p>
+                    </div>
                 </div>
-                <div class="col">
-                    <p>
-                        @Html.DisplayFor(model => model.Password)
-                    </p>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            <b>
+                                @Html.DisplayNameFor(model => model.Password)
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>
+                            @Html.DisplayFor(model => model.Password)
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <b>
-                            Admin Director Group
-                        </b>
-                    </p>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            <b>
+                                Admin Director Group
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>
+                            @Html.DisplayFor(model => model.isADG)
+                        </p>
+                    </div>
                 </div>
-                <div class="col">
-                    <p>
-                        @Html.DisplayFor(model => model.isADG)
-                    </p>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            <b>
+                                Executive Director Group
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>
+                            @Html.DisplayFor(model => model.isEDG)
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <b>
-                            Executive Director Group
-                        </b>
-                    </p>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            <b>
+                                Program Group
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>
+                            @Html.DisplayFor(model => model.isPG)
+                        </p>
+                    </div>
                 </div>
-                <div class="col">
-                    <p>
-                        @Html.DisplayFor(model => model.isEDG)
-                    </p>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            <b>
+                                Admin Assistant Group
+                            </b>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>
+                            @Html.DisplayFor(model => model.isAAG)
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <b>
-                            Program Group
-                        </b>
-                    </p>
-                </div>
-                <div class="col">
-                    <p>
-                        @Html.DisplayFor(model => model.isPG)
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        <b>
-                            Admin Assistant Group
-                        </b>
-                    </p>
-                </div>
-                <div class="col">
-                    <p>
-                        @Html.DisplayFor(model => model.isAAG)
-                    </p>
-                </div>
-            </div>
+            }
+
             <div class="row">
                 <div class="col">
                     <p>
@@ -207,9 +211,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col mt-2 text-center">
+                <div class="col mt-2">
                     <a class="btn btn-sm btn-warning" href="javascript:history.back()">Go back to lists</a>
-                    <a class="btn btn-sm btn-primary" href="/Staffs/Edit/@Model.IDStaff">Edit</a>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                    {
+                        <a class="btn btn-sm btn-primary" href="/Staffs/Edit/@Model.IDStaff">Edit</a>
+                    }
                 </div>
             </div>
         </div>

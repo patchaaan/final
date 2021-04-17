@@ -10,109 +10,116 @@ using Icarus.Models;
 
 namespace Icarus.Controllers
 {
-    public class FacilityReportsController : Controller
+    public class PaymentsController : Controller
     {
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
-        // GET: tblFacilityReports
-        [Route("FacilityReports/")]
+        // GET: Payments
+        [Route("Payments/")]
         public ActionResult Index()
         {
-            return View(db.tblFacilityReports.ToList().OrderByDescending(x => x.IDFacilityReport).ToList());
+            return View(db.vPaymentBrowses.ToList().OrderByDescending(p => p.IDPayment).ToList());
         }
 
-        // GET: tblFacilityReports/Details/5
+        // GET: Payments/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            if (tblFacilityReport == null)
+            tblPayment tblPayment = db.tblPayments.Find(id);
+            if (tblPayment == null)
             {
                 return HttpNotFound();
             }
-            return View(tblFacilityReport);
+            return View(tblPayment);
         }
 
-        // GET: tblFacilityReports/Create
+        // GET: Payments/Create
         public ActionResult Create()
         {
+            var residents = db.tblResidents.Select(
+                    s => new {
+                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                        Value = s.IDResident
+                    }
+                ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
             return View();
         }
 
-        // POST: tblFacilityReports/Create
+        // POST: Payments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDFacilityReport,ReportDate,Activity,PostedBy")] tblFacilityReport tblFacilityReport)
+        public ActionResult Create([Bind(Include = "IDPayment,PaidDate,IDAdmission,TotalPaid,IDPaymentMethod,Bank,CheckNo,CheckDate,Notes,IsVerified,PostedDate")] tblPayment tblPayment)
         {
             if (ModelState.IsValid)
             {
-                tblFacilityReport.PostedBy = Session["Username"].ToString();
-                db.tblFacilityReports.Add(tblFacilityReport);
+                db.tblPayments.Add(tblPayment);
                 db.SaveChanges();
-                return RedirectToAction("Index","FacilityReports");
+                return RedirectToAction("Index");
             }
 
-            return View(tblFacilityReport);
+            return View(tblPayment);
         }
 
-        // GET: tblFacilityReports/Edit/5
+        // GET: Payments/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            if (tblFacilityReport == null)
+            tblPayment tblPayment = db.tblPayments.Find(id);
+            if (tblPayment == null)
             {
                 return HttpNotFound();
             }
-            return View(tblFacilityReport);
+            return View(tblPayment);
         }
 
-        // POST: tblFacilityReports/Edit/5
+        // POST: Payments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDFacilityReport,ReportDate,Activity,PostedBy")] tblFacilityReport tblFacilityReport)
+        public ActionResult Edit([Bind(Include = "IDPayment,PaidDate,IDAdmission,TotalPaid,IDPaymentMethod,Bank,CheckNo,CheckDate,Notes,IsVerified,PostedDate")] tblPayment tblPayment)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tblFacilityReport).State = EntityState.Modified;
+                db.Entry(tblPayment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tblFacilityReport);
+            return View(tblPayment);
         }
 
-        // GET: tblFacilityReports/Delete/5
+        // GET: Payments/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            if (tblFacilityReport == null)
+            tblPayment tblPayment = db.tblPayments.Find(id);
+            if (tblPayment == null)
             {
                 return HttpNotFound();
             }
-            return View(tblFacilityReport);
+            return View(tblPayment);
         }
 
-        // POST: tblFacilityReports/Delete/5
+        // POST: Payments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            db.tblFacilityReports.Remove(tblFacilityReport);
+            tblPayment tblPayment = db.tblPayments.Find(id);
+            db.tblPayments.Remove(tblPayment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

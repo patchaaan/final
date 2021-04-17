@@ -41,17 +41,8 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.Status)
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="notes">
                         @Html.DisplayNameFor(model => model.Notes)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Username)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
-                    <th scope="col" class="staffPassword">
-                        @Html.DisplayNameFor(model => model.Password)
                     </th>
                     <th class="tableheadright text-center action" scope="col">
                         Action
@@ -88,22 +79,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Username)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @if (item.Password != null)
-                        {
-                            <p>********</p>
-                        }
-                        else
-                        {
-                            @Html.DisplayFor(modelItem => item.Password)
-                        }
                     </td>
                     @if(Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                     {
@@ -144,7 +119,7 @@
         console.log(pg);
         if (aag != "Y" && edg != "Y" && adg != "Y") {
             $(".action").css("display", "none");
-            $(".staffPassword").attr("class", "staffPassword tableheadright");
+            $(".notes").attr("class", "notes tableheadright");
         }
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();

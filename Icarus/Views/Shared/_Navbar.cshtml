@@ -25,18 +25,15 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Expense Browse</a>
-                        <a class="dropdown-item" href="#">Vendors</a>
+                        <a class="dropdown-item" href="/Vendors">Vendors</a>
                         <a class="dropdown-item" href="/Requests">Requests</a>
                         <a class="dropdown-item" href="/AssertionCategories">Assertion Category</a>
-                        <a class="dropdown-item" href="#">Chart of Accounts</a>
+                        <a class="dropdown-item" href="/ChartOfAccounts">Chart of Accounts</a>
                     </div>
                 </li>
-
-
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Payments</a>
+                    <a class="nav-link" href="/Payments">Payments</a>
                 </li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Reports
@@ -46,8 +43,8 @@
                         {
                             <a class="dropdown-item" href="#">Reports Browse</a>
                         }
-                        <a class="dropdown-item" href="#">Resident Activity</a>
-                        <a class="dropdown-item" href="#">Facility Report</a>
+                        <a class="dropdown-item" href="/ResidentActivities">Resident Activity</a>
+                        <a class="dropdown-item" href="/FacilityReports">Facility Report</a>
                     </div>
                 </li>
 
@@ -71,40 +68,39 @@
     <div class="modal fade" id="changePassword" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header" ">
+                <div class="modal-header">
                     <h4 class="modal-title">Change Password</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group col-sm-12">
-                                    <label>Old Password:</label>
-                                    <input name="oldPassword" class="form-control" type="password"/>
-                                </div>                                
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-12">
-                                    <label>New Password:</label>
-                                    <input name="NewPassword" class="form-control" type="password" />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-12">
-                                    <label>Re-type New Password:</label>
-                                    <input name="RetypeNewPassword" type="password" class="form-control" />
-                                </div>
-                            </div>
-                        </form>
-                    }
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label>Old Password:</label>
+                            <input name="oldPassword" class="form-control oldPassword" type="password" required />
+                            <span id="oldPass" style="color:red;"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label>New Password:</label>
+                            <input name="newPassword" class="form-control password" type="password" required />
+                            <span id="checker" style="color:red;"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label>Re-type New Password:</label>
+                            <input name="retypedPassword" type="password" class="form-control retypePassword" required />
+                            <span id="check" style="color:red;"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save">Save</button>
                 </div>
+
+
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -117,6 +113,61 @@
     var showClass = "show";
 
     $(window).on("load resize", function () {
+
+        $('#save').unbind().click(function () {
+            var old = $('.oldPassword').val();
+            var newPass = $('.password').val();
+            var retyped = $('.retypePassword').val();
+            var oldPass = false;
+            var newType = false;
+            if (old != "@Session["Password"]") {
+                $('#oldPass').text("Old Password do not match!");
+                $('#oldPass').css("color", "red");
+                var oldPass = false;
+            }
+            else {
+                $('#oldPass').text("Password match!");
+                $('#oldPass').css("color", "green");
+                var oldPass = true;
+            }
+
+            if (newPass != retyped || ((newPass == '' || newPass == null) && (newPass == '' || newPass == null ))) {
+                $('#checker').text("New Password do not match!");
+                $('#check').text("New Password do not match!");
+                var newType = false;
+            }
+            else {
+                var newType = true;
+            }
+            console.log(old != "@Session["Password"]");
+            console.log(newPass != retyped);
+
+            if (oldPass && newType) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ChangePassword",
+                    data: {
+                        newPassword: newPass
+                    },
+                    success: function (result) {
+                        if (result == "Success") {
+                            $('.oldPassword').val('');
+                            $('.password').val('');
+                            $('.retypePassword').val('');
+                            $('#oldPass').text('');
+                            $('#check').text('');
+                            $('#checker').text('');
+                            console.log("SUCCESS");
+                            $('.modal').modal('toggle');
+                        }
+                        else {
+                            alert("Saving failed!");
+                        }
+                    },
+                });
+            }
+        })
+
         if (this.matchMedia("(min-width: 768px)").matches) {
             $dropdown.hover(
                 function () {

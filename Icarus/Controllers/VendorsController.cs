@@ -15,6 +15,7 @@ namespace Icarus.Controllers
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
         // GET: tblVendors
+        [Route("Vendors/")]
         public ActionResult Index()
         {
             return View(db.tblVendors.ToList());

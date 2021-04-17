@@ -23,6 +23,9 @@ namespace Icarus.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (Session["Username"] != null) {
+                return RedirectToAction("Index", "Residents");
+            }
             return View();
         }
 
@@ -38,20 +41,10 @@ namespace Icarus.Controllers
                 Session["isEDG"] = checkLogin.isEDG.ToString();
                 Session["isPG"] = checkLogin.isPG.ToString();
                 Session["Username"] = tblstaff.Username.ToString();
+                Session["Password"] = checkLogin.Password.ToString();
+                Session["ID"] = checkLogin.IDStaff.ToString();
 
-                //if (checkLogin.isAAG.ToString() == "Y") {
-                //    Session["isAAG"] = true;
-                //}
-                //if (checkLogin.isADG.ToString() == "Y") {
-                //    Session["isADG"] = true;
-                //}
-                //if (checkLogin.isEDG.ToString() == "Y") {
-                //    Session["isEDG"] = true;
 
-                //}
-                //if (checkLogin.isPG.ToString() == "Y") {
-                //    Session["isPG"] = true;
-                //}
                 return RedirectToAction("Index", "Residents");
 
             }

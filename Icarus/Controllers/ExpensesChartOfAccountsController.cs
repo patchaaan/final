@@ -15,6 +15,7 @@ namespace Icarus.Controllers
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
         // GET: ExpensesChartOfAccounts
+        [Route("ChartOfAccounts/")]
         public ActionResult Index()
         {
             return View(db.tblExpensesChartOfAccounts.ToList());

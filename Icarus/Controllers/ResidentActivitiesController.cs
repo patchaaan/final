@@ -15,9 +15,11 @@ namespace Icarus.Controllers
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
         // GET: tblResidentActivities
+        [Route("ResidentActivities/")]
         public ActionResult Index()
         {
-            return View(db.tblResidentActivities.ToList());
+            ViewBag.ResidentLists = db.tblResidents.ToList();
+            return View(db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList());
         }
 
         // GET: tblResidentActivities/Details/5
@@ -38,6 +40,15 @@ namespace Icarus.Controllers
         // GET: tblResidentActivities/Create
         public ActionResult Create()
         {
+            var residents = db.tblResidents.Select(
+                    s => new {
+                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                        Value = s.IDResident
+                    }
+                ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.generatedBy = Session["Username"];
+            ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
             return View();
         }
 
@@ -50,6 +61,7 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
+                tblResidentActivity.PostedBy = Session["Username"].ToString();
                 db.tblResidentActivities.Add(tblResidentActivity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -70,6 +82,14 @@ namespace Icarus.Controllers
             {
                 return HttpNotFound();
             }
+            var residents = db.tblResidents.Select(
+                    s => new {
+                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                        Value = s.IDResident
+                    }
+                ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
             return View(tblResidentActivity);
         }
 
@@ -82,6 +102,7 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 db.Entry(tblResidentActivity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -52,6 +52,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.4-rc\lib\net45\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -135,6 +138,14 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RequestsController.cs" />
     <Compile Include="Controllers\ResidentsController.cs" />
+    <Compile Include="Controllers\FacilityReportsController.cs" />
+    <Compile Include="Controllers\VendorsController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ExpensesChartOfAccountsController.cs" />
+    <Compile Include="Controllers\UnbilledtoCodepController.cs" />
+    <Compile Include="Controllers\CollectiblesController.cs" />
+    <Compile Include="Controllers\ResidentActivitiesController.cs" />
     <Compile Include="Controllers\StaffsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -315,6 +326,7 @@
     <Content Include="Models\ICARUS.edmx.diagram">
       <DependentUpon>ICARUS.edmx</DependentUpon>
     </Content>
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -380,6 +392,33 @@
     <Content Include="Views\Requests\Edit.cshtml" />
     <Content Include="Views\Requests\Index.cshtml" />
     <Content Include="Views\Admissions\AdmissionDetails.cshtml" />
+    <Content Include="Views\FacilityReports\Create.cshtml" />
+    <Content Include="Views\FacilityReports\Delete.cshtml" />
+    <Content Include="Views\FacilityReports\Details.cshtml" />
+    <Content Include="Views\FacilityReports\Edit.cshtml" />
+    <Content Include="Views\FacilityReports\Index.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\Create.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\Delete.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\Details.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\Edit.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\Index.cshtml" />
+    <Content Include="Views\Vendors\Create.cshtml" />
+    <Content Include="Views\Vendors\Delete.cshtml" />
+    <Content Include="Views\Vendors\Details.cshtml" />
+    <Content Include="Views\Vendors\Edit.cshtml" />
+    <Content Include="Views\Vendors\Index.cshtml" />
+    <Content Include="Views\Payments\Create.cshtml" />
+    <Content Include="Views\Payments\Delete.cshtml" />
+    <Content Include="Views\Payments\Details.cshtml" />
+    <Content Include="Views\Payments\Edit.cshtml" />
+    <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\ResidentActivities\Create.cshtml" />
+    <Content Include="Views\ResidentActivities\Delete.cshtml" />
+    <Content Include="Views\ResidentActivities\Details.cshtml" />
+    <Content Include="Views\ResidentActivities\Edit.cshtml" />
+    <Content Include="Views\ResidentActivities\Index.cshtml" />
+    <Content Include="Views\Collectibles\Index.cshtml" />
+    <Content Include="Views\UnbilledtoCodep\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

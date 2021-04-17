@@ -275,6 +275,13 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                var residents = db.tblResidents.Select(
+                    s => new {
+                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                        Value = s.IDResident
+                    }
+                ).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
                 return View();
             }
             else {
