@@ -5,33 +5,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container ">
-    <div class="row mt-5">
-        <div class="col-sm-12 d-flex align-items-center justify-content-center mt-5">
-            <div class="card cards col-sm-5" style="background-color:#C9E6F0;">
-                <div class="d-flex align-items-center justify-content-center m-5">
-                    <img src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/user-male-circle-blue-512.png" style="width:25%;height:25%" />
-                </div>
-                <div class="d-flex align-items-center justify-content-center">
-                    <label>@ViewBag.Notification</label>
-                </div>
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
-                    <div class="form col-sm-12 pb-5">
-                        <center>
-                            <div>
-                                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = " input mb-3 username", @type = "text", @placeholder = "Username" } })
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = " input mb-5 password", @type = "password", @placeholder = "Password" } })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                <center><button type="submit" value="Create" class="btn btn-primary" style="width:280px;">Login</button></center>
-                            </div>
-                        </center>
-                        <!--<input type="text" class="username mb-3" placeholder="Username" />-->
-                        <!--<input type="password" class="password mb-5" placeholder="Password" />-->
+<div class="container holder">
+    <div class="center">
+        <div class="row">
+            <div class="col-sm-12 d-flex align-items-center justify-content-center">
+                <div class="card cards col-sm-8" style="background-color:#C9E6F0;">
+                    <div class="d-flex align-items-center justify-content-center m-5">
+                        <img src="~/Content/user-icon.png" style="width:25%;height:25%" />
                     </div>
-                }
+                    <div class="d-flex align-items-center justify-content-center">
+                        <label>@ViewBag.Notification</label>
+                    </div>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form col-sm-12 pb-5">
+                            <center>
+                                <div>
+                                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = " input mb-3 username", @type = "text", @placeholder = "Username" } })
+                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = " input mb-5 password", @type = "password", @placeholder = "Password" } })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    <center><button type="submit" value="Create" class="btn btn-primary" style="width:280px;">Login</button></center>
+                                </div>
+                            </center>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
@@ -91,6 +91,15 @@
 
     input {
         margin: auto;
+    }
+
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
     }
 </style>
 <script>

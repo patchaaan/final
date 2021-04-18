@@ -282,6 +282,7 @@ namespace Icarus.Controllers
                     }
                 ).ToList();
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
                 return View();
             }
             else {

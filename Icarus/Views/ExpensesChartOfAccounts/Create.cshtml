@@ -5,44 +5,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
 
+<div class="container">
+    <h2>Create Chart of Accounts</h2>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>tblExpensesChartOfAccount</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.AccountCode, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AccountCode, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountCode, "", new { @class = "text-danger" })
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.AccountCode, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.AccountCode, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AccountCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>
+                    <div class="col">
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.Account, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col text-center">
+                        <a class="btn btn-warning btn-sm" href="javascript:history.back()">Go back</a>
+                        <input type="submit" value="Create" class="btn btn-sm btn-primary" />
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
+<script>
+    $(document).ready(function () {
+        document.title = 'Create Chart of Account';
+    });
+</script>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

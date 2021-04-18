@@ -13,11 +13,10 @@
         @Html.AntiForgeryToken()
     <div class="form">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.IDAdmission)
         <div class="form-row">
             <div class="form-group col-sm-4">
                 <label><b>Resident</b></label>
-                @Html.DropDownListFor(model => model.IDResident, (SelectList)ViewBag.residentList,new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.IDResident, (SelectList)ViewBag.residentList, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IDResident, "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-sm-4">
@@ -93,6 +92,14 @@
                         new { @class = "form-control phase"}
                     )
                 @Html.ValidationMessageFor(model => model.Phase, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Rank</b></label>
+                @Html.DropDownListFor(model => model.IDRank, ViewBag.ranks as SelectList, new { @class = "form-control" })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Notes</b></label>
+                @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
             </div>
         </div>
         <div class="form-group pull-right">

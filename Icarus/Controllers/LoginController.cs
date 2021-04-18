@@ -17,6 +17,10 @@ namespace Icarus.Controllers
         // GET: Login
         public ActionResult Index()
         {
+            if (Session["Username"] != null)
+            {
+                return RedirectToAction("Index", "Residents");
+            }
             return View();
         }
 

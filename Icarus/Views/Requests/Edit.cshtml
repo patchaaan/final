@@ -5,127 +5,129 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>tblRequest</h4>
-        <hr />
+<div class="container">
+    <h2>Edit Request</h2>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.IDRequest)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateRequest, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateRequest, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateRequest, "", new { @class = "text-danger" })
+    <div class="form">
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <label><b>Date Requested</b></label>
+                @Html.TextBoxFor(model => model.DateRequest, new { @type = "datetime-local", @class = "form-control daterequest" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateNeeded, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateNeeded, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateNeeded, "", new { @class = "text-danger" })
+            <div class="form-group col-sm-4">
+                <label><b>Date Needed</b></label>
+                @Html.TextBoxFor(model => model.DateNeeded, new { @type = "datetime-local", @class = "form-control dateneeded" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="form-group col-sm-4">
+                <label><b>Requested by:</b></label>
                 @Html.EditorFor(model => model.RequestedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <label><b>Budget</b></label>
+                @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Request Status</b></label>
+                @Html.DropDownListFor(model => model.IDRequestStatus,
+                        (
+                            new[] {
+                            new SelectListItem { Text = "New Request", Value = "1" },
+                            new SelectListItem { Text = "Being Reviewed", Value = "2" },
+                            new SelectListItem { Text = "Approved", Value = "3"},
+                            new SelectListItem { Text = "Delivered", Value = "4"},
+                            new SelectListItem { Text = "Declined", Value = "5"},
+                        }),
+                        new { @class = "form-control", Value = Model.IDRequestStatus, Selected = true }
+                    )
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Date Approved</b></label>
+                @Html.TextBoxFor(model => model.DateApproved, new { @type = "datetime-local", @class = "form-control dateapproved" })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <label><b>Requestor Email</b></label>
+                @Html.EditorFor(model => model.RequestorEmail, new { htmlAttributes = new { @type = "email", @class = "form-control" } })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Date Accepted</b></label>
+                @Html.TextBoxFor(model => model.DateAcc, new { @type = "datetime-local", @class = "form-control dateacc" })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Requestor Email</b></label>
+                @Html.EditorFor(model => model.ApprovedBy, new { htmlAttributes = new { @class = "form-control", @Value=Session["Username"].ToString(), disabled=true } })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <label><b>Request</b></label>
+                @Html.TextAreaFor(model => model.Request, new { @class = "form-control", @rows = 5 })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Approver Notes</b></label>
+                @Html.TextAreaFor(model => model.ApproverNotes, new { @class = "form-control", @rows = 5 })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Requestor Notes</b></label>
+                @Html.TextAreaFor(model => model.RequestorNotes, new { @class = "form-control", @rows = 5 })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <div class="pull-left">
+                    <a type="button" class="btn btn-sm btn-warning" href="/Requests">Go Back</a>
+                    <input type="submit" value="Update" class="btn btn-primary btn-sm" />
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Request, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Request, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Request, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Budget, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ApprovedBy, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IDRequestStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IDRequestStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IDRequestStatus, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ApproverNotes, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ApproverNotes, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ApproverNotes, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateApproved, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateApproved, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateApproved, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RequestorEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RequestorEmail, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RequestorEmail, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateAcc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateAcc, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateAcc, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RequestorNotes, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RequestorNotes, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RequestorNotes, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script>
+    $(document).ready(function () {
+        document.title = 'Edit Request';
+        $('.daterequest').val(new Date('@Model.DateRequest').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('.dateneeded').val(new Date('@Model.DateNeeded').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('.dateapproved').val(new Date('@Model.DateApproved').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('.dateacc').val(new Date('@Model.DateAcc').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+    });
+</script>

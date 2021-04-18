@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Icarus.Models.tblExpens>
+
+
+@{
+    ViewBag.Title = "Expense Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="pl-5 pr-5">
+    <br />
+    <div id="formSearch" class="row">
+        <div class="col col-sm-3">
+            <input id="searchInput1" name="search" class="form-control" placeholder="Search String" aria-label="Search" aria-describedby="search-addon" />
+        </div>
+        <div class="col-sm-6">
+            @using (Html.BeginForm("Index", "Expense", FormMethod.Get))
+            {
+                <div class="d-flex pl-0 pr-0">
+                    <input type="date" id="dateFrom" name="start" class="form-control">
+                     <input type="date" id="dateTo" name="end" class="form-control">
+                    <span><button type="submit" name="submit" value="Search" class="btn btn-primary ml-1">Search </button></span>
+                </div>
+            }
+        </div>
+        <div class="col-sm-3">
+            <div class="pull-right">
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="/Expense/Create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Expenses</span>
+                </a>
+                <button style="background-color:#4E58A2;" type="button" class="btn btn-m  btn-primary">Verified</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div id="tableForm" class="table-holder">
+        <table id="example" class="table table-striped table-hover table-borderless align-items-center">
+            <thead style="background-color: #6C7AE0; color: white;">
+                <tr id="datacolumn">
+                    <th class="tableheadleft" scope="col">
+                        @Html.DisplayNameFor(model => model.IDExpense)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ExpenseDate)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.PostedDate)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ORNumber)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Particulars)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.WithReceipt)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.IDAccount)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.EncodedBy)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.IsVerified)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ChargeToCodep)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.VATSales)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.VATAmount)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.VATExempt)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.ChargedToCodep)
+                    </th>
+                    <th class="tableheadright text-center" scope="col">Action</th>
+
+
+
+                </tr>
+            </thead>
+
+            <tbody id="rowTable">
+                @foreach (var item in Model)
+                {
+                    var id = item.IDExpense;
+
+                    <tr id="item">
+                        <td scope="row">
+                            <span onClick="window.location='/Expenses/Details/@item.IDExpense'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDExpense</span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExpenseDate)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ORNumber)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Particulars)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WithReceipt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IDAccount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EncodedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsVerified)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ChargeToCodep)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VATSales)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VATAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VATExempt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ChargedToCodep)
+                        </td>
+
+
+                        <td>
+                            <center>
+                                <a class="btn btn-sm btn-warning" href="/Expense/Edit/@item.IDExpense">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="/Expense/Delete/@item.IDExpense">Delete</a>
+                            </center>
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        document.title = 'Expenses Browse';
+
+        $("#searchInput1").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#rowTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px;
+    }
+
+
+    .tableheadright {
+        border-top-right-radius: 15px;
+    }
+
+    .table-holder {
+        overflow-x: scroll;
+    }
+
+    .table-holder::-webkit-scrollbar {
+        width: 0; /* Remove scrollbar space */
+        background: transparent; /* Optional: just make scrollbar invisible */
+    }
+    /* Optional: show position indicator in red */
+    .table-holder::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
+</style>
+
+

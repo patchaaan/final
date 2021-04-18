@@ -22,8 +22,8 @@ namespace Icarus.Controllers
             {
                 IEnumerable<tblRequestStatu> tblRequestStatus = db.tblRequestStatus.ToList();
                 ViewData["requestStatus"] = tblRequestStatus;
-                ViewBag.RequestStatus = db.tblRequestStatus.ToList();
-                return View(db.tblRequests.ToList());
+                //ViewBag.RequestStatus = db.tblRequestStatus.ToList();
+                return View(db.tblRequests.ToList().OrderByDescending(x => x.IDRequest).ToList());
             }
             else {
                 return RedirectToAction("Login", "Login");
@@ -44,6 +44,7 @@ namespace Icarus.Controllers
                 {
                     return HttpNotFound();
                 }
+                ViewBag.requests = new SelectList(db.tblRequestStatus, "IDRequestStatus", "Status");
                 return View(tblRequest);
             }
             else
@@ -57,6 +58,7 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                ViewBag.requests = new SelectList(db.tblRequestStatus, "IDRequestStatus", "Status");
                 return View();
             }
             else

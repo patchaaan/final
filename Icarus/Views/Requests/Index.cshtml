@@ -9,7 +9,7 @@
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
         <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="#">
+            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Requests/Create">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>&nbsp;Add Request</span>
             </a>
@@ -75,7 +75,7 @@
                     </td>
                     <td>
                         @foreach (var status in ViewBag.requestStatus) {
-                            if (status.IDRequestStatus == item.IDRequest) {
+                            if (status.IDRequestStatus == item.IDRequestStatus) {
                                 @status.Status
                             }
                         }

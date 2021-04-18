@@ -10,108 +10,108 @@ using Icarus.Models;
 
 namespace Icarus.Controllers
 {
-    public class VendorsController : Controller
+    public class ExpensesController : Controller
     {
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
-        // GET: tblVendors
-        [Route("Vendors/")]
+        // GET: Expenses
+        [Route("Expenses/")]
         public ActionResult Index()
         {
-            return View(db.tblVendors.ToList().OrderByDescending(x => x.IDVendor).ToList());
+            return View(db.tblExpenses.ToList());
         }
 
-        // GET: tblVendors/Details/5
+        // GET: Expenses/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            if (tblVendor == null)
+            tblExpens tblExpens = db.tblExpenses.Find(id);
+            if (tblExpens == null)
             {
                 return HttpNotFound();
             }
-            return View(tblVendor);
+            return View(tblExpens);
         }
 
-        // GET: tblVendors/Create
+        // GET: Expenses/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: tblVendors/Create
+        // POST: Expenses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDVendor,Vendor,ContactPerson,ContactNumber,Email,Notes,IsActive,TIN")] tblVendor tblVendor)
+        public ActionResult Create([Bind(Include = "IDExpense,DatePosted,ExpenseDate,ORNumber,IDVendor,Particulars,WithReceipt,IDAccount,EncodedBy,IsVerified,ChargeToCodep,VATSales,VATAmount,VATExempt,Amount,PostedDate,ChargedToCodep,TIN")] tblExpens tblExpens)
         {
             if (ModelState.IsValid)
             {
-                db.tblVendors.Add(tblVendor);
+                db.tblExpenses.Add(tblExpens);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(tblVendor);
+            return View(tblExpens);
         }
 
-        // GET: tblVendors/Edit/5
+        // GET: Expenses/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            if (tblVendor == null)
+            tblExpens tblExpens = db.tblExpenses.Find(id);
+            if (tblExpens == null)
             {
                 return HttpNotFound();
             }
-            return View(tblVendor);
+            return View(tblExpens);
         }
 
-        // POST: tblVendors/Edit/5
+        // POST: Expenses/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDVendor,Vendor,ContactPerson,ContactNumber,Email,Notes,IsActive,TIN")] tblVendor tblVendor)
+        public ActionResult Edit([Bind(Include = "IDExpense,DatePosted,ExpenseDate,ORNumber,IDVendor,Particulars,WithReceipt,IDAccount,EncodedBy,IsVerified,ChargeToCodep,VATSales,VATAmount,VATExempt,Amount,PostedDate,ChargedToCodep,TIN")] tblExpens tblExpens)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tblVendor).State = EntityState.Modified;
+                db.Entry(tblExpens).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tblVendor);
+            return View(tblExpens);
         }
 
-        // GET: tblVendors/Delete/5
+        // GET: Expenses/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            if (tblVendor == null)
+            tblExpens tblExpens = db.tblExpenses.Find(id);
+            if (tblExpens == null)
             {
                 return HttpNotFound();
             }
-            return View(tblVendor);
+            return View(tblExpens);
         }
 
-        // POST: tblVendors/Delete/5
+        // POST: Expenses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            db.tblVendors.Remove(tblVendor);
+            tblExpens tblExpens = db.tblExpenses.Find(id);
+            db.tblExpenses.Remove(tblExpens);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

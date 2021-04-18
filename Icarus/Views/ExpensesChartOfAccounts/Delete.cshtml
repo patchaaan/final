@@ -6,7 +6,7 @@
 }
 
 <div class="container">
-    <h2>Are you sure you want to delete this Vendor?</h2>
+    <h2>Are you sure you want to delete chart of account?</h2>
     <div>
         <hr />
         <div class="container">
@@ -46,7 +46,7 @@
                     {
                         @Html.AntiForgeryToken()
                         <div class="form-actions">
-                            <a class="btn btn-sm btn-warning" href="/ExpensesChartOfAccounts/Index">Go back to lists</a>
+                            <a class="btn btn-sm btn-warning" href="/ChartOfAccounts">Go back to lists</a>
                             <input class="btn btn-sm btn-danger" type="submit" value="Delete" />
                         </div>
                     }
@@ -57,6 +57,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        document.title = 'Delete Resident';
+        document.title = 'Delete Chart Of Accounts';
     });
 </script>
