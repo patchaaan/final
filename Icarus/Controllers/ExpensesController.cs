@@ -16,10 +16,31 @@ namespace Icarus.Controllers
 
         // GET: Expenses
         [Route("Expenses/")]
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(DateTime? start, DateTime? end)
         {
-            return View(db.tblExpenses.ToList());
+            if (Session["Username"] != null)
+            {
+                if (start != null && end != null)
+                {
+                    Response.Write("<script>console.log('Reading')</script>");
+                    List<tblExpens> tblexp = new List<tblExpens>();
+                    tblexp = db.tblExpenses.ToList().OrderByDescending(p => p.IDExpense).ToList();
+                    return View(db.tblExpenses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderBy(y => y.ExpenseDate).ToList());
+                }
+                else {
+                    var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+                    var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                    return View(db.tblExpenses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            
         }
+
 
         // GET: Expenses/Details/5
         public ActionResult Details(int? id)
@@ -39,6 +60,7 @@ namespace Icarus.Controllers
         // GET: Expenses/Create
         public ActionResult Create()
         {
+            ViewBag.vendors = new SelectList(db.tblVendors,"IDVendor", "Vendor");
             return View();
         }
 
