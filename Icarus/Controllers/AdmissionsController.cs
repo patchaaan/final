@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -60,7 +61,8 @@ namespace Icarus.Controllers
                 }
 
                 tblAdmission admission = db.tblAdmissions.SingleOrDefault(x => x.IDAdmission == id);
-
+                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", admission.IDAdmission));
+                Response.Write("<script>console.log('hello'"+")</script>");
                 IEnumerable<tblAdmissionBilling> admissionBilling = db.tblAdmissionBillings.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionBilling).ToList();
                 tblAdmissionBilling adBilling = new tblAdmissionBilling();
                 adBilling.IDAdmission = admission.IDAdmission;
@@ -173,6 +175,7 @@ namespace Icarus.Controllers
                 {
                     db.tblAssertions.Add(tblAssertion);
                     db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
                     return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
                 }
             }
@@ -195,6 +198,7 @@ namespace Icarus.Controllers
                     tblAdmissionBilling.GeneratedBy = Session["Username"].ToString();
                     db.tblAdmissionBillings.Add(tblAdmissionBilling);
                     db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAdmissionBilling.IDAdmission));
                     return RedirectToAction("Details", "Admissions", new { id = tblAdmissionBilling.IDAdmission });
                 }
             }
@@ -295,7 +299,7 @@ namespace Icarus.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDAdmission,IDResident,Resident,Nickname,AdmissionDate,TerminationDate,TreatmentFee,TotalBilling,TotalPaid,OverallBalance,IsActive,LastPaymentInfo,StopTFBilling,rank,Phase")] tblAdmission tblAdmission)
+        public ActionResult Create([Bind(Include = "IDAdmission,IDResident,AdmissionDate,TerminationDate,TreatmentFee,isActive,Notes,TotalBilling,TotalPaid,OverallBalance,StopTFBilling,Status,IDRank,Phase")] tblAdmission tblAdmission)
         {
             if (Session["Username"] != null)
             {
@@ -410,6 +414,13 @@ namespace Icarus.Controllers
                 return RedirectToAction("Login", "Login");
             }
             
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GenerateBilling(int? id)
+        {
+            return View("GenerateBilling");
         }
 
         public virtual PartialViewResult Assertions()

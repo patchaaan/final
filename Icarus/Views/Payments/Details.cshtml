@@ -5,95 +5,171 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<script>
+    $(document).ready(function () {
+        document.title = 'Payment Details';
+    });
+</script>
 
-<div>
-    <h4>tblPayment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.PaidDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaidDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDAdmission)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDAdmission)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalPaid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalPaid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDPaymentMethod)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDPaymentMethod)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Bank)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Bank)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CheckNo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CheckNo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CheckDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CheckDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsVerified)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsVerified)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PostedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PostedDate)
-        </dd>
-
-    </dl>
+<div class="container">
+    <div>
+        <h2>Payment Details</h2>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            @Html.DisplayNameFor(model => model.PaidDate)
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.PaidDate)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Admission
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @ViewBag.residentName
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Total Paid
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.TotalPaid)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Payment Method
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @foreach (var item in ViewBag.method)
+                        {
+                            if (item.IDPaymentMethod == Model.IDPaymentMethod)
+                            {
+                                @item.PaymentMethod
+                            }
+                        }
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Bank
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Bank)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Check No
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.CheckNo)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Check Date
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.CheckDate)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Verified
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.IsVerified)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Posted Date
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.PostedDate)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <b>
+                            Notes
+                        </b>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        @Html.DisplayFor(model => model.Notes)
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mt-2 text-center">
+                    <a class="btn btn-sm btn-warning" href="javascript:history.back()">Go back to lists</a>
+                    @if (Session["isADG"].ToString() == "Y") {
+                        <a class="btn btn-sm btn-primary" href="/Payments/Edit/@Model.IDPayment">Edit</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDPayment }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

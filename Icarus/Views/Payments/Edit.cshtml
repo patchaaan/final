@@ -3,12 +3,127 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var resident = ViewBag.residentName;
 }
-
-
-
+<script>
+    $(document).ready(function () {
+        document.title = 'Edit Payment';
+        $('#checkdate').val(new Date('@Model.CheckDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('#paiddate').val(new Date('@Model.PaidDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('#posteddate').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+    });
+</script>
 
 <div class="container">
+    <h2>Edit Payment</h2>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IDPayment)
+        @Html.HiddenFor(model => model.IDAdmission)
+
+        <div class="form">
+            <div class="form-row">
+                <div class="form-group col-sm-4">
+                    <label><b>Paid Date</b></label>
+                    @Html.EditorFor(model => model.PaidDate, new { htmlAttributes = new { @id = "paiddate", @type = "datetime-local", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PaidDate, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-4">
+                    <label><b>Posted Date</b></label>
+                    @Html.EditorFor(model => model.PostedDate, new { htmlAttributes = new { @id = "posteddate", @type = "datetime-local", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PaidDate, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-4">
+                    <label><b>ID Admission</b></label>
+                    <input class="form-control" value="@ViewBag.residentName" disabled />
+                    @Html.ValidationMessageFor(model => model.IDAdmission, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-4">
+                    <label><b>Payment Method</b></label>
+                    @Html.DropDownListFor(model => model.IDPaymentMethod, ViewBag.paymentMethod as SelectList, new { @class = "form-control", Value = Model.IDPaymentMethod, Selected = Model.IDPaymentMethod })
+                    @Html.ValidationMessageFor(model => model.IDPaymentMethod, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-4">
+                    <label><b>Bank</b></label>
+                    @Html.EditorFor(model => model.Bank, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-4">
+                    <label><b>Check No</b></label>
+                    @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-4">
+                    <label><b>Verified</b></label>
+                    @Html.DropDownListFor(modelItem => modelItem.IsVerified,
+                        (
+                            new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                            new SelectListItem { Text = "N", Value = "N" }
+                        }),
+                        new { @class = "form-control active", Value = Model.IsVerified, Text = Model.IsVerified, Selected = true })
+                </div>
+                <div class="form-group col-sm-4">
+                    <label><b>Total Paid</b></label>
+                    @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.ValidationMessageFor(model => model.TotalPaid, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-sm-4">
+                    <label><b>Check Date</b></label>
+                    @Html.EditorFor(model => model.CheckDate, new { htmlAttributes = new { @id = "checkdate", @type = "datetime-local", @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CheckDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-4">
+                    <label><b>Notes</b></label>
+                    @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
+                    @Html.ValidationMessageFor(model => model.PaidDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-12">
+                    <div class="col text-center">
+                        <a class="btn btn-warning btn-sm" href="/Payments">Go back to List</a>
+                        <button type="submit" value="Save" class="btn btn-sm btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@*<div class="container">
     <h2>Edit </h2>
     @using (Html.BeginForm())
     {
@@ -155,14 +270,6 @@
             </div>
         </div>
     }
-</div>
-<script>
-    $(document).ready(function () {
-        document.title = 'Resident Details';
-    });
-</script>
+</div>*@
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -38,12 +38,12 @@
             </div>
             <div class="form-group col-sm-4">
                 <label><b>Total Billing Fee</b></label>
-                @Html.EditorFor(model => model.TotalBilling, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                @Html.EditorFor(model => model.TotalBilling, new { htmlAttributes = new { @type = "number", @class = "form-control", Value="0.00", disabled=true } })
                 @Html.ValidationMessageFor(model => model.TotalBilling, "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-sm-4">
                 <label><b>Total Paid</b></label>
-                @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @type = "number", @class = "form-control", Value = "0.00", disabled = true } })
                 @Html.ValidationMessageFor(model => model.TotalPaid, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="form-row">
             <div class="form-group col-sm-4">
                 <label><b>Overall Balance</b></label>
-                @Html.EditorFor(model => model.OverallBalance, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                @Html.EditorFor(model => model.OverallBalance, new { htmlAttributes = new { @type = "number", @class = "form-control", Value = "0.00", disabled = true } })
                 @Html.ValidationMessageFor(model => model.OverallBalance, "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-sm-4">

@@ -24,16 +24,25 @@
                         Expenses
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/Expenses">Expense Browse</a>
+                        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                        {
+                            <a class="dropdown-item" href="/Expenses">Expense Browse</a>
+                        }
                         <a class="dropdown-item" href="/Vendors">Vendors</a>
                         <a class="dropdown-item" href="/Requests">Requests</a>
                         <a class="dropdown-item" href="/AssertionCategories">Assertion Category</a>
-                        <a class="dropdown-item" href="/ChartOfAccounts">Chart of Accounts</a>
+                        @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                        {
+                            <a class="dropdown-item" href="/ChartOfAccounts">Chart of Accounts</a>
+                        }
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Payments">Payments</a>
-                </li>
+                @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Payments">Payments</a>
+                    </li>
+                }
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Reports

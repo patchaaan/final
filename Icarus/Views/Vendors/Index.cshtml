@@ -8,12 +8,14 @@
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Vendors/Create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Vendors</span>
-            </a>
-        </div>
+        @if(Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+            <div>
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="/Vendors/Create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Vendors</span>
+                </a>
+            </div>
+        }
     </div>
     <hr>
     <div>
@@ -41,48 +43,64 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.IsActive)
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.TIN)
-                    </th>
-                    <th scope="col" class="tableheadright">
-                        Actions
-                    </th>
+                    @if (Session["isAAG"].ToString() != "Y" && Session["isADG"].ToString() != "Y" )
+                    {
+                        <th class="tableheadright" scope="col">
+                            @Html.DisplayNameFor(model => model.TIN)
+                        </th>
+                    }
+                    else
+                    {
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.TIN)
+                        </th>
+                        <th scope="col" class="tableheadright">
+                            Actions
+                        </th>
+                    }
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
-                    <tr>
+                <tr>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IDVendor)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Vendor)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ContactNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ContactPerson)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Notes)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsActive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TIN)
-                        </td>
-                        <td style="display:flex;">
-                            <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IDVendor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vendor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactPerson)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TIN)
+                    </td>
+                    @if (Session["isAAG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
+                    {
+                    <td style="display:flex;">
+                        <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
+                        @if (Session["isADG"].ToString() == "Y")
+                        {
                             <a class="btn btn-danger btn-sm ml-1" href="/Vendors/Delete/@item.IDVendor">Delete</a>
+                        }
                         </td>
-                    </tr>
+                    }
+
+                </tr>
                 }
             </tbody>
         </table>

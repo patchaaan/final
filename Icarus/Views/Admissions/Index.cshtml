@@ -57,12 +57,22 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.TotalPaid)
                     </th>
-                    <th scope="col" class="overAllBalance">
-                        @Html.DisplayNameFor(model => model.OverallBalance)
-                    </th>
-                    <th scope="col" class="tableheadright action">
-                        Actions
-                    </th>
+                    @if (Session["isADG"].ToString() == "Y")
+                    {
+                        <th scope="col">
+                            @Html.DisplayNameFor(model => model.OverallBalance)
+                        </th>
+                        <th scope="col" class="tableheadright action">
+                            Actions
+                        </th>
+                    }
+                    else
+                    {
+                        <th scope="col" class="tableheadright">
+                            @Html.DisplayNameFor(model => model.OverallBalance)
+                        </th>
+                    }
+
                 </tr>
             </thead>
             <tbody id="myTable">
@@ -144,15 +154,6 @@
 <script>
     $(document).ready(function () {
         document.title = 'Admission Browse';
-        var aag = "@Session["isAAG"]";
-        var edg = "@Session["isEDG"]";
-        var adg = "@Session["isADG"]";
-        var pg = "@Session["isPG"]";
-        console.log(pg);
-        if (adg != "Y") {
-            $(".action").css("display", "none");
-            $(".overAllBalance").attr("class", "overAllBalance tableheadright");
-        }
 
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();

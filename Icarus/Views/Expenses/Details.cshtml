@@ -4,152 +4,230 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>tblExpens</h4>
+<script>
+    $(document).ready(function () {
+        document.title = 'Expense Details';
+    });
+</script>
+<div class="container">
+    <h2>Expense Details</h2>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DatePosted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ExpenseDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ExpenseDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ORNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ORNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDVendor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDVendor)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Particulars)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Particulars)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.WithReceipt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.WithReceipt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDAccount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDAccount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EncodedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EncodedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsVerified)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsVerified)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ChargeToCodep)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ChargeToCodep)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VATSales)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VATSales)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VATAmount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VATAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VATExempt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VATExempt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PostedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PostedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ChargedToCodep)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ChargedToCodep)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TIN)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TIN)
-        </dd>
-
-    </dl>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Date Posted
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.DatePosted)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Expense Date
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.ExpenseDate)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        OR Number
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.ORNumber)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Vendor
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.IDVendor)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Particulars
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.Particulars)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        W/ Receipt
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.WithReceipt)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        ID Account
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.IDAccount)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Encode By
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.EncodedBy)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Is Verified
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.IsVerified)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Charge To Codep
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.ChargeToCodep)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        VAT Sales
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.VATSales)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        VAT Amount
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.VATAmount)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        VAT Exempt
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.VATExempt)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Amount
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.Amount)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p>
+                    <b>
+                        Posted Date
+                    </b>
+                </p>
+            </div>
+            <div class="col">
+                <p>
+                    @Html.DisplayFor(model => model.PostedDate)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mt-2 text-center">
+                <a class="btn btn-sm btn-warning" href="javascript:history.back()">Go back to lists</a>
+                <a class="btn btn-sm btn-primary" href="/Expenses/Edit/@Model.IDExpense">Edit</a>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDExpense }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

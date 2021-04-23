@@ -10,12 +10,15 @@
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/FacilityReports/Create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Facility Report</span>
-            </a>
-        </div>
+        @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
+        {
+            <div>
+                <a class="btn" style="background-color:#4E58A2;color:white;" href="/FacilityReports/Create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Facility Report</span>
+                </a>
+            </div>
+        }
     </div>
     <hr>
     <div>
@@ -23,7 +26,7 @@
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
                     <th class="tableheadleft" scope="col">
-                        @Html.DisplayNameFor(model => model.IDFacilityReport)
+                        ID
                     </th>
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.ReportDate)
@@ -31,36 +34,46 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.Activity)
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.PostedBy)
-                    </th>
-                    <th scope="col" class="tableheadright text-center">
-                        Actions
-                    </th>
+                    @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
+                    {
+                        <th scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th class="tableheadright text-center" scope="col">Action</th>
+                    }
+                    else
+                    {
+                        <th class="tableheadright" scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                    }
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
-                    <tr>
+                <tr>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IDFacilityReport)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ReportDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Activity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PostedBy)
-                        </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IDFacilityReport)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Activity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostedBy)
+                    </td>
+                    @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
+                    {
+
                         <td style="display:flex;">
                             <a class="btn btn-warning btn-sm mr-1" href="/FacilityReports/Edit/@item.IDFacilityReport">Edit</a>
-                            <a class="btn btn-danger btn-sm ml-1" href="/FacilityReports/Delete/@item.IDFacilityReport">Delete</a>
+                            @if (Session["isADG"].ToString() == "Y")
+                            {
+                                <a class="btn btn-danger btn-sm ml-1" href="/FacilityReports/Delete/@item.IDFacilityReport">Delete</a>
+                            }
                         </td>
-                    </tr>
+                    }
+                </tr>
                 }
             </tbody>
         </table>

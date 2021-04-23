@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -29,6 +30,12 @@ namespace Icarus.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             tblPayment tblPayment = db.tblPayments.Find(id);
+            tblAdmission admission = db.tblAdmissions.Find(tblPayment.IDAdmission);
+            tblResident resident = db.tblResidents.Find(admission.IDResident);
+            IEnumerable<tblPaymentMethod> paymentMethod = db.tblPaymentMethods.ToList();
+
+            ViewData["method"] = paymentMethod;
+            ViewBag.residentName = resident.Firstname + ' ' + resident.Nickname + ' ' + resident.Lastname;
             if (tblPayment == null)
             {
                 return HttpNotFound();
@@ -57,10 +64,14 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDPayment,PaidDate,IDAdmission,TotalPaid,IDPaymentMethod,Bank,CheckNo,CheckDate,Notes,IsVerified,PostedDate")] tblPayment tblPayment)
         {
+            Response.Write("<script>alert("+tblPayment.IDAdmission+");</script>");
             if (ModelState.IsValid)
             {
+                tblAdmission tblAdmission = db.tblAdmissions.Where(x => x.IDResident == tblPayment.IDAdmission).FirstOrDefault();
+                tblPayment.IDAdmission = tblAdmission.IDAdmission;
                 db.tblPayments.Add(tblPayment);
                 db.SaveChanges();
+                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblPayment.IDAdmission));
                 return RedirectToAction("Index");
             }
 
@@ -75,6 +86,11 @@ namespace Icarus.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             tblPayment tblPayment = db.tblPayments.Find(id);
+            tblAdmission admission = db.tblAdmissions.Find(tblPayment.IDAdmission);
+            tblResident resident = db.tblResidents.Find(admission.IDResident);
+            ViewBag.residentName = resident.Firstname + ' ' + resident.Nickname + ' ' + resident.Lastname;
+
+            ViewBag.paymentMethod = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
             if (tblPayment == null)
             {
                 return HttpNotFound();

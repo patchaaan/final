@@ -73,6 +73,7 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
+                tblExpens.EncodedBy = Session["Username"].ToString();
                 db.tblExpenses.Add(tblExpens);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -93,6 +94,7 @@ namespace Icarus.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
             return View(tblExpens);
         }
 
@@ -105,6 +107,7 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
+                tblExpens.EncodedBy = Session["Username"].ToString();
                 db.Entry(tblExpens).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

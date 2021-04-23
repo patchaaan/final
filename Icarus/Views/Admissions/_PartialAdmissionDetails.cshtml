@@ -164,7 +164,8 @@
                     </p>
                 </div>
                 <div class="col col-sm-8">
-                    @Html.EditorFor(model => model.TreatmentFee, new { htmlAttributes = new { @id = "admissiondate", @type = "number", @class = "form-control", disabled = true } })
+                    @Html.EditorFor(model => model.TreatmentFee, new { htmlAttributes = new { @type = "number", @class = "form-control", @value = Model.TreatmentFee, disabled = true } })
+
                 </div>
             </div>
         </div>
