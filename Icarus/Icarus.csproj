@@ -420,8 +420,10 @@
     <Content Include="Views\ResidentActivities\Index.cshtml" />
     <Content Include="Views\Collectibles\Index.cshtml" />
     <Content Include="Views\UnbilledtoCodep\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Expenses\Create.cshtml" />
     <Content Include="Views\Expenses\Delete.cshtml" />
+    <Content Include="Views\Collectibles\Index.cshtml" />
     <Content Include="Views\Expenses\Details.cshtml" />
     <Content Include="Views\Expenses\Edit.cshtml" />
     <Content Include="Views\Expenses\Index.cshtml" />

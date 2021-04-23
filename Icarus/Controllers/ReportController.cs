@@ -9,6 +9,7 @@ namespace Icarus.Controllers
     public class ReportController : Controller
     {
         // GET: Report
+        [Route("Reports/")]
         public ActionResult Index()
         {
             return View();

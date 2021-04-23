@@ -416,8 +416,6 @@ namespace Icarus.Controllers
             
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult GenerateBilling(int? id)
         {
             return View("GenerateBilling");
