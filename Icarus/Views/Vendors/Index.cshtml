@@ -3,12 +3,41 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.toDelete = 0;
 }
+
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = "Vendors Browse";
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $(".delete").on('click', function () {
+            console.log(document.getElementById("delete").value);
+            $("#id").val(document.getElementById("delete").value);
+            $('#myModal').modal().show();
+        });
+    });
+</script>
 
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
-        @if(Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+        @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
             <div>
                 <a class="btn" style="background-color:#4E58A2;color:white;" href="/Vendors/Create">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -43,7 +72,7 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.IsActive)
                     </th>
-                    @if (Session["isAAG"].ToString() != "Y" && Session["isADG"].ToString() != "Y" )
+                    @if (Session["isAAG"].ToString() != "Y" && Session["isADG"].ToString() != "Y")
                     {
                         <th class="tableheadright" scope="col">
                             @Html.DisplayNameFor(model => model.TIN)
@@ -63,66 +92,74 @@
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
-                <tr>
+                    <tr>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IDVendor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vendor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactPerson)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Notes)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TIN)
-                    </td>
-                    @if (Session["isAAG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
-                    {
-                    <td style="display:flex;">
-                        <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
-                        @if (Session["isADG"].ToString() == "Y")
-                        {
-                            <a class="btn btn-danger btn-sm ml-1" href="/Vendors/Delete/@item.IDVendor">Delete</a>
-                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IDVendor)
                         </td>
-                    }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Vendor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactPerson)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TIN)
+                        </td>
+                        @if (Session["isAAG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
+                        {
+                            <td style="display:flex;">
+                                <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
+                                @if (Session["isADG"].ToString() == "Y")
+                                {
+                                    <button class="btn btn-danger btn-sm ml-1 delete" id="delete" value="@item.IDVendor">Delete</button>
+                                }
+                            </td>
+                        }
 
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
-</div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+        Delete
+    </button>
 
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        document.title = 'Vendors Browse';
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Vendor?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "Vendors", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

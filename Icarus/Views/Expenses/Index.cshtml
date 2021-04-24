@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Icarus.Models.tblExpens>
+﻿@model IEnumerable<Icarus.Models.vExpensesBrowse>
 
 
 @{
@@ -120,46 +120,43 @@
                         ID Expense
                     </th>
                     <th scope="col">
-                        Expense Date
+                        ExpenseDate
                     </th>
                     <th scope="col">
-                        Posted Date
+                        Date Posted
                     </th>
                     <th scope="col">
                         OR Number
                     </th>
                     <th scope="col">
+                        Vendor
+                    </th>
+                    <th scope="col">
+                        TIN
+                    </th>
+                    <th scope="col">
                         Particulars
+                    </th>
+                    <th scope="col">
+                        Account
+                    </th>
+                    <th scope="col">
+                        EncodedBy
+                    </th>
+                    <th scope="col">
+                        Amount
+                    </th>
+                    <th scope="col">
+                        AmountCharged
                     </th>
                     <th scope="col">
                         W/ Receipt
                     </th>
                     <th scope="col">
-                        ID Account
-                    </th>
-                    <th scope="col">
-                        Encoded By
+                        Codep
                     </th>
                     <th scope="col">
                         Verified
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.ChargeToCodep)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.VATSales)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.VATAmount)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.VATExempt)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Amount)
-                    </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.ChargedToCodep)
                     </th>
                     <th class="tableheadright text-center" scope="col">Action</th>
                 </tr>
@@ -178,48 +175,42 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.PostedDate)
+                            @Html.DisplayFor(modelItem => item.DatePosted)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ORNumber)
                         </td>
 
                         <td>
+                            @Html.DisplayFor(modelItem => item.Vendor)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TIN)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Particulars)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.WithReceipt)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IDAccount)
+                            @Html.DisplayFor(modelItem => item.Account)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.EncodedBy)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.IsVerified)
+                            @Html.DisplayFor(modelItem => item.Amount)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ChargeToCodep)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.VATSales)
+                            @Html.DisplayFor(modelItem => item.WithReceipt)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.VATAmount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.VATExempt)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-
                         <td>
                             @Html.DisplayFor(modelItem => item.ChargedToCodep)
                         </td>
-
-
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsVerified)
+                        </td>
                         <td>
                             <center>
                                 <a class="btn btn-sm btn-warning" href="/Expenses/Edit/@item.IDExpense">Edit</a>

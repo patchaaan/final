@@ -24,14 +24,14 @@ namespace Icarus.Controllers
                 if (start != null && end != null)
                 {
                     Response.Write("<script>console.log('Reading')</script>");
-                    List<tblExpens> tblexp = new List<tblExpens>();
-                    tblexp = db.tblExpenses.ToList().OrderByDescending(p => p.IDExpense).ToList();
-                    return View(db.tblExpenses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderBy(y => y.ExpenseDate).ToList());
+                    //List<tblExpens> tblexp = new List<tblExpens>();
+                    //tblexp = db.tblExpenses.ToList().OrderByDescending(p => p.IDExpense).ToList();
+                    return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderBy(y => y.ExpenseDate).ToList());
                 }
                 else {
                     var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
                     var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
-                    return View(db.tblExpenses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
+                    return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
                 }
             }
             else
@@ -64,6 +64,13 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
+                var account = db.tblExpensesChartOfAccounts.Select(
+                        s => new {
+                            Text = s.Account +"      "+s.AccountCode,
+                            Value = s.IDAccount
+                        }
+                    ).ToList();
+                ViewBag.accountsList = new SelectList(account, "Value", "Text");
                 ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
                 return View();
             }
