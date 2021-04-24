@@ -18,38 +18,48 @@ namespace Icarus.Controllers
         [Route("ResidentActivities/")]
         public ActionResult Index()
         {
-            ViewBag.ResidentLists = db.tblResidents.ToList();
-            return View(db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList());
+            if (Session["Username"] != null) {
+                ViewBag.ResidentLists = db.tblResidents.ToList();
+                return View(db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList());
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblResidentActivities/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["Username"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
+                if (tblResidentActivity == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblResidentActivity);
             }
-            tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-            if (tblResidentActivity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblResidentActivity);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblResidentActivities/Create
         public ActionResult Create()
         {
-            var residents = db.tblResidents.Select(
-                    s => new {
-                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
-                        Value = s.IDResident
-                    }
-                ).ToList();
-            ViewBag.residentList = new SelectList(residents, "Value", "Text");
-            ViewBag.generatedBy = Session["Username"];
-            ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
-            return View();
+            if (Session["Username"] != null) {
+                var residents = db.tblResidents.Select(
+                        s => new {
+                            Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                            Value = s.IDResident
+                        }
+                    ).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.generatedBy = Session["Username"];
+                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
+                return View();
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblResidentActivities/Create
@@ -59,38 +69,46 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDResidentActivityLog,LogDate,IDAdmission,Position,Activity,PostedBy")] tblResidentActivity tblResidentActivity)
         {
-            if (ModelState.IsValid)
-            {
-                tblResidentActivity.PostedBy = Session["Username"].ToString();
-                db.tblResidentActivities.Add(tblResidentActivity);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    tblResidentActivity.PostedBy = Session["Username"].ToString();
+                    db.tblResidentActivities.Add(tblResidentActivity);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            return View(tblResidentActivity);
+                return View(tblResidentActivity);
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblResidentActivities/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["Username"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
+                if (tblResidentActivity == null)
+                {
+                    return HttpNotFound();
+                }
+                var residents = db.tblResidents.Select(
+                        s => new
+                        {
+                            Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                            Value = s.IDResident
+                        }
+                    ).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
+                return View(tblResidentActivity);
             }
-            tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-            if (tblResidentActivity == null)
-            {
-                return HttpNotFound();
-            }
-            var residents = db.tblResidents.Select(
-                    s => new {
-                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
-                        Value = s.IDResident
-                    }
-                ).ToList();
-            ViewBag.residentList = new SelectList(residents, "Value", "Text");
-            ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
-            return View(tblResidentActivity);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblResidentActivities/Edit/5
@@ -100,29 +118,35 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDResidentActivityLog,LogDate,IDAdmission,Position,Activity,PostedBy")] tblResidentActivity tblResidentActivity)
         {
-            if (ModelState.IsValid)
-            {
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
 
-                db.Entry(tblResidentActivity).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    db.Entry(tblResidentActivity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblResidentActivity);
             }
-            return View(tblResidentActivity);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblResidentActivities/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
+                if (tblResidentActivity == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblResidentActivity);
             }
-            tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-            if (tblResidentActivity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblResidentActivity);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblResidentActivities/Delete/5
@@ -130,10 +154,13 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-            db.tblResidentActivities.Remove(tblResidentActivity);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
+                db.tblResidentActivities.Remove(tblResidentActivity);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         protected override void Dispose(bool disposing)

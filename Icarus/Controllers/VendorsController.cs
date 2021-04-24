@@ -18,28 +18,38 @@ namespace Icarus.Controllers
         [Route("Vendors/")]
         public ActionResult Index()
         {
-            return View(db.tblVendors.ToList().OrderByDescending(x => x.IDVendor).ToList());
+            if (Session["Username"] != null) {
+                return View(db.tblVendors.ToList().OrderByDescending(x => x.IDVendor).ToList());
+            }
+            return RedirectToAction("Login", "Login");
+
         }
 
         // GET: tblVendors/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblVendor tblVendor = db.tblVendors.Find(id);
+                if (tblVendor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblVendor);
             }
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            if (tblVendor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblVendor);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblVendors/Create
         public ActionResult Create()
         {
-            return View();
+            if (Session["Username"] != null) {
+                return View();
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblVendors/Create
@@ -49,29 +59,34 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDVendor,Vendor,ContactPerson,ContactNumber,Email,Notes,IsActive,TIN")] tblVendor tblVendor)
         {
-            if (ModelState.IsValid)
-            {
-                db.tblVendors.Add(tblVendor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    db.tblVendors.Add(tblVendor);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblVendor);
             }
-
-            return View(tblVendor);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblVendors/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblVendor tblVendor = db.tblVendors.Find(id);
+                if (tblVendor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblVendor);
             }
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            if (tblVendor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblVendor);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblVendors/Edit/5
@@ -81,28 +96,34 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDVendor,Vendor,ContactPerson,ContactNumber,Email,Notes,IsActive,TIN")] tblVendor tblVendor)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tblVendor).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tblVendor).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblVendor);
             }
-            return View(tblVendor);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblVendors/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblVendor tblVendor = db.tblVendors.Find(id);
+                if (tblVendor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblVendor);
             }
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            if (tblVendor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblVendor);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblVendors/Delete/5
@@ -110,10 +131,13 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblVendor tblVendor = db.tblVendors.Find(id);
-            db.tblVendors.Remove(tblVendor);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                tblVendor tblVendor = db.tblVendors.Find(id);
+                db.tblVendors.Remove(tblVendor);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         protected override void Dispose(bool disposing)

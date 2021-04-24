@@ -18,28 +18,37 @@ namespace Icarus.Controllers
         [Route("FacilityReports/")]
         public ActionResult Index()
         {
-            return View(db.tblFacilityReports.ToList().OrderByDescending(x => x.IDFacilityReport).ToList());
+            if (Session["Username"] != null) {
+                return View(db.tblFacilityReports.ToList().OrderByDescending(x => x.IDFacilityReport).ToList());
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblFacilityReports/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
+                if (tblFacilityReport == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblFacilityReport);
             }
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            if (tblFacilityReport == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblFacilityReport);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblFacilityReports/Create
         public ActionResult Create()
         {
-            return View();
+            if (Session["Username"] != null) {
+                return View();
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblFacilityReports/Create
@@ -49,30 +58,35 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDFacilityReport,ReportDate,Activity,PostedBy")] tblFacilityReport tblFacilityReport)
         {
-            if (ModelState.IsValid)
-            {
-                tblFacilityReport.PostedBy = Session["Username"].ToString();
-                db.tblFacilityReports.Add(tblFacilityReport);
-                db.SaveChanges();
-                return RedirectToAction("Index","FacilityReports");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    tblFacilityReport.PostedBy = Session["Username"].ToString();
+                    db.tblFacilityReports.Add(tblFacilityReport);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "FacilityReports");
+                }
+                return View(tblFacilityReport);
             }
-
-            return View(tblFacilityReport);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblFacilityReports/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
+                if (tblFacilityReport == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblFacilityReport);
             }
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            if (tblFacilityReport == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblFacilityReport);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblFacilityReports/Edit/5
@@ -82,28 +96,34 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDFacilityReport,ReportDate,Activity,PostedBy")] tblFacilityReport tblFacilityReport)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tblFacilityReport).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tblFacilityReport).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblFacilityReport);
             }
-            return View(tblFacilityReport);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: tblFacilityReports/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
+                if (tblFacilityReport == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblFacilityReport);
             }
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            if (tblFacilityReport == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblFacilityReport);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: tblFacilityReports/Delete/5
@@ -111,10 +131,13 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-            db.tblFacilityReports.Remove(tblFacilityReport);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
+                db.tblFacilityReports.Remove(tblFacilityReport);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         protected override void Dispose(bool disposing)

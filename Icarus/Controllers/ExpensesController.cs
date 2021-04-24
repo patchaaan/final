@@ -45,23 +45,29 @@ namespace Icarus.Controllers
         // GET: Expenses/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblExpens tblExpens = db.tblExpenses.Find(id);
+                if (tblExpens == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblExpens);
             }
-            tblExpens tblExpens = db.tblExpenses.Find(id);
-            if (tblExpens == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblExpens);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Expenses/Create
         public ActionResult Create()
         {
-            ViewBag.vendors = new SelectList(db.tblVendors,"IDVendor", "Vendor");
-            return View();
+            if (Session["Username"] != null) {
+                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                return View();
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Expenses/Create
@@ -71,31 +77,36 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDExpense,DatePosted,ExpenseDate,ORNumber,IDVendor,Particulars,WithReceipt,IDAccount,EncodedBy,IsVerified,ChargeToCodep,VATSales,VATAmount,VATExempt,Amount,PostedDate,ChargedToCodep,TIN")] tblExpens tblExpens)
         {
-            if (ModelState.IsValid)
-            {
-                tblExpens.EncodedBy = Session["Username"].ToString();
-                db.tblExpenses.Add(tblExpens);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    tblExpens.EncodedBy = Session["Username"].ToString();
+                    db.tblExpenses.Add(tblExpens);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblExpens);
             }
-
-            return View(tblExpens);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Expenses/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblExpens tblExpens = db.tblExpenses.Find(id);
+                if (tblExpens == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                return View(tblExpens);
             }
-            tblExpens tblExpens = db.tblExpenses.Find(id);
-            if (tblExpens == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-            return View(tblExpens);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Expenses/Edit/5
@@ -105,29 +116,36 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDExpense,DatePosted,ExpenseDate,ORNumber,IDVendor,Particulars,WithReceipt,IDAccount,EncodedBy,IsVerified,ChargeToCodep,VATSales,VATAmount,VATExempt,Amount,PostedDate,ChargedToCodep,TIN")] tblExpens tblExpens)
         {
-            if (ModelState.IsValid)
-            {
-                tblExpens.EncodedBy = Session["Username"].ToString();
-                db.Entry(tblExpens).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    tblExpens.EncodedBy = Session["Username"].ToString();
+                    db.Entry(tblExpens).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblExpens);
             }
-            return View(tblExpens);
+            return RedirectToAction("Login", "Login");
+
         }
 
         // GET: Expenses/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblExpens tblExpens = db.tblExpenses.Find(id);
+                if (tblExpens == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblExpens);
             }
-            tblExpens tblExpens = db.tblExpenses.Find(id);
-            if (tblExpens == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblExpens);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Expenses/Delete/5
@@ -135,10 +153,13 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblExpens tblExpens = db.tblExpenses.Find(id);
-            db.tblExpenses.Remove(tblExpens);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                tblExpens tblExpens = db.tblExpenses.Find(id);
+                db.tblExpenses.Remove(tblExpens);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         protected override void Dispose(bool disposing)

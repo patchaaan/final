@@ -31,22 +31,31 @@ namespace Icarus.Controllers
         // GET: AssertionCategories/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["Username"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                if (tblAssertionCategory == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblAssertionCategory);
             }
-            tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-            if (tblAssertionCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblAssertionCategory);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: AssertionCategories/Create
         public ActionResult Create()
         {
-            return View();
+            if (Session["Username"] != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: AssertionCategories/Create
@@ -56,29 +65,35 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDAssertionCategory,Category")] tblAssertionCategory tblAssertionCategory)
         {
-            if (ModelState.IsValid)
-            {
-                db.tblAssertionCategories.Add(tblAssertionCategory);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    db.tblAssertionCategories.Add(tblAssertionCategory);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            return View(tblAssertionCategory);
+                return View(tblAssertionCategory);
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: AssertionCategories/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                if (tblAssertionCategory == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblAssertionCategory);
             }
-            tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-            if (tblAssertionCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblAssertionCategory);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: AssertionCategories/Edit/5
@@ -88,28 +103,34 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDAssertionCategory,Category")] tblAssertionCategory tblAssertionCategory)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tblAssertionCategory).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tblAssertionCategory).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(tblAssertionCategory);
             }
-            return View(tblAssertionCategory);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: AssertionCategories/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (Session["Username"] != null) {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                if (tblAssertionCategory == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(tblAssertionCategory);
             }
-            tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-            if (tblAssertionCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tblAssertionCategory);
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: AssertionCategories/Delete/5
@@ -117,10 +138,13 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-            db.tblAssertionCategories.Remove(tblAssertionCategory);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["Username"] != null) {
+                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                db.tblAssertionCategories.Remove(tblAssertionCategory);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Login");
         }
 
         protected override void Dispose(bool disposing)
