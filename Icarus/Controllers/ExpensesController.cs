@@ -70,8 +70,20 @@ namespace Icarus.Controllers
                             Value = s.IDAccount
                         }
                     ).ToList();
+                var residents = db.tblResidents.Select(
+                        s => new {
+                            Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                            Value = s.IDResident
+                        }
+                    ).ToList();
+                int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
+                int idExp = db.tblExpenses.Max(x => x.IDExpense);
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
                 ViewBag.accountsList = new SelectList(account, "Value", "Text");
                 ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                ViewBag.lastIDCTC = idCTC + 1;
+                ViewBag.lastIDEXP = idExp + 1;
                 return View();
             }
             return RedirectToAction("Login", "Login");

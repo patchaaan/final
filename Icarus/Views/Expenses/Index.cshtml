@@ -68,7 +68,14 @@
         border: dashed 1px lightblue;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 100px;
+        /*max-width: 100px;*/
+    }
+
+    table thead tr th:first-child {
+        border-top-left-radius: 15px !important;
+    }
+    table thead tr th:last-child {
+        border-top-left-radius: 15px !important;
     }
 
     html, body {
@@ -153,7 +160,7 @@
                         W/ Receipt
                     </th>
                     <th scope="col">
-                        Codep
+                        ChargedToCodep
                     </th>
                     <th scope="col">
                         Verified
@@ -200,13 +207,13 @@
                             @Html.DisplayFor(modelItem => item.Amount)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ChargeToCodep)
+                            @Html.DisplayFor(modelItem => item.ChargedToCodep)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.WithReceipt)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ChargedToCodep)
+                            @Html.DisplayFor(modelItem => item.ChargeToCodep)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.IsVerified)
