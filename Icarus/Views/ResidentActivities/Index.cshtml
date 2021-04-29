@@ -49,9 +49,9 @@
                             @Html.DisplayFor(modelItem => item.LogDate)
                         </td>
                         <td>
-                            @foreach (var res in ViewBag.ResidentLists) {
-                                if (item.IDAdmission == res.IDResident) {
-                                    <p>@res.Firstname @res.Nickname @res.Lastname</p>
+                            @foreach (var res in ViewBag.residents) {
+                                if (item.IDAdmission == res.IDAdmission) {
+                                    <p>@res.Resident</p>
                                 }
                             }
                         </td>

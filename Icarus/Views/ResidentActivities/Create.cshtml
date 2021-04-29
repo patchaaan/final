@@ -16,7 +16,7 @@
             <div class="form-row">
                 <div class="form-group col-sm-6">
                     <label><b>Log Date</b></label>
-                    @Html.TextBoxFor(model => model.LogDate, new { @class = "form-control", @type="datetime-local" })
+                    @Html.TextBoxFor(model => model.LogDate, new { @class = "form-control", @type="datetime-local", Required=true })
                     @Html.ValidationMessageFor(model => model.LogDate, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group col-sm-6">
@@ -41,7 +41,7 @@
             <div class="form-row">
                 <div class="form-group col-sm-6">
                     <label><b>Activity</b></label>
-                    @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 5 })
+                    @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 5 , Required=true})
                     @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })
                 </div>
             </div>

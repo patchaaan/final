@@ -1,0 +1,128 @@
+﻿@model Icarus.Models.tblCodepUpdate
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        document.title = 'Edit Codep Update';
+         $('.dateupdate').val(new Date('@Model.DateUpdate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('.datelog').val(new Date('@Model.DateLog').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+    });
+</script>
+
+<div class="container">
+    <h2>Edit Codep Update</h2>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IDUpdate)
+    <div class="form">
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <label><b>Date Update</b></label>
+                @Html.TextBoxFor(model => model.DateUpdate, new { @type = "datetime-local", @class = "form-control dateupdate", @id = "dateupdate" })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Date Log</b></label>
+                @Html.TextBoxFor(model => model.DateLog, new { @type = "datetime-local", @class = "form-control datelog", @id = "datelog" })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Update Log</b></label>
+                @Html.DropDownListFor(model => model.UpdateType,
+                        (
+                            new[] { new SelectListItem { Text = "Program", Value = "Program" },
+                            new SelectListItem { Text = "Medical", Value = "Medical" }
+                        }),
+                        new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-4">
+                <label><b>Updated By</b></label>
+                @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control", @Value = Session["Username"], disabled = true } })
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Admission</b></label>
+                @Html.DropDownListFor(model => model.IDAdmission, ViewBag.residentList as SelectList, new { @class = "form-control" })
+                <span>@ViewBag.admissionEdit</span>
+            </div>
+            <div class="form-group col-sm-4">
+                <label><b>Update Summary</b></label>
+                @Html.TextAreaFor(model => model.UpdateSummary, new { @class = "form-control", @rows = 5 })
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <div class="pull-left">
+                    <a type="button" class="btn btn-sm btn-warning" href="/CodepUpdates">Go Back</a>
+                    <input type="submit" value="Save" class="btn btn-primary btn-sm" />
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+</div>
+
+
+@*<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>vselCodepUpdateBrowse</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IDUpdate)
+
+        @Html.HiddenFor(model => model.DateUpdate)
+
+        @Html.HiddenFor(model => model.DateLog)
+
+        @Html.HiddenFor(model => model.UpdateType)
+
+        @Html.HiddenFor(model => model.UpdatedBy)
+
+        @Html.HiddenFor(model => model.UpdateSummary)
+
+        @Html.HiddenFor(model => model.IDAdmission)
+
+        @Html.HiddenFor(model => model.Resident)
+
+        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@

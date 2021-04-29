@@ -70,10 +70,10 @@ namespace Icarus.Controllers
                             Value = s.IDAccount
                         }
                     ).ToList();
-                var residents = db.tblResidents.Select(
+                var residents = db.vAdmissionBrowses.Select(
                         s => new {
-                            Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
-                            Value = s.IDResident
+                            Text = s.Resident,
+                            Value = s.IDAdmission
                         }
                     ).ToList();
                 int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
@@ -107,6 +107,13 @@ namespace Icarus.Controllers
                 return View(tblExpens);
             }
             return RedirectToAction("Login", "Login");
+        }
+
+        [HttpPost]
+        public JsonResult CreateAssertion(tblAssertion tblAssertion) {
+            db.tblAssertions.Add(tblAssertion);
+            db.SaveChanges();
+            return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
         // GET: Expenses/Edit/5

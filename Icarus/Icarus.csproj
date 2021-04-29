@@ -133,6 +133,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdmissionsController.cs" />
     <Compile Include="Controllers\AssertionCategoriesController.cs" />
+    <Compile Include="Controllers\CodepUpdatesController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InquiriesController.cs" />
@@ -428,6 +429,11 @@
     <Content Include="Views\Expenses\Edit.cshtml" />
     <Content Include="Views\Expenses\Index.cshtml" />
     <Content Include="Views\Admissions\GenerateBilling.cshtml" />
+    <Content Include="Views\CodepUpdates\Create.cshtml" />
+    <Content Include="Views\CodepUpdates\Delete.cshtml" />
+    <Content Include="Views\CodepUpdates\Details.cshtml" />
+    <Content Include="Views\CodepUpdates\Edit.cshtml" />
+    <Content Include="Views\CodepUpdates\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

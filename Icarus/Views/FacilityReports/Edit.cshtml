@@ -5,6 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    $(document).ready(function () {
+        document.title = 'Edit Facility Report';
+         $('.reportdate').val(new Date('@Model.ReportDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+    });
+</script>
+
 <div class="container">
     <h2>Edit </h2>
     @using (Html.BeginForm())
@@ -71,21 +85,3 @@
     </div>
     }
 </div>
-<script>
-    $(document).ready(function () {
-        document.title = 'Resident Details';
-         $('.reportdate').val(new Date('@Model.ReportDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-    });
-</script>
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

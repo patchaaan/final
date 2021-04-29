@@ -36,7 +36,7 @@
         white-space: nowrap;
     }
 </style>
-
+<script src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
     $(document).ready(function () {
         document.title = 'Create Expense';
@@ -54,6 +54,7 @@
         $('.assertionCategory').hide();
         $('.idToCodep').hide();
         $('.idExpense').hide();
+        $('.saveallassertion').hide();
         $('.posteddate').val(new Date().toLocaleString("sv-SE", {
             year: "numeric",
             month: "2-digit",
@@ -155,6 +156,20 @@
             $(".assertionnote").val('');
         });
 
+        $(".amount").on('keyup', function () {
+            var amount = $(this).val();
+            var vatsales = amount - (amount * .12);
+            var vatamount = amount * .12;
+            if (vatsales % 1 != 0) {
+                vatsales = vatsales.toFixed(2);
+            }
+            if (vatamount % 1 != 0) {
+                vatamount = vatamount.toFixed(2);
+            }
+            $(".vatsales").val(vatsales);
+            $(".vatamount").val(vatamount);
+        });
+
         $(".addAssertion").on('click', function () {
             var description = $("#description").val();
             description == '' || description == null ? $("#descriptionMessage").text("Description is required!") : $("#descriptionMessage").text(null);
@@ -206,13 +221,12 @@
                 $(".assertionTable").append(tableStart)
                 $(".table").append(tableHeader)
                 $(".table tbody").append(row);
-                //console.log('ARRAY', assertList);
             }
             else {
                 $(".table tbody").append(row);
             }
 
-            assertList.push(product = {
+            assertList.push(assertion = {
                 Description: $("#description").val(),
                 IDAdmission: $(".admission").val(),
                 AssertionDate: assertionDate,
@@ -226,8 +240,29 @@
                 IDChargeToCodep: @ViewBag.lastIDCTC,
                 PostedDate: $(".addassertiondateposted").val()
             });
+            $('.saveallassertion').show();
             $("#assertionModal").modal("hide");
+            console.log(assertList);
             window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        $(".saveallassertion").on('click', function () {
+            $.each(assertList, function (index, value) {
+                console.log('VALUE', value);
+                $.ajax({
+                    url: '/Expenses/CreateAssertion',
+                    method: "POST",
+                    data: value,
+                    success:function (data) {
+                        if (index == assertList.length-1) {
+                            alert(data);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            });
         });
 
         $(".cancelButton").on("click", function () {
@@ -303,26 +338,26 @@
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Amount</b></label>
-                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @type = "number", @class = "form-control", @Value="0.00" } })
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @type = "number", @class = "form-control amount", @Value="0.00" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>VAT Sales</b></label>
-                    @Html.EditorFor(model => model.VATSales, new { htmlAttributes = new { @type = "number", @class = "form-control", @Value="0.00" } })
+                    @Html.EditorFor(model => model.VATSales, new { htmlAttributes = new { @type = "number", @class = "form-control vatsales", @Value="0.00", disabled=true } })
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     <label><b>VAT Amount</b></label>
-                    @Html.EditorFor(model => model.VATAmount, new { htmlAttributes = new { @type = "number", @class = "form-control", @Value="0.00" } })
+                    @Html.EditorFor(model => model.VATAmount, new { htmlAttributes = new { @type = "number", @class = "form-control vatamount", @Value="0.00", disabled=true } })
 
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>VAT Exempt</b></label>
-                    @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @type = "number", @class = "form-control", @Value="0.00" } })
+                    @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @type = "number", @class = "form-control vatexempt", @Value="0.00" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>TIN</b></label>
-                    @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                    @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @type = "number", @class = "form-control tin" } })
                 </div>
             </div>
             <div class="form-row">
@@ -355,7 +390,7 @@
         </div>
     }
     <div id="assertionButton">
-        <button class="btn addAssertion" id="addAssertion" style="background-color:#4E58A2;color:white;" >
+        <button class="btn addAssertion" id="addAssertion" style="background-color:#4E58A2;color:white;">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
             <span>&nbsp;Add Assertion</span>
         </button>
@@ -480,6 +515,8 @@
     </div><!-- /.modal -->
 </div>
 <div class="container">
+    <button class="btn saveallassertion" style="background-color:#4E58A2;color:white;">Save All Assertion</button>
+    <br />
     <div class="assertionTable">
 
     </div>

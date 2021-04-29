@@ -53,10 +53,10 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                var residents = db.tblResidents.Select(
+                var residents = db.vAdmissionBrowses.Select(
                         s => new {
-                            Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
-                            Value = s.IDResident
+                            Text = s.Resident,
+                            Value = s.IDAdmission
                         }
                     ).ToList();
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
@@ -76,8 +76,8 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (ModelState.IsValid)
                 {
-                    tblAdmission tblAdmission = db.tblAdmissions.Where(x => x.IDResident == tblPayment.IDAdmission).FirstOrDefault();
-                    tblPayment.IDAdmission = tblAdmission.IDAdmission;
+                    //tblAdmission tblAdmission = db.tblAdmissions.Where(x => x.IDResident == tblPayment.IDAdmission).FirstOrDefault();
+                    //tblPayment.IDAdmission = tblAdmission.IDAdmission;
                     db.tblPayments.Add(tblPayment);
                     db.SaveChanges();
                     db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblPayment.IDAdmission));

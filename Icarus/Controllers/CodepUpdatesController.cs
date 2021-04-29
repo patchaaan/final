@@ -10,50 +10,44 @@ using Icarus.Models;
 
 namespace Icarus.Controllers
 {
-    public class ResidentActivitiesController : Controller
+    public class CodepUpdatesController : Controller
     {
         private ICARUSDBEntities db = new ICARUSDBEntities();
 
-        // GET: tblResidentActivities
-        [Route("ResidentActivities/")]
+        // GET: CodepUpdates
+        [Route("CodepUpdates/")]
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
-                ViewBag.residents = db.vAdmissionBrowses.ToList();
-                return View(db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList());
+                return View(db.vselCodepUpdateBrowses.ToList().OrderByDescending(x => x.IDUpdate).ToList());
             }
             return RedirectToAction("Login", "Login");
         }
 
-        // GET: tblResidentActivities/Details/5
+        // GET: CodepUpdates/Details/5
         public ActionResult Details(int? id)
         {
-            if (Session["Username"] != null)
-            {
+            if (Session["Username"] != null) {
+
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-                if (tblResidentActivity == null)
+                vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
+                if (vselCodepUpdateBrowse == null)
                 {
                     return HttpNotFound();
                 }
-                return View(tblResidentActivity);
+                return View(vselCodepUpdateBrowse);
             }
             return RedirectToAction("Login", "Login");
         }
 
-        // GET: tblResidentActivities/Create
+        // GET: CodepUpdates/Create
         public ActionResult Create()
         {
-            if (Session["Username"] != null) {
+            if (Session["Username"] != null)
+            {
                 var residents = db.vAdmissionBrowses.Select(
                         s => new {
                             Text = s.Resident,
@@ -61,35 +55,36 @@ namespace Icarus.Controllers
                         }
                     ).ToList();
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.generatedBy = Session["Username"];
-                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
                 return View();
             }
             return RedirectToAction("Login", "Login");
+
         }
 
-        // POST: tblResidentActivities/Create
+        // POST: CodepUpdates/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDResidentActivityLog,LogDate,IDAdmission,Position,Activity,PostedBy")] tblResidentActivity tblResidentActivity)
+        public ActionResult Create([Bind(Include = "IDUpdate,DateUpdate,DateLog,UpdateType,UpdatedBy,UpdateSummary,IDAdmission")] tblCodepUpdate tblCodepUpdate)
         {
-            if (Session["Username"] != null) {
+            if (Session["Username"] != null)
+            {
                 if (ModelState.IsValid)
                 {
-                    tblResidentActivity.PostedBy = Session["Username"].ToString();
-                    db.tblResidentActivities.Add(tblResidentActivity);
+                    tblCodepUpdate.UpdatedBy = Session["Username"].ToString();
+                    db.tblCodepUpdates.Add(tblCodepUpdate);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
 
-                return View(tblResidentActivity);
+                return RedirectToAction("Index", "CodepUpdates");
+
             }
             return RedirectToAction("Login", "Login");
         }
 
-        // GET: tblResidentActivities/Edit/5
+        // GET: CodepUpdates/Edit/5
         public ActionResult Edit(int? id)
         {
             if (Session["Username"] != null)
@@ -98,8 +93,8 @@ namespace Icarus.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-                if (tblResidentActivity == null)
+                tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
+                if (codepUpdate == null)
                 {
                     return HttpNotFound();
                 }
@@ -110,62 +105,67 @@ namespace Icarus.Controllers
                         }
                     ).ToList();
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
-                return View(tblResidentActivity);
+                return View(codepUpdate);
             }
             return RedirectToAction("Login", "Login");
+
         }
 
-        // POST: tblResidentActivities/Edit/5
+        // POST: CodepUpdates/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDResidentActivityLog,LogDate,IDAdmission,Position,Activity,PostedBy")] tblResidentActivity tblResidentActivity)
+        public ActionResult Edit([Bind(Include = "IDUpdate,DateUpdate,DateLog,UpdateType,UpdatedBy,UpdateSummary,IDAdmission")] tblCodepUpdate tblCodepUpdate)
         {
-            if (Session["Username"] != null) {
+            if (Session["Username"] != null)
+            {
                 if (ModelState.IsValid)
                 {
-
-                    db.Entry(tblResidentActivity).State = EntityState.Modified;
+                    db.Entry(tblCodepUpdate).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                return View(tblResidentActivity);
+                return RedirectToAction("Index", "CodepUpdates");
             }
             return RedirectToAction("Login", "Login");
+
         }
 
-        // GET: tblResidentActivities/Delete/5
+        // GET: CodepUpdates/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (Session["Username"] != null) {
+            if (Session["Username"] != null)
+            {
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-                if (tblResidentActivity == null)
+                vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
+                if (vselCodepUpdateBrowse == null)
                 {
                     return HttpNotFound();
                 }
-                return View(tblResidentActivity);
+                return View(vselCodepUpdateBrowse);
             }
             return RedirectToAction("Login", "Login");
+
         }
 
-        // POST: tblResidentActivities/Delete/5
+        // POST: CodepUpdates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (Session["Username"] != null) {
-                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-                db.tblResidentActivities.Remove(tblResidentActivity);
+            if (Session["Username"] != null)
+            {
+                vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
+                db.vselCodepUpdateBrowses.Remove(vselCodepUpdateBrowse);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Login", "Login");
+
         }
 
         protected override void Dispose(bool disposing)

@@ -3,11 +3,37 @@
 @{
     ViewBag.Title = "Resident Browse";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.ADG = Session["ADG"];
-    ViewBag.EDG = Session["EDG"];
-    ViewBag.AAG = Session["AAG"];
-    ViewBag.PG = Session["PG"];
 }
+
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Resident Browse';
+        var aag = "@Session["isAAG"]";
+        var edg = "@Session["isEDG"]";
+        var adg = "@Session["isADG"]";
+        var pg = "@Session["isPG"]";
+        if (aag != "Y" && edg != "Y" && adg != "Y") {
+            $(".action").css("display", "none");
+            $(".sexClass").attr("class", "sexClass tableheadright");
+        }
+
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
@@ -88,32 +114,3 @@
         </table>
     </div>
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        document.title = 'Resident Browse';
-        var aag = "@Session["isAAG"]";
-        var edg = "@Session["isEDG"]";
-        var adg = "@Session["isADG"]";
-        var pg = "@Session["isPG"]";
-        if (aag != "Y" && edg != "Y" && adg != "Y") {
-            $(".action").css("display", "none");
-            $(".sexClass").attr("class", "sexClass tableheadright");
-        }
-
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>

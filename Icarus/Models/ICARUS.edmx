@@ -599,6 +599,13 @@ warning 6002: The table/view 'ICARUSDB.dbo.vrptPayment' does not have a primary 
           <Property Name="PostedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6013: The table/view 'ICARUSDB.dbo.vrptPaymentPerMonth' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="vrptPaymentPerMonth">
+          <Property Name="YearPaid" Type="int" />
+          <Property Name="MonthPaid" Type="int" />
+          <Property Name="TotalPaid" Type="money" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ICARUSDB.dbo.vrptUnderChargedExpenses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vrptUnderChargedExpenses">
           <Key>

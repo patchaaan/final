@@ -5,6 +5,100 @@
 }
 
 
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+
+    .assertionTable::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: #dddddd;
+        height: 10px;
+    }
+
+    .assertionTable::-webkit-scrollbar-track {
+        background: #dddddd !important; /* color of the tracking area */
+    }
+
+    .assertionTable::-webkit-scrollbar-thumb {
+        background: #808080 !important; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid grey !important; /* creates padding around scroll thumb */
+    }
+
+    .assertionTable {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#mySearch").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#thisTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $(".markupPercent").on("keyup", function () {
+            var price = $(".price").val();
+            var qty = $(".qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(this).val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markUpValue").val(markUpValue);
+                $(".subTotal").val(subTotal);
+            }
+            else {
+                console.log("Reading")
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
+
+        })
+
+        $(".price").on("keyup", function () {
+            var price = $(this).val();
+            var qty = $(".qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(".markupPercent").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markUpValue").val(markUpValue);
+                $(".subTotal").val(subTotal);
+            }
+            else {
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
+        });
+        $(".qty").on("keyup", function () {
+            var price = $(".price").val();
+            var qty = $(this).val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(".markupPercent").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markUpValue").val(markUpValue);
+                $(".subTotal").val(subTotal);
+            }
+            else {
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
+        });
+    });
+</script>
+
 <div class="col-sm-12 pl-3 pr-3">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         @if (ViewBag.assertionLists == false)
@@ -87,7 +181,7 @@
                             <td>@item.Qty</td>
                             <td>@item.Price</td>
                             <td>@item.Markup</td>
-                            <td>@item.MarkupValue</td>                            
+                            <td>@item.MarkupValue</td>
                             <td>@item.SubTotal</td>
                             <td>@item.SubTotal</td>
                             <td>@item.Notes</td>
@@ -176,96 +270,4 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-    .assertionTable::-webkit-scrollbar {
-        width: 12px; /* width of the entire scrollbar */
-        background-color: #dddddd;
-        height: 10px;
-    }
-
-    .assertionTable::-webkit-scrollbar-track {
-        background: #dddddd !important; /* color of the tracking area */
-    }
-
-    .assertionTable::-webkit-scrollbar-thumb {
-        background: #808080 !important; /* color of the scroll thumb */
-        border-radius: 20px; /* roundness of the scroll thumb */
-        border: 3px solid grey !important; /* creates padding around scroll thumb */
-    }
-    .assertionTable {
-        display:block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    
-</style>
-<script>
-    $(document).ready(function () {
-        $("#mySearch").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#thisTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-
-        $(".markupPercent").on("keyup", function () {
-            var price = $(".price").val();
-            var qty = $(".qty").val();
-            var totalPrice = price * qty;
-            var markUpPercent = $(this).val();
-            if (markUpPercent != 0) {
-                var markUpValue = ((totalPrice * markUpPercent) / 100);
-                var subTotal = totalPrice + markUpValue;
-                $(".markUpValue").val(markUpValue);
-                $(".subTotal").val(subTotal);
-            }
-            else {
-                console.log("Reading")
-                $(".markUpValue").val(0);
-                $(".subTotal").val(totalPrice);
-            }
-            
-        })
-
-        $(".price").on("keyup", function () {
-            var price = $(this).val();
-            var qty = $(".qty").val();
-            var totalPrice = price * qty;
-            var markUpPercent = $(".markupPercent").val();
-            if (markUpPercent != 0) {
-                var markUpValue = ((totalPrice * markUpPercent) / 100);
-                var subTotal = totalPrice + markUpValue;
-                $(".markUpValue").val(markUpValue);
-                $(".subTotal").val(subTotal);
-            }
-            else {
-                $(".markUpValue").val(0);
-                $(".subTotal").val(totalPrice);
-            }
-        });
-        $(".qty").on("keyup", function () {
-            var price = $(".price").val();
-            var qty = $(this).val();
-            var totalPrice = price * qty;
-            var markUpPercent = $(".markupPercent").val();
-            if (markUpPercent != 0) {
-                var markUpValue = ((totalPrice * markUpPercent) / 100);
-                var subTotal = totalPrice + markUpValue;
-                $(".markUpValue").val(markUpValue);
-                $(".subTotal").val(subTotal);
-            }
-            else {
-                $(".markUpValue").val(0);
-                $(".subTotal").val(totalPrice);
-            }
-        });
-    });
-</script>
 
