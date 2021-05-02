@@ -55,7 +55,10 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                return View();
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+                    return View();
+                }
+                return RedirectToAction("Index", "Residents");
             }
             else
             {
@@ -94,16 +97,20 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblResident tblResident = db.tblResidents.Find(id);
+                    if (tblResident == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblResident);
                 }
-                tblResident tblResident = db.tblResidents.Find(id);
-                if (tblResident == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblResident);
+                return RedirectToAction("Index", "Residents");
             }
             else
             {

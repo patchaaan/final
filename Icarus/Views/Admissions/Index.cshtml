@@ -5,6 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+
+    $(document).ready(function () {
+        document.title = 'Admission Browse';
+
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
@@ -79,87 +107,80 @@
                 @foreach (var item in Model)
                 {
                     var id = item.IDAdmission;
-                <tr>
-                    @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                    {
+                    <tr>
                         <td scope="row">
-                            <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                            <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" value="@item.IDAdmission" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
                         </td>
-                    }
-                    else
-                    {
-                        <td scope="row">
-                            <span ondblclick="window.location='/Admissions/AdmissionDetails/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                        <td>
+                            @Html.ActionLink(
+                                linkText: item.Resident.ToString(),
+                                actionName: "Details",
+                                controllerName: "Residents",
+                                routeValues: new { id = item.IDResident },
+                                htmlAttributes: null
+                            )
+
                         </td>
-                    }
-
-                    <td>
-                        @Html.ActionLink(
-                            linkText: item.Resident.ToString(),
-                            actionName: "Details",
-                            controllerName: "Residents",
-                            routeValues: new { id = item.IDResident },
-                            htmlAttributes: null
-                        )
-
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phase)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.rank)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AdmissionDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TerminationDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TreatmentFee)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalBilling)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalPaid)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OverallBalance)
-                    </td>
-                    @if (Session["isADG"].ToString() == "Y") {
-                        <td style="display:flex;">
-                            <a class="btn btn-danger btn-sm ml-1" href="/Admissions/Delete/@item.IDAdmission">Delete</a>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phase)
                         </td>
-                    }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rank)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AdmissionDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TerminationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TreatmentFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalBilling)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalPaid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OverallBalance)
+                        </td>
+                        @if (Session["isADG"].ToString() == "Y")
+                        {
+                            <td style="display:flex;">
+                                <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDAdmission)">Delete</button>
+                            </td>
+                        }
 
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Admission?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "Residents", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        document.title = 'Admission Browse';
-
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>

@@ -14,6 +14,11 @@
     }
 </style>
 <script>
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+
     $(document).ready(function () {
         document.title = 'Codep Updates Browse';
 
@@ -43,83 +48,81 @@
         <table class="table table-striped table-hover table-borderless">
             <thead class="head" style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th scope="col" class="tableheadleft">ID</th>
+                    <th scope="col" class="tableheadleft" width="5%">ID</th>
                     <th scope="col" width="13%">Date Update</th>
                     <th scope="col" width="13%">Date Log</th>
-                    <th scope="col">UpdateType</th>
-                    <th scope="col">UpdatedBy</th>
+                    <th scope="col" width="8%">Update Type</th>
+                    <th scope="col" width="8%">Updated By</th>
                     <th scope="col">Update Summary</th>
-                    <th scope="col" width="5%">IDAdmission</th>
-                    <th scope="col" width="15%">Resident</th>
-                    <th scope="col" class="tableheadright text-center" width="10%">Action</th>
+                    <th scope="col" width="10%">ID Admission</th>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y")
+                    {
+                        <th scope="col" width="15%">Resident</th>
+                        <th scope="col" class="tableheadright text-center" width="10%">Action</th>
+                    }
+                    else
+                    {
+                        <th scope="col" class="tableheadright" width="15%">Resident</th>
+                    }
                 </tr>
             </thead>
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td scope="row" style="text-decoration:underline;">
-                            @Html.ActionLink(
-                                linkText: item.IDUpdate.ToString(),
-                                actionName: "Details",
-                                controllerName: "CodepUpdates",
-                                routeValues: new { id = item.IDUpdate },
-                                htmlAttributes: null
-                            )
-                        </td>
-                        <td>@item.DateUpdate</td>
-                        <td>@item.DateLog</td>
-                        <td>@item.UpdateType</td>
-                        <td>@item.UpdatedBy</td>
-                        <td>@item.UpdateSummary</td>
-                        <td>@item.IDAdmission</td>
-                        <td>@item.Resident</td>
+                <tr>
+                    <td scope="row" style="text-decoration:underline;">
+                        @Html.ActionLink(
+                            linkText: item.IDUpdate.ToString(),
+                            actionName: "Details",
+                            controllerName: "CodepUpdates",
+                            routeValues: new { id = item.IDUpdate },
+                            htmlAttributes: null
+                        )
+                    </td>
+                    <td>@item.DateUpdate</td>
+                    <td>@item.DateLog</td>
+                    <td>@item.UpdateType</td>
+                    <td>@item.UpdatedBy</td>
+                    <td>@item.UpdateSummary</td>
+                    <td>@item.IDAdmission</td>
+                    <td>@item.Resident</td>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y")
+                    {
                         <td>
                             <center>
                                 <a class="btn btn-sm btn-warning" href="/CodepUpdates/Edit/@item.IDUpdate">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="/CodepUpdates/Delete/@item.IDUpdate">Delete</a>
+                                @if (Session["isADG"].ToString() == "Y") {
+                                    <button class="btn btn-sm btn-danger" type="button" onclick="Delete(@item.IDUpdate)">Delete</button>
+                                }
                             </center>
                         </td>
+                    }
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Codep Update?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "CodepUpdates", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-@*<h2>Index</h2>
-
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>ID</th>
-            <th>Date Update</th>
-            <th>Date Log</th>
-            <th>Update Type</th>
-            <th>Updated By</th>
-            <th>Update Summary</th>
-            <th>ID Admission</th>
-            <th>Resident</th>
-            <th>Action</th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.IDUpdate</td>
-                <td>@item.DateUpdate</td>
-                <td>@item.DateLog</td>
-                <td>@item.UpdateType</td>
-                <td>@item.UpdatedBy</td>
-                <td>@item.UpdateSummary</td>
-                <td>@item.IDAdmission</td>
-                <td>@item.Resident</td>
-                <td>
-
-                </td>
-            </tr>
-        }
-
-    </table>*@

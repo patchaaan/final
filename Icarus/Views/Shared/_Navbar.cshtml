@@ -6,8 +6,14 @@
         </button>
 
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav pull-right" style="margin-right: 5%;">
+                @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Payments">Payments</a>
+                    </li>
+                }
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Admission
@@ -38,12 +44,6 @@
                         }
                     </div>
                 </li>
-                @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Payments">Payments</a>
-                    </li>
-                }
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Reports

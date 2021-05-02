@@ -5,6 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+    $(document).ready(function () {
+        document.title = 'Inquiry Logs';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
@@ -51,80 +77,83 @@
         <tbody id="myTable">
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IDInquiry)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InquiryDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Codep)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContactNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Prospect)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Details)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FollowupOn)
-                </td>
-                <td>
-                    @if (item.IDInquiryStatus == 1)
-                    {
-                        <p>Open</p>
-                    }
-                    else if (item.IDInquiryStatus == 2)
-                    {
-                        <p>For Followup</p>
-
-                    }
-                    else if (item.IDInquiryStatus == 3)
-                    {
-                        <p>Closed - Converted</p>
-
-                    }
-                    else if (item.IDInquiryStatus == 4)
-                    {
-                        <p>Closed - Did Not Convert</p>
-
-                    }
-                </td>
-                <td>
-                    <center>
-                        <a class="btn btn-sm btn-warning" href="/Inquiries/Edit/@item.IDInquiry">Edit</a>
-                        @if (Session["isADG"].ToString() == "Y")
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IDInquiry)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InquiryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Codep)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prospect)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FollowupOn)
+                    </td>
+                    <td>
+                        @if (item.IDInquiryStatus == 1)
                         {
-                            <a class="btn btn-sm btn-danger" href="/Inquiries/Delete/@item.IDInquiry">Delete</a>
+                            <p>Open</p>
                         }
-                    </center>
-                </td>
-            </tr>
+                        else if (item.IDInquiryStatus == 2)
+                        {
+                            <p>For Followup</p>
+
+                        }
+                        else if (item.IDInquiryStatus == 3)
+                        {
+                            <p>Closed - Converted</p>
+
+                        }
+                        else if (item.IDInquiryStatus == 4)
+                        {
+                            <p>Closed - Did Not Convert</p>
+
+                        }
+                    </td>
+                    <td>
+                        <center>
+                            <a class="btn btn-sm btn-warning" href="/Inquiries/Edit/@item.IDInquiry">Edit</a>
+                            @if (Session["isADG"].ToString() == "Y")
+                            {
+                                <button type="button" class="btn btn-sm btn-danger" value="@item.IDInquiry" onclick="Delete(@item.IDInquiry)">Delete</button>
+                            }
+                        </center>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Resident?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "Inquiries", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        document.title = 'Inquiry Logs';
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>

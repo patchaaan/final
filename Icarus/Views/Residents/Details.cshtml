@@ -167,8 +167,10 @@
             </div>
             <div class="row">
                 <div class="col mt-2 text-center">
-                    <a class="btn btn-sm btn-warning" href="javascript:history.back()">Go back to lists</a>
-                    <a class="btn btn-sm btn-primary" href="/Residents/Edit/@Model.IDResident">Edit</a>
+                    <a class="btn btn-sm btn-default" href="javascript:history.back()">Go back to lists</a>
+                    @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+                        <a class="btn btn-sm btn-primary" href="/Residents/Edit/@Model.IDResident">Edit</a>
+                    }
                 </div>
             </div>
         </div>

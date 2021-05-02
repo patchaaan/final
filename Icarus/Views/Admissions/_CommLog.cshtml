@@ -15,13 +15,16 @@
         {
             <input class="form-control col-sm-4" id="commLogInput" type="search" placeholder="Search" aria-label="Search">
         }
-        <div>
-            <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#modalCommLog">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add CommLog</span>
-            </button>
+        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#modalCommLog">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add CommLog</span>
+                </button>
+            </div>
+        }
         </div>
-    </div>
     <hr>
     @if (ViewBag.commLogCheck == false)
     {

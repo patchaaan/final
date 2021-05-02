@@ -15,13 +15,16 @@
         {
             <input class="form-control col-sm-4" id="vitalInput" type="search" placeholder="Search" aria-label="Search">
         }
-        <div>
-            <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#modalVitalSigns">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Vital Signs</span>
-            </button>
+        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#modalVitalSigns">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Vital Signs</span>
+                </button>
+            </div>
+        }
         </div>
-    </div>
     <hr>
     @if ( ViewBag.vitalSignsLists == false)
     {

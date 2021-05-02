@@ -5,6 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+
+    $(document).ready(function () {
+        document.title = 'Requests Browse';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
@@ -74,42 +100,46 @@
                         @Html.DisplayFor(modelItem => item.DateAcc)
                     </td>
                     <td>
-                        @foreach (var status in ViewBag.requestStatus) {
-                            if (status.IDRequestStatus == item.IDRequestStatus) {
+                        @foreach (var status in ViewBag.requestStatus)
+                        {
+                            if (status.IDRequestStatus == item.IDRequestStatus)
+                            {
                                 @status.Status
                             }
                         }
-                        @*@Html.DisplayFor(modelItem => item.IDRequestStatus)*@
                     </td>
                     <td style="display:flex;">
                         <a class="btn btn-warning btn-sm mr-1" href="/Requests/Edit/@item.IDRequest">Edit</a>
                         @if (Session["isADG"].ToString() == "Y")
                         {
-                            <a class="btn btn-danger btn-sm ml-1" href="/Requests/Delete/@item.IDRequest">Delete</a>
+                            <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDRequest)">Delete</button>
                         }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Request?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "Requests", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        document.title = 'Requests Browse';
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>

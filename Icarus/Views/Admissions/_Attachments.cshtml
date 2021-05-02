@@ -15,13 +15,16 @@
         {
             <input class="form-control col-sm-4" id="myInput" type="search" style="visibility:hidden;" placeholder="Search" aria-label="Search">
         }
-        <div>
-            <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#attachmentModal">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Attachments</span>
-            </button>
+        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#attachmentModal">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Attachments</span>
+                </button>
+            </div>
+        }
         </div>
-    </div>
     <hr>
     @if (ViewBag.attachmentList == false)
     {

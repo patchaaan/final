@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.toDelete = 0;
+    var models = new Icarus.Models.tblVendor();
 }
 
 <style>
@@ -15,9 +15,21 @@
         border-top-right-radius: 15px !important;
     }
 </style>
+
 <script>
+
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+
+    function Create() {
+        $("#createModal").modal().show();
+    }
+
     $(document).ready(function () {
         document.title = "Vendors Browse";
+
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#myTable tr").filter(function () {
@@ -25,11 +37,6 @@
             });
         });
 
-        $(".delete").on('click', function () {
-            console.log(document.getElementById("delete").value);
-            $("#id").val(document.getElementById("delete").value);
-            $('#myModal').modal().show();
-        });
     });
 </script>
 
@@ -63,10 +70,10 @@
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.ContactPerson)
                     </th>
-                    <th scope="col">
+                    <th scope="col" width="8%">
                         @Html.DisplayNameFor(model => model.Email)
                     </th>
-                    <th scope="col">
+                    <th scope="col" width="10%">
                         @Html.DisplayNameFor(model => model.Notes)
                     </th>
                     <th scope="col">
@@ -74,13 +81,13 @@
                     </th>
                     @if (Session["isAAG"].ToString() != "Y" && Session["isADG"].ToString() != "Y")
                     {
-                        <th class="tableheadright" scope="col">
+                        <th class="tableheadright" scope="col" width="10%">
                             @Html.DisplayNameFor(model => model.TIN)
                         </th>
                     }
                     else
                     {
-                        <th scope="col">
+                        <th scope="col" width="10%">
                             @Html.DisplayNameFor(model => model.TIN)
                         </th>
                         <th scope="col" class="tableheadright">
@@ -92,8 +99,8 @@
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
+                    var nextActionParam = @Html.Raw(Json.Encode(Model));
                     <tr>
-
                         <td>
                             @Html.DisplayFor(modelItem => item.IDVendor)
                         </td>
@@ -124,21 +131,17 @@
                                 <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
                                 @if (Session["isADG"].ToString() == "Y")
                                 {
-                                    <button class="btn btn-danger btn-sm ml-1 delete" id="delete" value="@item.IDVendor">Delete</button>
+                                    <button class="btn btn-danger btn-sm ml-1 delete" id="delete" value="@item.IDVendor" onclick="Delete(@item.IDVendor)">Delete</button>
                                 }
                             </td>
                         }
-
+                                                                    
                     </tr>
                 }
             </tbody>
         </table>
     </div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
-        Delete
-    </button>
-
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-sm" role="document">
@@ -162,4 +165,68 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="gridSystemModalLabel">Create Vendor</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                @using (Html.BeginForm("Create", "Vendors", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @*@Html.HiddenFor(model => models.IDVendor)*@
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label><b>Vendor</b></label>
+                                    @Html.EditorFor(model => models.Vendor, new { htmlAttributes = new { @class = "form-control vendor" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label><b>Contact Person</b></label>
+                                    @Html.EditorFor(model => models.ContactPerson, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label><b>Contact Number</b></label>
+                                    @Html.EditorFor(model => models.ContactNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label><b>Email</b></label>
+                                    @Html.EditorFor(model => models.Email, new { htmlAttributes = new { @class = "form-control", Type="email" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => models.TIN)
+                                    @Html.EditorFor(model => models.TIN, new { htmlAttributes = new { @type = "number", @class = "form-control price" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label><b>Is Active</b></label>
+                                    @Html.DropDownListFor(model => models.IsActive,
+                                (
+                                    new[] { new SelectListItem { Text = "N", Value = "N" },
+                                    new SelectListItem { Text = "Y", Value = "Y" }
+                                }),
+                                new { @class = "form-control stopTF" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => models.Notes)
+                                    @Html.TextAreaFor(model => models.Notes, new { @class = "form-control", @rows = 5 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+                }
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>

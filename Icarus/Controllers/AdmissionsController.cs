@@ -279,15 +279,19 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                var residents = db.tblResidents.Select(
-                    s => new {
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    var residents = db.tblResidents.Select(
+                    s => new
+                    {
                         Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
                         Value = s.IDResident
-                    }
-                ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
-                return View();
+                    }).ToList();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
+                    return View();
+                }
+                return RedirectToAction("Index","Admissions");
             }
             else {
                 return RedirectToAction("Login", "Login");
@@ -377,26 +381,26 @@ namespace Icarus.Controllers
 
         }
         // GET: Admissions/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblAdmission tbladmission = db.tblAdmissions.Find(id);
-                if (tbladmission == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tbladmission);
-            }
-            else {
-                return RedirectToAction("Login", "Login");
-            }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null)
+        //    {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblAdmission tbladmission = db.tblAdmissions.Find(id);
+        //        if (tbladmission == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tbladmission);
+        //    }
+        //    else {
+        //        return RedirectToAction("Login", "Login");
+        //    }
             
-        }
+        //}
 
         // POST: Admissions/Delete/5
         [HttpPost, ActionName("Delete")]

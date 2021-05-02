@@ -75,6 +75,7 @@
         var tableHeader = "<thead style='background-color: #6C7AE0; color: white;'><tr><th class='tableheadleft'>ID CTC</th><th>Posted Date</th><th>Description</th><th>Category</th><th>Qty</th><th>Price</th><th>MarkUp%</th><th>MarkUpValue</th><th>MarkupPrice</th><th>Subtotal</th><th class='tableheadright'>Notes</th></tr></thead><tbody></tbody>";
         var tableEnd = "</table>";
         var assertList = [];
+        var totalAmount = 0;
 
         $(".markup").on("keyup", function () {
             var price = $(".price").val();
@@ -156,18 +157,37 @@
             $(".assertionnote").val('');
         });
 
+        $(".vatexempt").on('keypress', function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var vatexempt = $(this).val();
+                var total = Number(totalAmount) + Number(vatexempt);
+                $(".amount").val(total);
+                console.log('READING AMOUNT', total)
+            }
+        });
+
         $(".amount").on('keyup', function () {
-            var amount = $(this).val();
-            var vatsales = amount - (amount * .12);
-            var vatamount = amount * .12;
-            if (vatsales % 1 != 0) {
-                vatsales = vatsales.toFixed(2);
+            totalAmount = $(this).val();
+        });
+
+        $(".amount").on('keypress', function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var amount = $(this).val();
+                var vatsales = amount - (amount * .12);
+                var vatamount = amount * .12;
+                if (vatsales % 1 != 0) {
+                    vatsales = vatsales.toFixed(2);
+                }
+                if (vatamount % 1 != 0) {
+                    vatamount = vatamount.toFixed(2);
+                }
+                $(".vatsales").val(vatsales);
+                $(".vatamount").val(vatamount);
+                totalAmount = amount;
+                $(this).val(Number(amount)+Number($(".vatexempt").val()));
             }
-            if (vatamount % 1 != 0) {
-                vatamount = vatamount.toFixed(2);
-            }
-            $(".vatsales").val(vatsales);
-            $(".vatamount").val(vatamount);
         });
 
         $(".addAssertion").on('click', function () {
@@ -338,7 +358,7 @@
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Amount</b></label>
-                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @type = "number", @class = "form-control amount", @Value="0.00" } })
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @type = "number", @class = "form-control amount", @Value="0" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>VAT Sales</b></label>
@@ -353,7 +373,7 @@
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>VAT Exempt</b></label>
-                    @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @type = "number", @class = "form-control vatexempt", @Value="0.00" } })
+                    @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @type = "number", @class = "form-control vatexempt", @Value="0" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>TIN</b></label>

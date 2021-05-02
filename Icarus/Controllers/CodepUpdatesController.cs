@@ -48,14 +48,18 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                var residents = db.vAdmissionBrowses.Select(
+                if(Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
+                {
+                    var residents = db.vAdmissionBrowses.Select(
                         s => new {
                             Text = s.Resident,
                             Value = s.IDAdmission
                         }
                     ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                return View();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    return View();
+                }
+                return RedirectToAction("Index","CodepUpdates");
             }
             return RedirectToAction("Login", "Login");
 
@@ -89,23 +93,28 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
+                    if (codepUpdate == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    var residents = db.vAdmissionBrowses.Select(
+                            s => new
+                            {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    return View(codepUpdate);
                 }
-                tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
-                if (codepUpdate == null)
-                {
-                    return HttpNotFound();
-                }
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                return View(codepUpdate);
+                return RedirectToAction("Index","CodepUpdates");
             }
             return RedirectToAction("Login", "Login");
 
@@ -133,24 +142,24 @@ namespace Icarus.Controllers
         }
 
         // GET: CodepUpdates/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
-                if (vselCodepUpdateBrowse == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(vselCodepUpdateBrowse);
-            }
-            return RedirectToAction("Login", "Login");
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null)
+        //    {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
+        //        if (vselCodepUpdateBrowse == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(vselCodepUpdateBrowse);
+        //    }
+        //    return RedirectToAction("Login", "Login");
 
-        }
+        //}
 
         // POST: CodepUpdates/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -159,8 +168,8 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
-                db.vselCodepUpdateBrowses.Remove(vselCodepUpdateBrowse);
+                tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
+                db.tblCodepUpdates.Remove(codepUpdate);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

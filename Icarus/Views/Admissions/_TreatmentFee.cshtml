@@ -7,19 +7,24 @@
 
 <div class="col-sm-12 pl-0 pr-0">
     <div class="d-flex mb-2 mt-2 justify-content-between">
-        @if (ViewBag.admissionBillingLists == false) {
+        @if (ViewBag.admissionBillingLists == false)
+        {
             <p>No Data to search.</p>
         }
-        else {
+        else
+        {
             <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
         }
-        <div>
-            <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#treatmentfeeModal">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Admission Bill</span>
-            </button>
+        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        {
+            <div>
+                <button class="btn" style="background-color:#4E58A2;color:white;" data-toggle="modal" data-target="#treatmentfeeModal">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <span>&nbsp;Add Admission Bill</span>
+                </button>
+            </div>
+        }
         </div>
-    </div>
     <hr>
     @if (ViewBag.admissionBillingLists == false)
     {

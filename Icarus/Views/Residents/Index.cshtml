@@ -15,6 +15,11 @@
     }
 </style>
 <script>
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+
     $(document).ready(function () {
         document.title = 'Resident Browse';
         var aag = "@Session["isAAG"]";
@@ -67,50 +72,72 @@
                 @foreach (var item in Model)
                 {
                     var id = item.IDResident;
-                <tr>
-                    <td scope="row">
-                        @Html.ActionLink(
-                            linkText: id.ToString(),
-                            actionName: "Details",
-                            controllerName: "Residents",
-                            routeValues: new { id = id },
-                            htmlAttributes: null
-                        )
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Lastname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Firstname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Middlename)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Birthdate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Age)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sex)
-                    </td>
-                    @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                    {
-                        <td>
-                            <center>
-                                <a class="btn btn-sm btn-warning" href="/Residents/Edit/@item.IDResident">Edit</a>
-                                @if (Session["isADG"].ToString() == "Y")
-                                {
-                                    <a class="btn btn-sm btn-danger" href="/Residents/Delete/@item.IDResident">Delete</a>
-                                }
-                            </center>
+                    <tr>
+                        <td scope="row">
+                            @Html.ActionLink(
+                                linkText: id.ToString(),
+                                actionName: "Details",
+                                controllerName: "Residents",
+                                routeValues: new { id = id },
+                                htmlAttributes: null
+                            )
                         </td>
-                    }
-
-                </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lastname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Firstname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Middlename)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Birthdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Age)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sex)
+                        </td>
+                        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                        {
+                            <td>
+                                <center>
+                                    <a class="btn btn-sm btn-warning" href="/Residents/Edit/@item.IDResident">Edit</a>
+                                    @if (Session["isADG"].ToString() == "Y")
+                                    {
+                                        <button class="btn btn-sm btn-danger" type="button" value="@item.IDResident" onclick="Delete(@item.IDResident)">Delete</button>
+                                    }
+                                </center>
+                            </td>
+                        }
+                    </tr>
                 }
             </tbody>
         </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Resident?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "Residents", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>

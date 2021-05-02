@@ -214,7 +214,10 @@
         <div class="form-group">
             <div class="row pull-right mb-3">
                 <a class="btn btn-sm btn-warning mr-2" href="/Admissions">Go back</a>
-                <input class="btn btn-sm btn-primary mr-4" type="submit" value="Update" />
+                @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    <input class="btn btn-sm btn-primary mr-4" type="submit" value="Update" />
+                }
             </div>
         </div>
 

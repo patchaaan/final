@@ -5,6 +5,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    function Delete(id) {
+        $("#id").val(id);
+        $('#myModal').modal().show();
+    }
+
+    $(document).ready(function () {
+        document.title = 'Resident Activity';
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
@@ -49,8 +74,10 @@
                             @Html.DisplayFor(modelItem => item.LogDate)
                         </td>
                         <td>
-                            @foreach (var res in ViewBag.residents) {
-                                if (item.IDAdmission == res.IDAdmission) {
+                            @foreach (var res in ViewBag.residents)
+                            {
+                                if (item.IDAdmission == res.IDAdmission)
+                                {
                                     <p>@res.Resident</p>
                                 }
                             }
@@ -64,42 +91,46 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.PostedBy)
                         </td>
-                        @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y") {
+                        @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
+                        {
                             <td>
                                 <center>
                                     <a class="btn btn-sm btn-warning" href="/ResidentActivities/Edit/@item.IDResidentActivityLog">Edit</a>
                                     @if (Session["isADG"].ToString() == "Y")
                                     {
-                                        <a class="btn btn-sm btn-danger" href="/ResidentActivities/Delete/@item.IDResidentActivityLog">Delete</a>
+                                        <button class="btn btn-sm btn-danger" type="button" onclick="Delete(@item.IDResidentActivityLog)">Delete</button>
                                     }
                                 </center>
 
                             </td>
                         }
-                        
+
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Resident Activity?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("Delete", "ResidentActivities", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        document.title = 'Resident Activity';
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>
