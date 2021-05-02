@@ -56,7 +56,11 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                return View();
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    return View();
+                }
+                return RedirectToAction("Index","Staffs");
             }
             else
             {
@@ -95,16 +99,20 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblStaff tblStaff = db.tblStaffs.Find(id);
+                    if (tblStaff == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblStaff);
                 }
-                tblStaff tblStaff = db.tblStaffs.Find(id);
-                if (tblStaff == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblStaff);
+                return RedirectToAction("Index","Staffs");
             }
             else
             {
@@ -138,27 +146,27 @@ namespace Icarus.Controllers
         }
 
         // GET: Staffs/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblStaff tblStaff = db.tblStaffs.Find(id);
-                if (tblStaff == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblStaff);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null)
+        //    {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblStaff tblStaff = db.tblStaffs.Find(id);
+        //        if (tblStaff == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblStaff);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Login");
+        //    }
             
-        }
+        //}
 
         // POST: Staffs/Delete/5
         [HttpPost, ActionName("Delete")]

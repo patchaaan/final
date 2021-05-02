@@ -53,7 +53,11 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                return View();
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    return View();
+                }
+                return RedirectToAction("Index","AssertionCategories");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -82,16 +86,20 @@ namespace Icarus.Controllers
         public ActionResult Edit(int? id)
         {
             if (Session["Username"] != null) {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                    if (tblAssertionCategory == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblAssertionCategory);
                 }
-                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-                if (tblAssertionCategory == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblAssertionCategory);
+                return RedirectToAction("Index","AssertionCategories");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -116,22 +124,22 @@ namespace Icarus.Controllers
         }
 
         // GET: AssertionCategories/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-                if (tblAssertionCategory == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblAssertionCategory);
-            }
-            return RedirectToAction("Login", "Login");
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null) {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+        //        if (tblAssertionCategory == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblAssertionCategory);
+        //    }
+        //    return RedirectToAction("Login", "Login");
+        //}
 
         // POST: AssertionCategories/Delete/5
         [HttpPost, ActionName("Delete")]

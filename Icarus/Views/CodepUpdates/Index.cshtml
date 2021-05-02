@@ -48,13 +48,13 @@
         <table class="table table-striped table-hover table-borderless">
             <thead class="head" style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th scope="col" class="tableheadleft" width="5%">ID</th>
-                    <th scope="col" width="13%">Date Update</th>
+                    @*<th scope="col" class="tableheadleft" width="5%">ID</th>*@
+                    <th scope="col"class="tableheadleft" width="13%">Date Update</th>
                     <th scope="col" width="13%">Date Log</th>
                     <th scope="col" width="8%">Update Type</th>
                     <th scope="col" width="8%">Updated By</th>
                     <th scope="col">Update Summary</th>
-                    <th scope="col" width="10%">ID Admission</th>
+                    @*<th scope="col" width="10%">ID Admission</th>*@
                     @if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y")
                     {
                         <th scope="col" width="15%">Resident</th>
@@ -70,7 +70,7 @@
                 @foreach (var item in Model)
                 {
                 <tr>
-                    <td scope="row" style="text-decoration:underline;">
+                    @*<td scope="row" style="text-decoration:underline;">
                         @Html.ActionLink(
                             linkText: item.IDUpdate.ToString(),
                             actionName: "Details",
@@ -78,13 +78,13 @@
                             routeValues: new { id = item.IDUpdate },
                             htmlAttributes: null
                         )
-                    </td>
+                    </td>*@
                     <td>@item.DateUpdate</td>
                     <td>@item.DateLog</td>
                     <td>@item.UpdateType</td>
                     <td>@item.UpdatedBy</td>
                     <td>@item.UpdateSummary</td>
-                    <td>@item.IDAdmission</td>
+                    @*<td>@item.IDAdmission</td>*@
                     <td>@item.Resident</td>
                     @if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y")
                     {

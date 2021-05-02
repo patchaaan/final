@@ -19,7 +19,11 @@ namespace Icarus.Controllers
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
-                return View(db.tblExpensesChartOfAccounts.ToList());
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    return View(db.tblExpensesChartOfAccounts.ToList());
+                }
+                return RedirectToAction("Index","Residents");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -47,7 +51,11 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                return View();
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    return View();
+                }
+                return RedirectToAction("Index", "Residents");
             }
             return RedirectToAction("Login", "Login");
 
@@ -101,34 +109,38 @@ namespace Icarus.Controllers
         public ActionResult Edit([Bind(Include = "IDAccount,AccountCode,Account")] tblExpensesChartOfAccount tblExpensesChartOfAccount)
         {
             if (Session["Username"] != null) {
-                if (ModelState.IsValid)
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    db.Entry(tblExpensesChartOfAccount).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(tblExpensesChartOfAccount).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(tblExpensesChartOfAccount);
                 }
-                return View(tblExpensesChartOfAccount);
+                return RedirectToAction("Index", "Residents");
             }
             return RedirectToAction("Login", "Login");
         }
 
         // GET: ExpensesChartOfAccounts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
-                if (tblExpensesChartOfAccount == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblExpensesChartOfAccount);
-            }
-            return RedirectToAction("Login", "Login");
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null) {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
+        //        if (tblExpensesChartOfAccount == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblExpensesChartOfAccount);
+        //    }
+        //    return RedirectToAction("Login", "Login");
+        //}
 
         // POST: ExpensesChartOfAccounts/Delete/5
         [HttpPost, ActionName("Delete")]

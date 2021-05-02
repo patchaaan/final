@@ -33,12 +33,12 @@ namespace Icarus.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
-                if (vselCodepUpdateBrowse == null)
+                tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
+                if (codepUpdate == null)
                 {
                     return HttpNotFound();
                 }
-                return View(vselCodepUpdateBrowse);
+                return View(codepUpdate);
             }
             return RedirectToAction("Login", "Login");
         }

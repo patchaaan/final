@@ -47,7 +47,11 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                return View();
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    return View();
+                }
+                return RedirectToAction("Index", "Vendors");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -75,16 +79,20 @@ namespace Icarus.Controllers
         public ActionResult Edit(int? id)
         {
             if (Session["Username"] != null) {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblVendor tblVendor = db.tblVendors.Find(id);
+                    if (tblVendor == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblVendor);
                 }
-                tblVendor tblVendor = db.tblVendors.Find(id);
-                if (tblVendor == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblVendor);
+                return RedirectToAction("Index", "Vendors");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -109,22 +117,22 @@ namespace Icarus.Controllers
         }
 
         // GET: tblVendors/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblVendor tblVendor = db.tblVendors.Find(id);
-                if (tblVendor == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblVendor);
-            }
-            return RedirectToAction("Login", "Login");
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null) {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblVendor tblVendor = db.tblVendors.Find(id);
+        //        if (tblVendor == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblVendor);
+        //    }
+        //    return RedirectToAction("Login", "Login");
+        //}
 
         // POST: tblVendors/Delete/5
         [HttpPost, ActionName("Delete")]

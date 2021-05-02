@@ -21,18 +21,20 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (start != null && end != null)
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    Response.Write("<script>console.log('Reading')</script>");
-                    //List<tblExpens> tblexp = new List<tblExpens>();
-                    //tblexp = db.tblExpenses.ToList().OrderByDescending(p => p.IDExpense).ToList();
-                    return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderBy(y => y.ExpenseDate).ToList());
+                    if (start != null && end != null)
+                    {
+                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderBy(y => y.ExpenseDate).ToList());
+                    }
+                    else
+                    {
+                        var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+                        var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                        return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
+                    }
                 }
-                else {
-                    var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                    var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
-                    return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
-                }
+                return RedirectToAction("Index","Residents");
             }
             else
             {

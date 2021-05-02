@@ -20,7 +20,10 @@ namespace Icarus.Controllers
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
-                return View(db.vPaymentBrowses.ToList().OrderByDescending(p => p.IDPayment).ToList());
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+                    return View(db.vPaymentBrowses.ToList().OrderByDescending(p => p.IDPayment).ToList());
+                }
+                return RedirectToAction("Index","Residents");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -53,15 +56,20 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    var residents = db.vAdmissionBrowses.Select(
+                        s => new
+                        {
                             Text = s.Resident,
                             Value = s.IDAdmission
                         }
                     ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
-                return View();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+                    return View();
+                }
+                return RedirectToAction("Index", "Residents");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -93,21 +101,25 @@ namespace Icarus.Controllers
         public ActionResult Edit(int? id)
         {
             if (Session["Username"] != null) {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblPayment tblPayment = db.tblPayments.Find(id);
-                tblAdmission admission = db.tblAdmissions.Find(tblPayment.IDAdmission);
-                tblResident resident = db.tblResidents.Find(admission.IDResident);
-                ViewBag.residentName = resident.Firstname + ' ' + resident.Nickname + ' ' + resident.Lastname;
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblPayment tblPayment = db.tblPayments.Find(id);
+                    tblAdmission admission = db.tblAdmissions.Find(tblPayment.IDAdmission);
+                    tblResident resident = db.tblResidents.Find(admission.IDResident);
+                    ViewBag.residentName = resident.Firstname + ' ' + resident.Nickname + ' ' + resident.Lastname;
 
-                ViewBag.paymentMethod = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
-                if (tblPayment == null)
-                {
-                    return HttpNotFound();
+                    ViewBag.paymentMethod = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+                    if (tblPayment == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblPayment);
                 }
-                return View(tblPayment);
+                return RedirectToAction("Index","Residents");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -132,22 +144,22 @@ namespace Icarus.Controllers
         }
 
         // GET: Payments/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblPayment tblPayment = db.tblPayments.Find(id);
-                if (tblPayment == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblPayment);
-            }
-            return RedirectToAction("Login", "Login");
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null) {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblPayment tblPayment = db.tblPayments.Find(id);
+        //        if (tblPayment == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblPayment);
+        //    }
+        //    return RedirectToAction("Login", "Login");
+        //}
 
         // POST: Payments/Delete/5
         [HttpPost, ActionName("Delete")]

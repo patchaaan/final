@@ -134,26 +134,26 @@ namespace Icarus.Controllers
         }
 
         // GET: Inquiries/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblInquiry tblInquiry = db.tblInquiries.Find(id);
-                if (tblInquiry == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblInquiry);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null)
+        //    {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblInquiry tblInquiry = db.tblInquiries.Find(id);
+        //        if (tblInquiry == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblInquiry);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Login");
+        //    }
+        //}
 
         // POST: Inquiries/Delete/5
         [HttpPost, ActionName("Delete")]

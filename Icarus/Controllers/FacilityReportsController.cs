@@ -46,7 +46,11 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                return View();
+                if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
+                {
+                    return View();
+                }
+                return RedirectToAction("Index", "FacilityReports");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -75,16 +79,20 @@ namespace Icarus.Controllers
         public ActionResult Edit(int? id)
         {
             if (Session["Username"] != null) {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
+                    if (tblFacilityReport == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblFacilityReport);
                 }
-                tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-                if (tblFacilityReport == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblFacilityReport);
+                return RedirectToAction("Index", "FacilityReports");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -109,22 +117,22 @@ namespace Icarus.Controllers
         }
 
         // GET: tblFacilityReports/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
-                if (tblFacilityReport == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblFacilityReport);
-            }
-            return RedirectToAction("Login", "Login");
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null) {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblFacilityReport tblFacilityReport = db.tblFacilityReports.Find(id);
+        //        if (tblFacilityReport == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblFacilityReport);
+        //    }
+        //    return RedirectToAction("Login", "Login");
+        //}
 
         // POST: tblFacilityReports/Delete/5
         [HttpPost, ActionName("Delete")]

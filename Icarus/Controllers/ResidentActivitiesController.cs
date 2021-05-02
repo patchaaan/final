@@ -54,16 +54,21 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
+                if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
+                {
+                    var residents = db.vAdmissionBrowses.Select(
+                        s => new
+                        {
                             Text = s.Resident,
                             Value = s.IDAdmission
                         }
                     ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.generatedBy = Session["Username"];
-                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
-                return View();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.generatedBy = Session["Username"];
+                    ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
+                    return View();
+                }
+                return RedirectToAction("Index","ResidentActivities");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -94,24 +99,29 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (id == null)
+                if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
+                    if (tblResidentActivity == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    var residents = db.vAdmissionBrowses.Select(
+                            s => new
+                            {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
+                    return View(tblResidentActivity);
                 }
-                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-                if (tblResidentActivity == null)
-                {
-                    return HttpNotFound();
-                }
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
-                return View(tblResidentActivity);
+                return RedirectToAction("Index","ResidentActivities");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -137,22 +147,22 @@ namespace Icarus.Controllers
         }
 
         // GET: tblResidentActivities/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
-                if (tblResidentActivity == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblResidentActivity);
-            }
-            return RedirectToAction("Login", "Login");
-        }
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (Session["Username"] != null) {
+        //        if (id == null)
+        //        {
+        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //        }
+        //        tblResidentActivity tblResidentActivity = db.tblResidentActivities.Find(id);
+        //        if (tblResidentActivity == null)
+        //        {
+        //            return HttpNotFound();
+        //        }
+        //        return View(tblResidentActivity);
+        //    }
+        //    return RedirectToAction("Login", "Login");
+        //}
 
         // POST: tblResidentActivities/Delete/5
         [HttpPost, ActionName("Delete")]
