@@ -21,6 +21,9 @@
         $("#id").val(id);
         $('#myModal').modal().show();
     }
+    function Add() {
+        $("#createModal").modal().show();
+    }
     $(document).ready(function () {
         document.title = 'Chart Of Accounts Browse';
         $("#myInput").on("keyup", function () {
@@ -36,9 +39,9 @@
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
         <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/ExpensesChartOfAccounts/Create">
+            <a class="btn" style="background-color:#4E58A2;color:white;" onclick="Add()">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>&nbsp;Add Accounts</span>
+                <span>&nbsp;Add Account</span>
             </a>
         </div>
     </div>
@@ -82,6 +85,9 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        @Html.Partial("_CreatePartial", ViewData["Chart"])
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

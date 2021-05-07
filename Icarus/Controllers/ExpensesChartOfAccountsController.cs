@@ -21,6 +21,10 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
+                    int chart = db.tblExpensesChartOfAccounts.Max(x => x.IDAccount);
+                    tblExpensesChartOfAccount chartOfAccount = new tblExpensesChartOfAccount();
+                    chartOfAccount.IDAccount = chart + 1;
+                    ViewData["Chart"] = chartOfAccount;
                     return View(db.tblExpensesChartOfAccounts.ToList());
                 }
                 return RedirectToAction("Index","Residents");

@@ -64,7 +64,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/Staffs">Staffs</a>
-                        <a class="dropdown-item" data-toggle="modal" data-target="#changePassword" style="cursor:pointer;">Change Password</a>
+                        <a class="dropdown-item" onclick="openModal()" style="cursor:pointer;">Change Password</a>
                         @using (Html.BeginForm("Logout", "Home", FormMethod.Post, new { id = "logoutForm" }))
                         {
                             @Html.AntiForgeryToken()
@@ -109,8 +109,6 @@
                     <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="save">Save</button>
                 </div>
-
-
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -121,6 +119,10 @@
     var $dropdownToggle = $(".dropdown-toggle");
     var $dropdownMenu = $(".dropdown-menu");
     var showClass = "show";
+
+    function openModal() {
+        $('#changePassword').modal().show();
+    }
 
     $(window).on("load resize", function () {
 
@@ -148,9 +150,7 @@
             }
             else {
                 var newType = true;
-            }
-            console.log(old != "@Session["Password"]");
-            console.log(newPass != retyped);
+            }            
 
             if (oldPass && newType) {
                 $.ajax({
@@ -167,8 +167,7 @@
                             $('#oldPass').text('');
                             $('#check').text('');
                             $('#checker').text('');
-                            console.log("SUCCESS");
-                            $('.modal').modal('toggle');
+                            $('#changePassword').modal('hide');
                         }
                         else {
                             alert("Saving failed!");

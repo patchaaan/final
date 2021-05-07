@@ -1,0 +1,68 @@
+﻿@model Icarus.Models.tblCodepUpdate
+
+<script>
+    $(document).ready(function () {
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Create Codep Update</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("Create", "CodepUpdates", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+        <div class="modal-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UpdatedBy)
+            <div class="form">
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Date Update</b></label>
+                        @Html.TextBoxFor(model => model.DateUpdate, new { @type = "datetime-local", @class = "form-control", @id = "dateupdate", Required = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Date Log</b></label>
+                        @Html.TextBoxFor(model => model.DateLog, new { @type = "datetime-local", @class = "form-control", @id = "datelog", Required = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Update Type</b></label>
+                        @Html.DropDownListFor(model => model.UpdateType,
+                                (
+                                    new[] { new SelectListItem { Text = "Program", Value = "Program" },
+                                    new SelectListItem { Text = "Medical", Value = "Medical" }
+                                }),
+                                new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Admission</b></label>
+                        @Html.DropDownListFor(model => model.IDAdmission, ViewBag.residentList as SelectList, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Update By</b></label>
+                        @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control", Value = Session["Username"].ToString(), disabled = true } })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Update Summary</b></label>
+                        @Html.TextAreaFor(model => model.UpdateSummary, new { @class = "form-control", @rows = 5, Required = true })
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Create</button>
+            </div>
+        }
+    </div>
+</div>

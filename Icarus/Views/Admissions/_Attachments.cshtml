@@ -4,6 +4,65 @@
     ViewBag.Title = "Admission Browse";
 }
 
+<style>
+    .assertionTable {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+
+    input[type="file"] {
+        position: absolute;
+        z-index: -1;
+        top: 10px;
+        left: 8px;
+        font-size: 17px;
+        color: #b8b8b8;
+    }
+
+    .button-wrap {
+        position: relative;
+    }
+
+    .button {
+        display: inline-block;
+        cursor: pointer;
+        padding: 8px 15px;
+        border-radius: 5px;
+        background-color: #6C7AE0;
+        font-size: 12px;
+        font-weight: bold;
+        color: #fff;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $('input[type=file]').change(function () {
+            var t = $(this).val();
+            var labelText = 'File : ' + t.substr(12, t.length);
+            $(this).prev('label').text(labelText);
+            $('.fileName').val(t.substr(12, t.length));
+        })
+
+        $(".files").on("change", ".file-upload-field", function () {
+            $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/, ''));
+        });
+    });
+</script>
 
 <div class="col-sm-12 pl-3 pr-3">
     <div class="d-flex mb-2 mt-2 justify-content-between">
@@ -24,7 +83,7 @@
                 </button>
             </div>
         }
-        </div>
+    </div>
     <hr>
     @if (ViewBag.attachmentList == false)
     {
@@ -74,107 +133,45 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(model => model.IDAdmission)
-                <form>
-                    <div class="modal-body">
-                        <div class="form-row">
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.IDAdmission)
-                                @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
-                            </div>
-                            <div class="form-group col-sm-4 files">
-                                <label><b>Uploaded File</b></label>
-                                <div class="button-wrap">
-                                    <label class="button" for="upload">Upload File</label>
-                                    <input id="upload" name="UploadedFile" type="file">
+                    <form>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.IDAdmission)
+                                    @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
+                                </div>
+                                <div class="form-group col-sm-4 files">
+                                    <label><b>Uploaded File</b></label>
+                                    <div class="button-wrap">
+                                        <label class="button" for="upload">Upload File</label>
+                                        <input id="upload" name="UploadedFile" type="file">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label><b>Attachment Type</b></label>
+                                    @Html.DropDownListFor(model => model.IDAttachmentType, ViewBag.attachmentType as SelectList, new { @class = "form-control" })
                                 </div>
                             </div>
-                            <div class="form-group col-sm-4">
-                                <label><b>Attachment Type</b></label>
-                                @Html.DropDownListFor(model => model.IDAttachmentType, ViewBag.attachmentType as SelectList, new { @class = "form-control" })
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    <label><b>File Name</b></label>
+                                    @Html.EditorFor(model => model.Filename, new { htmlAttributes = new { @class = "form-control fileName" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.Description)
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = 5 })
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-sm-4">
-                                <label><b>File Name</b></label>
-                                @Html.EditorFor(model => model.Filename, new { htmlAttributes = new { @class = "form-control fileName" } })
-                            </div>
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.Description)
-                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = 5 })
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
+                    </form>
                 }
 
-                
+
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<style>
-    .assertionTable {
-        table-layout: fixed;
-        width: 100%;
-    }
-
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-
-    input[type="file"] {
-        position: absolute;
-        z-index: -1;
-        top: 10px;
-        left: 8px;
-        font-size: 17px;
-        color: #b8b8b8;
-    }
-
-    .button-wrap {
-        position: relative;
-    }
-
-    .button {
-        display: inline-block;
-        cursor: pointer;
-        padding: 8px 15px;
-        border-radius: 5px;
-        background-color: #6C7AE0;
-        font-size: 12px;
-        font-weight: bold;
-        color: #fff;
-    }
-
-
-</style>
-<script>
-    $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-
-        $('input[type=file]').change(function () {
-            var t = $(this).val();
-            var labelText = 'File : ' + t.substr(12, t.length);
-            $(this).prev('label').text(labelText);
-            $('.fileName').val(t.substr(12, t.length));
-        })
-
-        $(".files").on("change", ".file-upload-field", function () {
-            $(this).parent(".file-upload-wrapper").attr("data-text", $(this).val().replace(/.*(\/|\\)/, ''));
-        });
-    });
-</script>
-

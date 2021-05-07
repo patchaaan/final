@@ -3,7 +3,26 @@
 @{
     ViewBag.Title = "Admission Browse";
 }
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
 
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+    });
+</script>
 
 <div class="col-sm-12 pl-0 pr-0">
     <div class="d-flex mb-2 mt-2 justify-content-between">
@@ -24,7 +43,7 @@
                 </button>
             </div>
         }
-        </div>
+    </div>
     <hr>
     @if (ViewBag.admissionBillingLists == false)
     {
@@ -131,23 +150,3 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<style>
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-        
-    });
-</script>

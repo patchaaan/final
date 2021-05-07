@@ -21,6 +21,18 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                var residents = db.tblResidents.Select(
+                    s => new
+                    {
+                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                        Value = s.IDResident
+                    }).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
+                int admis = db.tblAdmissions.Max(x => x.IDAdmission);
+                tblAdmission admission = new tblAdmission();
+                admission.IDAdmission = admis + 1;
+                ViewData["Admissions"] = admission;
                 return View(db.vAdmissionBrowses.ToList().OrderByDescending(p => p.IDAdmission).ToList());
             }
             else
@@ -61,7 +73,6 @@ namespace Icarus.Controllers
                 }
 
                 tblAdmission admission = db.tblAdmissions.SingleOrDefault(x => x.IDAdmission == id);
-                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", admission.IDAdmission));
                 Response.Write("<script>console.log('hello'"+")</script>");
                 IEnumerable<tblAdmissionBilling> admissionBilling = db.tblAdmissionBillings.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionBilling).ToList();
                 tblAdmissionBilling adBilling = new tblAdmissionBilling();
@@ -160,6 +171,7 @@ namespace Icarus.Controllers
                 {
                     return HttpNotFound();
                 }
+                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", admission.IDAdmission));
                 return View(ad);
             }
             return RedirectToAction("Login", "Login");
@@ -185,6 +197,61 @@ namespace Icarus.Controllers
             }
 
             return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
+        }
+
+        [HttpPost, ActionName("DeleteAssertion")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAssertion(int id)
+        {
+            if (Session["Username"] != null)
+            {
+                tblAssertion assertions = db.tblAssertions.Find(id);
+                db.tblAssertions.Remove(assertions);
+                db.SaveChanges();
+                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", assertions.IDAdmission));
+                return RedirectToAction("Details", new { id = assertions.IDAdmission });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+        }
+
+        [HttpPost, ActionName("DeleteVitalSign")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteVitalSign(int id)
+        {
+            if (Session["Username"] != null)
+            {
+                tblAdmissionVitalSign vitalSign = db.tblAdmissionVitalSigns.Find(id);
+                db.tblAdmissionVitalSigns.Remove(vitalSign);
+                db.SaveChanges();
+                return RedirectToAction("Details", new { id = vitalSign.IDAdmission });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
+        }
+
+        [HttpPost, ActionName("CommLogDelete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CommLogDelete(int id)
+        {
+            if (Session["Username"] != null)
+            {
+                tblAdmissionCommLog commlog = db.tblAdmissionCommLogs.Find(id);
+                db.tblAdmissionCommLogs.Remove(commlog);
+                db.SaveChanges();
+                return RedirectToAction("Details", new { id = commlog.IDAdmission });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
         }
 
         [HttpPost, ActionName("CreateTreatmentFee")]

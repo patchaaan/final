@@ -4,6 +4,30 @@
     ViewBag.Title = "Admission Browse";
 }
 
+<style>
+    .assertionTable {
+        width: 100%;
+    }
+
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#thisInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tableBody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
 <div class="col-sm-12 pl-3 pr-3">
     <div class="d-flex mb-2 mt-2 justify-content-between">
         @if (!Model.Any() || Model == null)
@@ -71,7 +95,8 @@
                         <td>
                             @foreach (var method in ViewBag.PaymentMethod)
                             {
-                                if (method.IDPaymentMethod == item.IDPaymentMethod) {
+                                if (method.IDPaymentMethod == item.IDPaymentMethod)
+                                {
                                     @method.PaymentMethod
                                 }
                             }
@@ -87,26 +112,3 @@
         </table>
     }
 </div>
-<style>
-    .assertionTable {
-        width: 100%;
-    }
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        $("#thisInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#tableBody tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>
-

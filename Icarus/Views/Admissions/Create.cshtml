@@ -68,8 +68,8 @@
                 <label><b>Stop T.F Billing</b></label>
                 @Html.DropDownListFor(model => model.StopTFBilling,
                        (
-                           new[] { new SelectListItem { Text = "Y", Value = "Y" },
-                           new SelectListItem { Text = "N", Value = "N" }
+                           new[] { new SelectListItem { Text = "N", Value = "N" },
+                           new SelectListItem { Text = "Y", Value = "Y" }
                        }),
                        new { @class = "form-control active" })
                 @Html.ValidationMessageFor(model => model.StopTFBilling, "", new { @class = "text-danger" })

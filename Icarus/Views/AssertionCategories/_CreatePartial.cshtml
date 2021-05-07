@@ -1,0 +1,40 @@
+﻿@model Icarus.Models.tblAssertionCategory
+
+<script>
+    $(document).ready(function () {
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Create Assertion Category</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("Create", "AssertionCategories", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="form">
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Category:</b></label>
+                            @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control",autocomplete="off", Required=true } })
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Create</button>
+            </div>
+        }
+    </div>
+</div>

@@ -56,16 +56,13 @@
         }
         $(".navs").on('click', function () {
             var temp = $(this).attr('target');
-            console.log(temp)
             var temp1 = "div" + temp
-            console.log(temp1)
             for (var i = 0; i < buttons.length; i++) {
                 if (divs[i] === temp1) {
                     $("." + buttons[i]).prop('disabled', true);
                     $("." + divs[temp - 1]).show();
                 }
                 else {
-                    console.log("READ")
                     $("." + buttons[i]).prop('disabled', false);
                     $("." + divs[i]).hide();
                 }

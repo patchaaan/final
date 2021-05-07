@@ -19,6 +19,17 @@ namespace Icarus.Controllers
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
+                int codepup = db.tblCodepUpdates.Max(x => x.IDUpdate);
+                tblCodepUpdate codepupdate = new tblCodepUpdate();
+                codepupdate.IDAdmission = codepup + 1;
+                ViewData["CodepUpdate"] = codepupdate;
+                var residents = db.vAdmissionBrowses.Select(
+                        s => new {
+                            Text = s.Resident,
+                            Value = s.IDAdmission
+                        }
+                    ).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
                 return View(db.vselCodepUpdateBrowses.ToList().OrderByDescending(x => x.IDUpdate).ToList());
             }
             return RedirectToAction("Login", "Login");

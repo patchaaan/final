@@ -20,6 +20,10 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                int res = db.tblResidents.Max(x => x.IDResident);
+                tblResident resident = new tblResident();
+                resident.IDResident = res + 1;
+                ViewData["Resident"] = resident;
                 return View(db.tblResidents.ToList().OrderByDescending(p => p.IDResident).ToList());
             }
             else {

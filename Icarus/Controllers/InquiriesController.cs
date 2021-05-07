@@ -20,6 +20,10 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                int inq = db.tblInquiries.Max(x => x.IDInquiry);
+                tblInquiry inquiry = new tblInquiry();
+                inquiry.IDInquiry = inq + 1;
+                ViewData["Inquiry"] = inquiry;
                 return View(db.tblInquiries.ToList().OrderByDescending(x => x.IDInquiry).ToList());
             }
             else {

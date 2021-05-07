@@ -1,0 +1,123 @@
+﻿@model Icarus.Models.tblAdmission
+
+<script>
+    $(document).ready(function () {
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Create Admission</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("Create", "Admissions", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Resident</b></label>
+                            @Html.DropDownListFor(model => model.IDResident, (SelectList)ViewBag.residentList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IDResident, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Admission Date</b></label>
+                            @Html.TextBoxFor(model => model.AdmissionDate, new { @type = "datetime-local", @class = "form-control", Required=true })
+                            @Html.ValidationMessageFor(model => model.AdmissionDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Termination Date</b></label>
+                            @Html.TextBoxFor(model => model.TerminationDate, new { @type = "datetime-local", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TerminationDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Treatment Fee</b></label>
+                            @Html.EditorFor(model => model.TreatmentFee, new { htmlAttributes = new { @type = "number", @class = "form-control", Required=true } })
+                            @Html.ValidationMessageFor(model => model.TreatmentFee, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Total Billing Fee</b></label>
+                            @Html.EditorFor(model => model.TotalBilling, new { htmlAttributes = new { @type = "number", @class = "form-control", Value = "0.00", disabled = true } })
+                            @Html.ValidationMessageFor(model => model.TotalBilling, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Total Paid</b></label>
+                            @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @type = "number", @class = "form-control", Value = "0.00", disabled = true } })
+                            @Html.ValidationMessageFor(model => model.TotalPaid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Overall Balance</b></label>
+                            @Html.EditorFor(model => model.OverallBalance, new { htmlAttributes = new { @type = "number", @class = "form-control", Value = "0.00", disabled = true } })
+                            @Html.ValidationMessageFor(model => model.OverallBalance, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Active</b></label>
+                            @Html.DropDownListFor(model => model.IsActive,
+                                   (
+                                       new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                       new SelectListItem { Text = "N", Value = "N" }
+                                   }),
+                                   new { @class = "form-control active" })
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Stop T.F Billing</b></label>
+                            @Html.DropDownListFor(model => model.StopTFBilling,
+                                   (
+                                       new[] { new SelectListItem { Text = "N", Value = "N" },
+                                       new SelectListItem { Text = "Y", Value = "Y" }
+                                   }),
+                                   new { @class = "form-control active" })
+                            @Html.ValidationMessageFor(model => model.StopTFBilling, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Phase</b></label>
+                            @Html.DropDownListFor(model => model.Phase,
+                                    (
+                                        new[] { new SelectListItem { Text = "N", Value = "N" },
+                                        new SelectListItem { Text = "Senior", Value = "Senior" },
+                                        new SelectListItem { Text = "Intensive", Value = "Intensive" },
+                                        new SelectListItem { Text = "Re-Entry", Value = "Re-Entry"},
+                                        new SelectListItem { Text = "Graduate", Value = "Graduate"},
+                                        new SelectListItem { Text = "Pullout", Value = "Pullout"},
+                                    }),
+                                    new { @class = "form-control phase"}
+                                )
+                            @Html.ValidationMessageFor(model => model.Phase, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Rank</b></label>
+                            @Html.DropDownListFor(model => model.IDRank, ViewBag.ranks as SelectList, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Notes</b></label>
+                            @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Create</button>
+            </div>
+            }
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿@model Icarus.Models.tblInquiry
+
+<script>
+    $(document).ready(function () {
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Create Inquiry Log</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("Create", "Inquiries", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Inquiry Date:</b></label>
+                            @Html.EditorFor(model => model.InquiryDate, new { htmlAttributes = new { @type = "datetime-local", @class = "form-control", Required = true } })
+                            @Html.ValidationMessageFor(model => model.InquiryDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Contact Number:</b></label>
+                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Codep:</b></label>
+                            @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Prospect:</b></label>
+                            @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Follow Up On:</b></label>
+                            @Html.EditorFor(model => model.FollowupOn, new { htmlAttributes = new { @type = "datetime-local", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FollowupOn, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Inquiry Status:</b></label>
+                            @Html.DropDownListFor(modelItem => modelItem.IDInquiryStatus,
+                                             (
+                                                 new[] { new SelectListItem { Text = "Open", Value = "1" },
+                                                 new SelectListItem { Text = "For Followup", Value = "2" },
+                                                 new SelectListItem { Text = "Closed - Converted", Value = "3" },
+                                                 new SelectListItem { Text = "Closed - Did Not Convert", Value = "4" }
+                                             }),
+                                             new { @class = "form-control stopTF" })
+                            @Html.ValidationMessageFor(model => model.IDInquiryStatus, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Details</b></label>
+                            @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Create</button>
+            </div>
+        }
+    </div>
+</div>

@@ -4,6 +4,30 @@
     ViewBag.Title = "Admission Browse";
 }
 
+<style>
+    .assertionTable {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
+
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#vitalInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#vitalTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 <div class="col-sm-12 pl-3 pr-3">
     <div class="d-flex mb-2 mt-2 justify-content-between">
@@ -24,9 +48,9 @@
                 </button>
             </div>
         }
-        </div>
+    </div>
     <hr>
-    @if ( ViewBag.vitalSignsLists == false)
+    @if (ViewBag.vitalSignsLists == false)
     {
         <div>No Vital Signs record yet.</div>
     }
@@ -77,77 +101,51 @@
                     <h4 class="modal-title">Add Vital Signs</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                @using (Html.BeginForm("CreateVitalSigns","Admissions", FormMethod.Post))
+                @using (Html.BeginForm("CreateVitalSigns", "Admissions", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(model => model.IDAdmission)
-                <form>
-                    <div class="modal-body">
+                    <form>
+                        <div class="modal-body">
 
-                        <div class="form-row">
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.IDAdmission)
-                                @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.IDAdmission)
+                                    @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.Performed)
+                                    @Html.TextBoxFor(model => model.Performed, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.BloodPressure)
+                                    @Html.EditorFor(model => model.BloodPressure, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
                             </div>
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.Performed)
-                                @Html.TextBoxFor(model => model.Performed, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                            <div class="form-row">
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.Temperature)
+                                    @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control datetimepicker" } })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.PulseRate)
+                                    @Html.TextBoxFor(model => model.PulseRate, new { @class = "form-control datetimepicker" })
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    @Html.LabelFor(model => model.Weight)
+                                    @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
                             </div>
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.BloodPressure)
-                                @Html.EditorFor(model => model.BloodPressure, new { htmlAttributes = new { @class = "form-control" } })
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.Temperature)
-                                @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control datetimepicker" } })
-                            </div>
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.PulseRate)
-                                @Html.TextBoxFor(model => model.PulseRate, new { @class = "form-control datetimepicker" })
-                            </div>
-                            <div class="form-group col-sm-4">
-                                @Html.LabelFor(model => model.Weight)
-                                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
-                            </div>
-                        </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
                 }
-                
+
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<style>
-    .assertionTable {
-        table-layout: fixed;
-        width: 100%;
-    }
-
-    .tableheadleft {
-        border-top-left-radius: 15px !important;
-    }
-
-    .tableheadright {
-        border-top-right-radius: 15px !important;
-    }
-</style>
-<script>
-    $(document).ready(function () {
-        $("#vitalInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#vitalTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
-</script>
-
-

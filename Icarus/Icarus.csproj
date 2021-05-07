@@ -393,7 +393,6 @@
     <Content Include="Views\Requests\Details.cshtml" />
     <Content Include="Views\Requests\Edit.cshtml" />
     <Content Include="Views\Requests\Index.cshtml" />
-    <Content Include="Views\Admissions\AdmissionDetails.cshtml" />
     <Content Include="Views\FacilityReports\Create.cshtml" />
     <Content Include="Views\FacilityReports\Delete.cshtml" />
     <Content Include="Views\FacilityReports\Details.cshtml" />
@@ -434,6 +433,13 @@
     <Content Include="Views\CodepUpdates\Details.cshtml" />
     <Content Include="Views\CodepUpdates\Edit.cshtml" />
     <Content Include="Views\CodepUpdates\Index.cshtml" />
+    <Content Include="Views\AssertionCategories\_CreatePartial.cshtml" />
+    <Content Include="Views\Admissions\_CreatePartial.cshtml" />
+    <Content Include="Views\Residents\_CreatePartial.cshtml" />
+    <Content Include="Views\Inquiries\_CreatePartial.cshtml" />
+    <Content Include="Views\CodepUpdates\_CreatePartial.cshtml" />
+    <Content Include="Views\Vendors\_CreatePartial.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\_CreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

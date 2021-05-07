@@ -20,6 +20,10 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                int idac = db.tblAssertionCategories.Max(x => x.IDAssertionCategory);
+                tblAssertionCategory assertioncat = new tblAssertionCategory();
+                assertioncat.IDAssertionCategory = idac + 1;
+                ViewData["Category"] = assertioncat;
                 return View(db.tblAssertionCategories.ToList());
             }
             else

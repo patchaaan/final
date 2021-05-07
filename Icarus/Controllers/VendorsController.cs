@@ -19,6 +19,10 @@ namespace Icarus.Controllers
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
+                int codepup = db.tblVendors.Max(x => x.IDVendor);
+                tblVendor vendor = new tblVendor();
+                vendor.IDVendor = codepup + 1;
+                ViewData["Vendor"] = vendor;
                 return View(db.tblVendors.ToList().OrderByDescending(x => x.IDVendor).ToList());
             }
             return RedirectToAction("Login", "Login");

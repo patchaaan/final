@@ -1,0 +1,72 @@
+﻿@model Icarus.Models.tblVendor
+
+<script>
+    $(document).ready(function () {
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Create Vendor</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("Create", "Vendors", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Vendor</b></label>
+                            @Html.EditorFor(model => model.Vendor, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required=true } })
+                            @Html.ValidationMessageFor(model => model.Vendor, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Contact Person</b></label>
+                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Contact Number</b></label>
+                            @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>TIN</b></label>
+                            @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.TIN, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Active</b></label>
+                            @Html.DropDownListFor(model => model.IsActive,
+                                (
+                                    new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                    new SelectListItem { Text = "N", Value = "N" }
+                                }),
+                                new { @class = "form-control"})
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Notes</b></label>
+                            @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Create</button>
+            </div>
+        }
+    </div>
+</div>

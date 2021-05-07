@@ -20,6 +20,10 @@
         $('#myModal').modal().show();
     }
 
+    function Add() {
+        $("#createModal").modal().show();
+    }
+
     $(document).ready(function () {
         document.title = 'Admission Browse';
 
@@ -42,7 +46,7 @@
                 <a class="btn" style="background-color:#4E58A2;color:white;">
                     <span>Generate Billing</span>
                 </a>
-                <a class="btn" style="background-color:#4E58A2;color:white;" href="/Admissions/Create">
+                <a class="btn" style="background-color:#4E58A2;color:white;" onclick="Add()">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     <span>&nbsp;Add Admission</span>
                 </a>
@@ -160,6 +164,9 @@
             </tbody>
         </table>
     </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        @Html.Partial("_CreatePartial", ViewData["Admissions"])
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-sm" role="document">
@@ -173,7 +180,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
-                    @using (Html.BeginForm("Delete", "Residents", FormMethod.Post))
+                    @using (Html.BeginForm("Delete", "Admissions", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
