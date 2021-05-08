@@ -440,6 +440,10 @@
     <Content Include="Views\CodepUpdates\_CreatePartial.cshtml" />
     <Content Include="Views\Vendors\_CreatePartial.cshtml" />
     <Content Include="Views\ExpensesChartOfAccounts\_CreatePartial.cshtml" />
+    <Content Include="Views\ResidentActivities\_CreatePartial.cshtml" />
+    <Content Include="Views\FacilityReports\_CreatePartial.cshtml" />
+    <Content Include="Views\Payments\_CreatePartial.cshtml" />
+    <Content Include="Views\Staffs\_CreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

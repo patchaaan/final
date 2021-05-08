@@ -26,6 +26,14 @@ namespace Icarus.Controllers
                         }
                     ).ToList();
                 ViewBag.residents = db.vAdmissionBrowses.ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.generatedBy = Session["Username"];
+                ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
+                int resact = db.tblResidentActivities.Max(x => x.IDResidentActivityLog);
+                tblResidentActivity residentact = new tblResidentActivity();
+                residentact.IDResidentActivityLog = resact + 1;
+                ViewData["ResidentAct"] = residentact;
+
                 return View(db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList());
             }
             return RedirectToAction("Login", "Login");

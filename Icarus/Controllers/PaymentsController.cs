@@ -21,6 +21,19 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null) {
                 if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+                    var residents = db.vAdmissionBrowses.Select(
+                        s => new
+                        {
+                            Text = s.Resident,
+                            Value = s.IDAdmission
+                        }
+                    ).ToList();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+                    int pay = db.tblPayments.Max(x => x.IDPayment);
+                    tblPayment payment = new tblPayment();
+                    payment.IDPayment = pay + 1;
+                    ViewData["Payment"] = payment;
                     return View(db.vPaymentBrowses.ToList().OrderByDescending(p => p.IDPayment).ToList());
                 }
                 return RedirectToAction("Index","Residents");

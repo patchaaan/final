@@ -20,6 +20,10 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
+                int staff = db.tblStaffs.Max(x => x.IDStaff);
+                tblStaff modelstaff = new tblStaff();
+                modelstaff.IDStaff = staff + 1;
+                ViewData["Staff"] = modelstaff;
                 return View(db.tblStaffs.ToList().OrderBy(p => p.Lastname).ToList());
             }
             else

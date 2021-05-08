@@ -19,6 +19,9 @@
         $("#id").val(id);
         $('#myModal').modal().show();
     }
+    function Add() {
+        $("#createModal").modal().show();
+    }
     $(document).ready(function () {
         document.title = 'Facility Reports';
         $("#myInput").on("keyup", function () {
@@ -36,7 +39,7 @@
         @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
         {
             <div>
-                <a class="btn" style="background-color:#4E58A2;color:white;" href="/FacilityReports/Create">
+                <a class="btn" style="background-color:#4E58A2;color:white;" onclick="Add()">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     <span>&nbsp;Add Facility Report</span>
                 </a>
@@ -48,10 +51,7 @@
         <table class="table table-striped table-hover table-borderless" style="overflow-x: inherit;">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft" scope="col">
-                        ID
-                    </th>
-                    <th scope="col" width="12%">
+                    <th class="tableheadleft" scope="col" width="12%">
                         @Html.DisplayNameFor(model => model.ReportDate)
                     </th>
                     <th scope="col">
@@ -59,12 +59,12 @@
                     </th>
                     @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
                     {
-                        <th scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th scope="col" width="10%"> @Html.DisplayNameFor(model => model.PostedBy)</th>
                         <th class="tableheadright text-center" scope="col">Action</th>
                     }
                     else
                     {
-                        <th class="tableheadright" scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th class="tableheadright" width="10%" scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
                     }
                 </tr>
             </thead>
@@ -72,10 +72,6 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IDFacilityReport)
-                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReportDate)
                         </td>
@@ -100,6 +96,9 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        @Html.Partial("_CreatePartial", ViewData["FacReport"])
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

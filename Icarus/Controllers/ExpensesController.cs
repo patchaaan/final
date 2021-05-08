@@ -23,15 +23,19 @@ namespace Icarus.Controllers
             {
                 if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
+
                     if (start != null && end != null)
                     {
-                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderBy(y => y.ExpenseDate).ToList());
-                    }
-                    else
+                        ViewBag.clicked = "F";
+                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderByDescending(y => y.ExpenseDate).ToList());
+                    } else if (start != null && end == null) {
+                        ViewBag.clicked = "F";
+                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start).ToList().OrderByDescending(y => y.IDExpense).ToList());
+                    } else
                     {
                         var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
                         var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
-                        return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
+                        return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IDExpense).ToList());
                     }
                 }
                 return RedirectToAction("Index","Residents");
@@ -40,7 +44,34 @@ namespace Icarus.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            
+        }
+        [HttpGet, ActionName("Verified")]
+        public ActionResult Verified(String clicked)
+        {
+            if (Session["Username"] != null)
+            {
+                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                {
+                    if (clicked == "F")
+                    {
+                        ViewBag.clicked = "T";
+                        var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+                        var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                        return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IsVerified).ToList());
+                    }
+                    else {
+                        ViewBag.clicked = "F";
+                        var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+                        var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                        return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
+                    }
+                }
+                return RedirectToAction("Index", "Residents");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
 
 

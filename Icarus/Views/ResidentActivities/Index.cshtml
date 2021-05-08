@@ -19,6 +19,9 @@
         $("#id").val(id);
         $('#myModal').modal().show();
     }
+    function Add() {
+        $("#createModal").modal().show();
+    }
 
     $(document).ready(function () {
         document.title = 'Resident Activity';
@@ -37,7 +40,7 @@
         @if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
         {
             <div>
-                <a class="btn" style="background-color:#4E58A2;color:white;" href="/ResidentActivities/Create">
+                <a class="btn" style="background-color:#4E58A2;color:white;" onclick="Add()">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     <span>&nbsp;Add Resident Activity</span>
                 </a>
@@ -109,6 +112,9 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        @Html.Partial("_CreatePartial", ViewData["ResidentAct"])
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -19,6 +19,10 @@ namespace Icarus.Controllers
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
+                int fac = db.tblFacilityReports.Max(x => x.IDFacilityReport);
+                tblFacilityReport facility = new tblFacilityReport();
+                facility.IDFacilityReport = fac + 1;
+                ViewData["FacReport"] = facility;
                 return View(db.tblFacilityReports.ToList().OrderByDescending(x => x.IDFacilityReport).ToList());
             }
             return RedirectToAction("Login", "Login");
