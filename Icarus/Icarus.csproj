@@ -133,6 +133,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdmissionsController.cs" />
     <Compile Include="Controllers\AssertionCategoriesController.cs" />
+    <Compile Include="Controllers\AssertionSummariesController.cs" />
     <Compile Include="Controllers\CodepUpdatesController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -143,7 +144,7 @@
     <Compile Include="Controllers\FacilityReportsController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
-    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ExpensesChartOfAccountsController.cs" />
     <Compile Include="Controllers\UnbilledtoCodepController.cs" />
     <Compile Include="Controllers\CollectiblesController.cs" />
@@ -420,10 +421,9 @@
     <Content Include="Views\ResidentActivities\Index.cshtml" />
     <Content Include="Views\Collectibles\Index.cshtml" />
     <Content Include="Views\UnbilledtoCodep\Index.cshtml" />
-    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Expenses\Create.cshtml" />
     <Content Include="Views\Expenses\Delete.cshtml" />
-    <Content Include="Views\Collectibles\Index.cshtml" />
     <Content Include="Views\Expenses\Details.cshtml" />
     <Content Include="Views\Expenses\Edit.cshtml" />
     <Content Include="Views\Expenses\Index.cshtml" />
@@ -444,6 +444,9 @@
     <Content Include="Views\FacilityReports\_CreatePartial.cshtml" />
     <Content Include="Views\Payments\_CreatePartial.cshtml" />
     <Content Include="Views\Staffs\_CreatePartial.cshtml" />
+    <Content Include="Views\Reports\_AssertionSummary.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\AssertionSummaries\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Icarus.Models.vrptAssertionSummary>
+
+
+@{
+    ViewBag.Title = "AssertionSummary";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style>
+    .holder {
+        padding: 2%;
+    }
+    td {
+        min-height: 100px;
+    }
+    thead, tbody tr:nth-last-child(2) {
+        border-bottom: 2px solid black;
+    }
+    thead, tfoot {
+        display: table-row-group
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'View Assertion Summary as PDF File';
+    });
+</script>
+
+<div class="holder">
+    <h3>Assertion Summary</h3>
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th scope="col" width="16%">Resident</th>
+                <th scope="col" width="8%">Asrt Date</th>
+                <th scope="col" width="19%">Post Date</th>
+                <th scope="col" width="15%">Description</th>
+                <th scope="col" width="8%">Category</th>
+                <th scope="col" width="2%">Qty</th>
+                <th scope="col" width="5%">Price</th>
+                <th scope="col">Cost</th>
+                <th scope="col" width="8%">Mkup %</th>
+                <th scope="col" width="8%">Mkup Val</th>
+                <th scope="col" width="5%">Billed</th>
+                <th scope="col" class="text-right" width="5%">Margin</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Resident</td>
+                    <td>@item.AssertionDate.ToString("MM/dd/yyyy")</td>
+                    <td>@item.PostedDate</td>
+                    <td>@item.Description</td>
+                    <td>@item.Category</td>
+                    <td>@((int)item.Qty)</td>
+                    <td>@item.Price.ToString("0.00")</td>
+                    <td>@String.Format("{0:n2}", @item.Cost)</td>
+                    <td>@item.Markup.ToString("0.00")</td>
+                    <td>@item.MarkupValue.ToString("0.00")</td>
+                    <td>@item.SubTotal.ToString("0.00")</td>
+                    <td class="text-right">@String.Format("{0:n2}", @item.Margin)</td>
+                </tr>
+            }
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>Total</td>
+                <td>@String.Format("{0:n2}", @Model.Sum(x => x.Cost))</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td class="text-right">@String.Format("{0:n2}", @Model.Sum(x => x.Margin))</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Reports Browse';
+        $(".assertionSumm").change(function () {
+            var button = '<button class="btn btn-primary ml-1" target="_blank">Open Report</button>';
+
+            if (this.checked) {
+                var firstInput = '<input class="form-control" id="datefrom" type="datetime-local" name="datefrom" required />';
+                var secondInput = '<input class="form-control ml-1" type="datetime-local" name="dateto" />';
+                $('#assertionSummaryID').empty();
+                $('#assertionSummaryID').append(firstInput+secondInput+button);
+            }
+            else {
+                var firstInput = '<input class="form-control" id="datefrom" type="date" name="datefrom" required />';
+                var secondInput = '<input class="form-control ml-1" type="date" name="dateto" />';
+                $('#assertionSummaryID').empty();
+                $('#assertionSummaryID').append(firstInput + secondInput + button);
+            }
+        });
+    });
+</script>
+
+<div class="pl-5 pr-5">
+    @*<h2>Reports Browse</h2>
+    <hr />*@
+    <div class="row" style="height: 20vh;">
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" style="background-color:#6C7AE0;color:white;" type="button" data-toggle="collapse" data-target="#assertionsummary" aria-expanded="false" aria-controls="assertionsummary">
+                <span><b>Assertion Summary</b></span>
+            </button>
+            <div class="collapse" id="assertionsummary">
+                <div class="well">
+                    <div class="">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" class="assertionSumm" id="assertionSummaryTime">Use Time
+                        </label>
+                        @using (Html.BeginForm("Index", "AssertionSummaries", FormMethod.Get, new { target = "_blank" }))
+                        {
+                            <div class="form" id="assertionSummaryID" style="display:flex;">
+
+                                <input class="form-control" id="datefrom" type="date" name="datefrom" required />
+                                <input class="form-control ml-1" id="dateto" type="date" name="dateto" />
+                                <button class="btn btn-primary ml-1">Open Report</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" type="button" style="background-color:#6C7AE0;color:white;" data-toggle="collapse" data-target="#collectibles" aria-expanded="false" aria-controls="collectibles">
+                <span><b>Collectibles</b></span>
+            </button>
+            <div class="collapse" id="collectibles">
+                <div class="well">
+                    This is a trial.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: 20vh">
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" style="background-color:#6C7AE0;color:white;" type="button" data-toggle="collapse" data-target="#expensesdaterange" aria-expanded="false" aria-controls="expensesdaterange">
+                <span><b>Expenses Date Rannge</b></span>
+            </button>
+            <div class="collapse" id="expensesdaterange">
+                <div class="well">
+                    This is a trial.
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" type="button" style="background-color:#6C7AE0;color:white;" data-toggle="collapse" data-target="#unbilledtocodep" aria-expanded="false" aria-controls="unbilledtocodep">
+                <span><b>Expenses Unbilled to Codep</b></span>
+            </button>
+            <div class="collapse" id="unbilledtocodep">
+                <div class="well">
+                    This is a trial.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: 20vh">
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" style="background-color:#6C7AE0;color:white;" type="button" data-toggle="collapse" data-target="#expensespermonth" aria-expanded="false" aria-controls="expensespermonth">
+                <span><b>Expenses Per Month</b></span>
+            </button>
+            <div class="collapse" id="expensespermonth">
+                <div class="well">
+                    This is a trial.
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" type="button" style="background-color:#6C7AE0;color:white;" data-toggle="collapse" data-target="#paymentsdaterange" aria-expanded="false" aria-controls="paymentsdaterange">
+                <span><b>Payments Collected Date Range</b></span>
+            </button>
+            <div class="collapse" id="paymentsdaterange">
+                <div class="well">
+                    This is a trial.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: 20vh">
+        <div class="col col-md-6">
+            <button class="btn btn-lg w-50" style="background-color:#6C7AE0;color:white;" type="button" data-toggle="collapse" data-target="#paymentspermonth" aria-expanded="false" aria-controls="paymentspermonth">
+                <span><b>Payments Per Month</b></span>
+            </button>
+            <div class="collapse" id="paymentspermonth">
+                <div class="well">
+                    This is a trial.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="content">
+        <div id="left">
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="/AssertionSummaryReport/Index">Assertion Summary</a>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-sm btn btn-warning" href="/Collectibles/PrintViewToPdf">Collectibles</a>
+            </div>
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="/ExpenseReport/Index"> Expenses Date Range</a>
+            </div>
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="/UnbilledtoCodep/PrintViewToPdf">Expenses unbilled to Codep</a>
+            </div>
+        </div>
+
+        <div id="right">
+            <div class="form-group">
+                <a type="button" class="btn btn-sm btn btn-warning" href="">Expenses Per Month</a>
+            </div>
+            <div class="form-group">
+                <a type="" class="btn btn-sm btn btn-warning" href="/PaymentReport/Index">Payments Collected Date Range </a>
+            </div>
+            <div class="form-group">
+                <a type="" class="btn btn-sm btn btn-warning" href="">Payments Per Month</a>
+            </div>
+        </div>
+    </div>*@
