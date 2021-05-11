@@ -2,6 +2,15 @@
 
 <script>
     $(document).ready(function () {
+        $('#birthdate').val(new Date('@Model.Birthdate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
         });
@@ -48,7 +57,7 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Birthdate</b></label>
-                            @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @type = "datetime-local", @class = "form-control" } })
+                            @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @id="birthdate", @type = "datetime-local", @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
@@ -62,10 +71,10 @@
                             <label><b>Sex</b></label>
                             @Html.DropDownListFor(model => model.Sex,
                                    (
-                                       new[] { new SelectListItem { Text = "F", Value = "F" },
-                                       new SelectListItem { Text = "M", Value = "M" }
+                                       new[] { new SelectListItem { Text = "Female", Value = "Female" },
+                                       new SelectListItem { Text = "Male", Value = "Male" }
                                    }),
-                                   new { @class = "form-control" })
+                                   new { @class = "form-control", Value=Model.Sex, Selected=true })
                             @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
