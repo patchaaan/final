@@ -22,7 +22,11 @@ namespace Icarus.Controllers
             {
                 IEnumerable<tblRequestStatu> tblRequestStatus = db.tblRequestStatus.ToList();
                 ViewData["requestStatus"] = tblRequestStatus;
+                int req = db.tblRequests.Max(x => x.IDRequest);
                 ViewBag.requests = new SelectList(db.tblRequestStatus, "IDRequestStatus", "Status");
+                tblRequest request = new tblRequest();
+                request.IDRequest = req + 1;
+                ViewData["Request"] = request;
                 return View(db.tblRequests.ToList().OrderByDescending(x => x.IDRequest).ToList());
             }
             else {
@@ -95,6 +99,7 @@ namespace Icarus.Controllers
         public PartialViewResult EditPartial(int id)
         {
             tblRequest request = db.tblRequests.Find(id);
+            ViewBag.requests = new SelectList(db.tblRequestStatus, "IDRequestStatus", "Status");
             return PartialView("_EditPartial", request);
         }
 

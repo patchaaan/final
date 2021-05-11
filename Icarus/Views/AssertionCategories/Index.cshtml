@@ -23,6 +23,14 @@
         $("#createModal").modal().show();
     }
 
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Assertion Category';
         var aag = "@Session["isAAG"]";
@@ -82,7 +90,7 @@
                         {
                             <td>
                                 <center>
-                                    <a class="btn btn-sm btn-warning" href="/AssertionCategories/Edit/@item.IDAssertionCategory">Edit</a>
+                                    <button class="btn btn-sm btn-warning" onclick="Edit(@item.IDAssertionCategory)">Edit</button>
                                     @if (Session["isADG"].ToString() == "Y")
                                     {
                                         <button class="btn btn-sm btn-danger" type="button" onclick="Delete(@item.IDAssertionCategory)">Delete</button>
@@ -90,12 +98,12 @@
                                 </center>
                             </td>
                         }
-
                     </tr>
-
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","AssertionCategories")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Category"])

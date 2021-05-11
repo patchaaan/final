@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label><b>Request Status</b></label>
-                        @Html.DropDownListFor(model => model.IDRequestStatus, ViewBag.requests as SelectList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.IDRequestStatus, (SelectList)ViewBag.requests, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-sm-4">
                         <label><b>Date Approved</b></label>

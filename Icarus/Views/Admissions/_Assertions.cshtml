@@ -14,32 +14,60 @@
         border-top-right-radius: 15px !important;
     }
 
-    .assertionTable::-webkit-scrollbar {
+    .table-holder {
+        width:100%;
+        overflow-x:scroll;
+        height:65vh;
+    }
+
+    .table-holder::-webkit-scrollbar {
         width: 12px; /* width of the entire scrollbar */
         background-color: #dddddd;
         height: 10px;
     }
 
-    .assertionTable::-webkit-scrollbar-track {
+    .table-holder::-webkit-scrollbar-track {
         background: #dddddd !important; /* color of the tracking area */
     }
 
-    .assertionTable::-webkit-scrollbar-thumb {
+    .table-holder::-webkit-scrollbar-thumb {
         background: #808080 !important; /* color of the scroll thumb */
         border-radius: 20px; /* roundness of the scroll thumb */
         border: 3px solid grey !important; /* creates padding around scroll thumb */
     }
 
-    .assertionTable {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+    #head {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
+
+    #td, #head {
+        min-width: 200px;
+        height: 25px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /*max-width: 100px;*/
+    }
+
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden
     }
 </style>
 <script>
     function Delete(id) {
         $("#id").val(id);
         $('#deleteModal').modal().show();
+    }
+
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
     }
 
 
@@ -128,55 +156,55 @@
     @if (ViewBag.assertionLists == false)
     {
         <div>No assertion records yet.</div>
-    }
-    else
-    {
-        <div class="scroll">
-            <table class="table table-striped table-hover table-borderless assertionTable">
+        }
+        else
+        {
+        <div id = "tableForm" class="table-holder">
+            <table id = "example" class="table table-striped table-hover table-borderless">
                 <thead style="background-color: #6C7AE0; color: white;">
                     <tr>
-                        <th class="tableheadleft" scope="col">
+                        <th id="head" class="tableheadleft" scope="col">
                             ID CTC
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Posted Date
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Description
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Category
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Quantity
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Price
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             MarkUp %
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Markup Value
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             MarkUp Price
                         </th>
-                        <th scope="col">
+                        <th id="head" scope="col">
                             Subtotal
                         </th>
                         @if (Session["isADG"].ToString() == "Y")
                         {
-                            <th scope="col">
+                            <th id="head" scope="col">
                                 Notes
                             </th>
-                            <th scope="col" class="tableheadright">
+                            <th id="head" scope="col" class="tableheadright">
                                 Action
                             </th>
                         }
                         else
                         {
-                            <th scope="col" class="tableheadright">
+                            <th id="head" scope="col" class="tableheadright">
                                 Notes
                             </th>
                         }
@@ -186,38 +214,41 @@
                 <tbody id="thisTable">
                     @foreach (var item in ViewBag.AssertionsLists)
                     {
-                    <tr>
-                        <td>@item.IDChargeToCodep</td>
-                        <td>@item.PostedDate</td>
-                        <td>@item.Description</td>
-                        <td>
-                            @foreach (var category in ViewBag.AssertionCategories)
-                            {
-                                if (item.IDAssertionCategory == category.IDAssertionCategory)
+                        <tr>
+                            <td id="td">@item.IDChargeToCodep</td>
+                            <td id="td">@item.PostedDate</td>
+                            <td id="td">@item.Description</td>
+                            <td id="td">
+                                @foreach (var category in ViewBag.AssertionCategories)
                                 {
-                                    @category.Category
+                                    if (item.IDAssertionCategory == category.IDAssertionCategory)
+                                    {
+                                        @category.Category
+                                    }
                                 }
-                            }
-                        </td>
-                        <td>@item.Qty</td>
-                        <td>@item.Price</td>
-                        <td>@item.Markup</td>
-                        <td>@item.MarkupValue</td>
-                        <td>@item.SubTotal</td>
-                        <td>@item.SubTotal</td>
-                        @if (Session["isADG"].ToString() == "Y")
-                        {
-                            <td>@item.Notes</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm text-center" type="button" onclick="Delete(@item.IDAssertion)">Delete</button>
                             </td>
-                        }
-                        else
-                        {
-                            <td>@item.Notes</td>
+                            <td id="td">@item.Qty</td>
+                            <td id="td">@item.Price</td>
+                            <td id="td">@item.Markup</td>
+                            <td id="td">@item.MarkupValue</td>
+                            <td id="td">@item.SubTotal</td>
+                            <td id="td">@item.SubTotal</td>
+                            @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                            {
+                                <td id="td">@item.Notes</td>
+                                <td id="td">
+                                    <button class="btn btn-sm btn-warning" onclick="Edit(@item.IDAssertion)">Edit</button>
+                                    @if (Session["isADG"].ToString() == "Y") {
+                                        <button class="btn btn-danger btn-sm text-center" type="button" onclick="Delete(@item.IDAssertion)">Delete</button>
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td id="td">@item.Notes</td>
 
-                        }
-                    </tr>
+                            }
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -323,6 +354,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditAssertionPartial","Admissions")">
     </div>
 </div>
 

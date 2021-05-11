@@ -16,6 +16,14 @@
         $("#createModal").modal().show();
     }
 
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Payments Browse';
         $("#myInput").on("keyup", function () {
@@ -166,7 +174,7 @@
                         {
                             <td>
                                 <center>
-                                    <a class="btn btn-sm btn-warning m-1" href="/Payments/Edit/@item.IDPayment">Edit</a>
+                                    <button class="btn btn-sm btn-warning m-1" onclick="Edit(@item.IDPayment)">Edit</button>
                                     <button class="btn btn-sm btn-danger m-1" id="delete" value="@item.IDPayment" onclick="Delete(@item.IDPayment)">Delete</button>
                                 </center>
                             </td>
@@ -175,6 +183,8 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","Payments")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Payment"])

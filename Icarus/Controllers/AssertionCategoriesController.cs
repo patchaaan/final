@@ -108,6 +108,13 @@ namespace Icarus.Controllers
             return RedirectToAction("Login", "Login");
         }
 
+        [HttpGet]
+        public PartialViewResult EditPartial(int id)
+        {
+            tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+            return PartialView("_EditPartial", tblAssertionCategory);
+        }
+
         // POST: AssertionCategories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -126,24 +133,6 @@ namespace Icarus.Controllers
             }
             return RedirectToAction("Login", "Login");
         }
-
-        // GET: AssertionCategories/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (Session["Username"] != null) {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-        //        if (tblAssertionCategory == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(tblAssertionCategory);
-        //    }
-        //    return RedirectToAction("Login", "Login");
-        //}
 
         // POST: AssertionCategories/Delete/5
         [HttpPost, ActionName("Delete")]

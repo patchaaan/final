@@ -19,9 +19,21 @@
         $("#id").val(id);
         $('#myModal').modal().show();
     }
+
+
     function Add() {
         $("#createModal").modal().show();
     }
+
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
+
     $(document).ready(function () {
         document.title = 'Facility Reports';
         $("#myInput").on("keyup", function () {
@@ -85,7 +97,7 @@
                         {
 
                             <td style="display:flex;">
-                                <a class="btn btn-warning btn-sm mr-1" href="/FacilityReports/Edit/@item.IDFacilityReport">Edit</a>
+                                <button class="btn btn-warning btn-sm mr-1" onclick="Edit(@item.IDFacilityReport)">Edit</button>
                                 @if (Session["isADG"].ToString() == "Y")
                                 {
                                     <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDFacilityReport)">Delete</button>
@@ -96,6 +108,8 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","FacilityReports")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["FacReport"])

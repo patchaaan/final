@@ -447,6 +447,29 @@ namespace Icarus.Controllers
             return View(tbladmission);
 
         }
+
+
+        [HttpGet]
+        public PartialViewResult EditAssertionPartial(int id)
+        {
+            tblAssertion assertion = db.tblAssertions.Find(id);
+            ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+            return PartialView("_EditAssertionPartial", assertion);
+        }
+
+        [HttpPost, ActionName("EditAssertion")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAssertion([Bind(Include = "IDAssertion,Description,IDAdmission,AssertionDate,IDAssertionCategory,Qty,Price,Markup,MarkupValue,SubTotal,Notes,PostedDate")] tblAssertion tblAssertion)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(tblAssertion).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
+                return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
+            }
+            return View(tblAssertion);
+        }
         // GET: Admissions/Delete/5
         //public ActionResult Delete(int? id)
         //{
@@ -466,7 +489,7 @@ namespace Icarus.Controllers
         //    else {
         //        return RedirectToAction("Login", "Login");
         //    }
-            
+
         //}
 
         // POST: Admissions/Delete/5

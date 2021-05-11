@@ -147,7 +147,6 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ExpensesChartOfAccountsController.cs" />
     <Compile Include="Controllers\UnbilledtoCodepController.cs" />
-    <Compile Include="Controllers\CollectiblesController.cs" />
     <Compile Include="Controllers\ResidentActivitiesController.cs" />
     <Compile Include="Controllers\StaffsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -419,7 +418,6 @@
     <Content Include="Views\ResidentActivities\Details.cshtml" />
     <Content Include="Views\ResidentActivities\Edit.cshtml" />
     <Content Include="Views\ResidentActivities\Index.cshtml" />
-    <Content Include="Views\Collectibles\Index.cshtml" />
     <Content Include="Views\UnbilledtoCodep\Index.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Expenses\Create.cshtml" />
@@ -453,6 +451,13 @@
     <Content Include="Views\ResidentActivities\_EditPartial.cshtml" />
     <Content Include="Views\Requests\_EditPartial.cshtml" />
     <Content Include="Views\Requests\_CreatePartial.cshtml" />
+    <Content Include="Views\Payments\_EditPartial.cshtml" />
+    <Content Include="Views\Inquiries\_EditPartial.cshtml" />
+    <Content Include="Views\FacilityReports\_EditPartial.cshtml" />
+    <Content Include="Views\ExpensesChartOfAccounts\_EditPartial.cshtml" />
+    <Content Include="Views\CodepUpdates\_EditPartial.cshtml" />
+    <Content Include="Views\AssertionCategories\_EditPartial.cshtml" />
+    <Content Include="Views\Admissions\_EditAssertionPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

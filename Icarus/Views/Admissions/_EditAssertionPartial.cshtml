@@ -1,0 +1,163 @@
+﻿@model Icarus.Models.tblAssertion
+
+<script>
+    $(document).ready(function () {
+        $('#assertiondate').val(new Date('@Model.AssertionDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
+        $('#posteddate').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
+
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+
+        $("#markupPercent").on("keyup", function () {
+            var price = $("#price").val();
+            var qty = $("#qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(this).val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $("#markUpValue").val(markUpValue);
+                $("#subTotal").val(subTotal);
+            }
+            else {
+                $(".markUpValue").val(0);
+                $(".subTotal").val(totalPrice);
+            }
+
+        })
+        $("#price").on("keyup", function () {
+            var price = $(this).val();
+            var qty = $("#qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $("#markupPercent").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $("#markUpValue").val(markUpValue);
+                $("#subTotal").val(subTotal);
+            }
+            else {
+                $("#markUpValue").val(0);
+                $("#subTotal").val(totalPrice);
+            }
+        });
+        $("#qty").on("keyup", function () {
+            var price = $("#price").val();
+            var qty = $(this).val();
+            var totalPrice = price * qty;
+            var markUpPercent = $("#markupPercent").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $("#markUpValue").val(markUpValue);
+                $("#subTotal").val(subTotal);
+            }
+            else {
+                $("#markUpValue").val(0);
+                $("#subTotal").val(totalPrice);
+            }
+        });
+
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Edit Assertion Category</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("EditAssertion", "Admissions", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.IDAdmission)
+            @Html.HiddenFor(model => model.IDAssertion)
+            <div class="modal-body">
+                <div class="form">
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            @Html.LabelFor(model => model.IDAdmission)
+                            @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", @id = "idadmission", Value = Model.IDAdmission, disabled = true } })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Assertion Date</b></label>
+                            @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @id = "assertiondate", @class = "form-control assertiondate" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            @Html.LabelFor(model => model.Qty)
+                            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @id = "qty", @class = "form-control qty", Value = Model.Qty } })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Assertion Category</b></label>
+                            @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            @Html.LabelFor(model => model.Price)
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @id = "price", @class = "form-control price", Value = Model.Price } })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Markup %</b></label>
+                            @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @id = "markupPercent", @class = "form-control markupPercent", Value = Model.Markup } })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label><b>Markup Value</b></label>
+                            @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @id = "markUpValue", @class = "form-control markUpValue", Value = Model.MarkupValue } })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            @Html.LabelFor(model => model.SubTotal)
+                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @id = "subTotal", @class = "form-control subTotal", Value = Model.SubTotal } })
+
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label><b>Posted Date</b></label>
+                            @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @id = "posteddate", @class = "form-control posteddate" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            @Html.LabelFor(model => model.Description)
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="form-group col-sm-4">
+                            @Html.LabelFor(model => model.Notes)
+                            @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Save</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+

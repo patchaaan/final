@@ -24,7 +24,7 @@
         $('#commLogDelete').modal().show();
     }
     $(document).ready(function () {
-        $("#commLogInput").on("keyup", function () {
+        $("#inputcomm").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             $("#commLogTable tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -41,7 +41,7 @@
         }
         else
         {
-            <input class="form-control col-sm-4" id="commLogInput" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control col-sm-4" id="inputcomm" type="search" autocomplete="off" placeholder="Search" aria-label="Search">
         }
         @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
         {
@@ -63,7 +63,7 @@
         <table class="table table-striped table-hover table-borderless assertionTable">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft col-sm-3" scope="col">
+                    <th class="tableheadleft" width="5%" scope="col">
                         ID
                     </th>
                     <th scope="col" width="15%">

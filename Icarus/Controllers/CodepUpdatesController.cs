@@ -128,7 +128,21 @@ namespace Icarus.Controllers
                 return RedirectToAction("Index","CodepUpdates");
             }
             return RedirectToAction("Login", "Login");
+        }
 
+        [HttpGet]
+        public PartialViewResult EditPartial(int id)
+        {
+            tblPayment payment = db.tblPayments.Find(id);
+            var residents = db.vAdmissionBrowses.Select(
+                            s => new
+                            {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            return PartialView("_EditPartial", payment);
         }
 
         // POST: CodepUpdates/Edit/5

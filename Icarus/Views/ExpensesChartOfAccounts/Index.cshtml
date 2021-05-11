@@ -24,6 +24,16 @@
     function Add() {
         $("#createModal").modal().show();
     }
+
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
+
     $(document).ready(function () {
         document.title = 'Chart Of Accounts Browse';
         $("#myInput").on("keyup", function () {
@@ -75,7 +85,7 @@
                         </td>
 
                         <td style="display:flex;">
-                            <a class="btn btn-warning btn-sm mr-1" href="/ExpensesChartOfAccounts/Edit/@item.IDAccount">Edit</a>
+                            <button class="btn btn-warning btn-sm mr-1" onclick="Edit(@item.IDAccount)">Edit</button>
                             @if (Session["isADG"].ToString() == "Y")
                             {
                                 <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDAccount)">Delete</button>
@@ -85,6 +95,8 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","ExpensesChartOfAccounts")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Chart"])

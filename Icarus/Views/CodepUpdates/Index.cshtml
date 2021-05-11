@@ -22,6 +22,14 @@
         $("#createModal").modal().show();
     }
 
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Codep Updates Browse';
 
@@ -81,7 +89,7 @@
                         {
                             <td>
                                 <center>
-                                    <a class="btn btn-sm btn-warning" href="/CodepUpdates/Edit/@item.IDUpdate">Edit</a>
+                                    <button class="btn btn-sm btn-warning" onclick="Edit(@item.IDUpdate)">Edit</button>
                                     @if (Session["isADG"].ToString() == "Y")
                                     {
                                         <button class="btn btn-sm btn-danger" type="button" onclick="Delete(@item.IDUpdate)">Delete</button>
@@ -93,6 +101,8 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","CodepUpdates")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["CodepUpdate"])
