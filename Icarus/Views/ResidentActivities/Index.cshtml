@@ -23,6 +23,14 @@
         $("#createModal").modal().show();
     }
 
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Resident Activity';
         $("#myInput").on("keyup", function () {
@@ -98,7 +106,7 @@
                         {
                             <td>
                                 <center>
-                                    <a class="btn btn-sm btn-warning" href="/ResidentActivities/Edit/@item.IDResidentActivityLog">Edit</a>
+                                    <button class="btn btn-sm btn-warning" onclick="Edit(@item.IDResidentActivityLog)">Edit</button>
                                     @if (Session["isADG"].ToString() == "Y")
                                     {
                                         <button class="btn btn-sm btn-danger" type="button" onclick="Delete(@item.IDResidentActivityLog)">Delete</button>
@@ -112,6 +120,8 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","ResidentActivities")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["ResidentAct"])

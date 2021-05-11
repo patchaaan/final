@@ -20,6 +20,18 @@
         $('#myModal').modal().show();
     }
 
+    function Add() {
+        $("#createModal").modal().show();
+    }
+
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Requests Browse';
         $("#myInput").on("keyup", function () {
@@ -35,10 +47,10 @@
     <div class="d-flex mb-2 mt-2 justify-content-between">
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
         <div>
-            <a class="btn" style="background-color:#4E58A2;color:white;" href="/Requests/Create">
+            <button class="btn" style="background-color:#4E58A2;color:white;" onclick="Add()">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>&nbsp;Add Request</span>
-            </a>
+            </button>
         </div>
     </div>
     <hr>
@@ -109,7 +121,7 @@
                         }
                     </td>
                     <td style="display:flex;">
-                        <a class="btn btn-warning btn-sm mr-1" href="/Requests/Edit/@item.IDRequest">Edit</a>
+                        <button class="btn btn-warning btn-sm mr-1" onclick="Edit(@item.IDRequest)">Edit</button>
                         @if (Session["isADG"].ToString() == "Y")
                         {
                             <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDRequest)">Delete</button>
@@ -119,6 +131,11 @@
             }
         </tbody>
     </table>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","Requests")">
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        @Html.Partial("_CreatePartial", ViewData["Resident"])
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-sm" role="document">

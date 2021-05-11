@@ -134,6 +134,22 @@ namespace Icarus.Controllers
             return RedirectToAction("Login", "Login");
         }
 
+        [HttpGet]
+        public PartialViewResult EditPartial(int id)
+        {
+            tblResident resident = db.tblResidents.Find(id);
+            var residents = db.vAdmissionBrowses.Select(
+                            s => new
+                            {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
+            return PartialView("_EditPartial", resident);
+        }
+
         // POST: tblResidentActivities/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.

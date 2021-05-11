@@ -22,7 +22,7 @@ namespace Icarus.Controllers
             {
                 IEnumerable<tblRequestStatu> tblRequestStatus = db.tblRequestStatus.ToList();
                 ViewData["requestStatus"] = tblRequestStatus;
-                //ViewBag.RequestStatus = db.tblRequestStatus.ToList();
+                ViewBag.requests = new SelectList(db.tblRequestStatus, "IDRequestStatus", "Status");
                 return View(db.tblRequests.ToList().OrderByDescending(x => x.IDRequest).ToList());
             }
             else {
@@ -89,6 +89,13 @@ namespace Icarus.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
+        }
+
+        [HttpGet]
+        public PartialViewResult EditPartial(int id)
+        {
+            tblRequest request = db.tblRequests.Find(id);
+            return PartialView("_EditPartial", request);
         }
 
         // GET: Requests/Edit/5

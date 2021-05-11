@@ -447,6 +447,12 @@
     <Content Include="Views\Reports\_AssertionSummary.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\AssertionSummaries\Index.cshtml" />
+    <Content Include="Views\Vendors\_EditPartial.cshtml" />
+    <Content Include="Views\Staffs\_EditPartial.cshtml" />
+    <Content Include="Views\Residents\_EditPartial.cshtml" />
+    <Content Include="Views\ResidentActivities\_EditPartial.cshtml" />
+    <Content Include="Views\Requests\_EditPartial.cshtml" />
+    <Content Include="Views\Requests\_CreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

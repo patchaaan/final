@@ -27,6 +27,14 @@
         $("#createModal").modal().show();
     }
 
+    function Edit(id) {
+        var url = $("#editModal").data("url");
+        $.get(url+"/"+id, function (data) {
+            $("#editModal").html(data);
+            $("#editModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = "Vendors Browse";
 
@@ -36,6 +44,7 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
 
     });
 </script>
@@ -61,10 +70,10 @@
                     <th class="tableheadleft" scope="col">
                         @Html.DisplayNameFor(model => model.Vendor)
                     </th>
-                    <th scope="col" class="text-center">
+                    <th scope="col">
                         @Html.DisplayNameFor(model => model.ContactNumber)
                     </th>
-                    <th scope="col" class="text-center">
+                    <th scope="col">
                         @Html.DisplayNameFor(model => model.ContactPerson)
                     </th>
                     <th scope="col" width="8%">
@@ -120,19 +129,23 @@
                         </td>
                         @if (Session["isAAG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
                         {
-                            <td style="display:flex;">
-                                <a class="btn btn-warning btn-sm mr-1" href="/Vendors/Edit/@item.IDVendor">Edit</a>
+                            <td style="display:flex;">                                    
+                                <button class="btn btn-warning btn-sm mr-1" type="button" onclick="Edit(@item.IDVendor)">Edit</button>
                                 @if (Session["isADG"].ToString() == "Y")
                                 {
                                     <button class="btn btn-danger btn-sm ml-1 delete" id="delete" value="@item.IDVendor" onclick="Delete(@item.IDVendor)">Delete</button>
                                 }
                             </td>
                         }
-
                     </tr>
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","Vendors")">
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        @Html.Partial("_CreatePartial", ViewData["Vendor"])
     </div>
     <!-- Button trigger modal -->
     <!-- Modal -->
@@ -157,8 +170,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        @Html.Partial("_CreatePartial", ViewData["Vendor"])
     </div>
 </div>

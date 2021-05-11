@@ -1,0 +1,78 @@
+﻿@model Icarus.Models.tblResidentActivity
+
+<script>
+    $(document).ready(function () {
+        $('#logdate').val(new Date('@Model.LogDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Edit Staff</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Html.BeginForm("Edit", "ResidentActivities", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.IDResidentActivityLog)
+            <div class="modal-body">
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label><b>Log Date</b></label>
+                            @Html.TextBoxFor(model => model.LogDate, new { @class = "form-control", @id = "logdate", @type = "datetime-local", Required = true })
+                            @Html.ValidationMessageFor(model => model.LogDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label><b>Admission</b></label>
+                            @Html.DropDownListFor(model => model.IDAdmission, (SelectList)ViewBag.residentList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IDAdmission, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label><b>Position</b></label>
+                            @Html.DropDownListFor(model => model.Position, (SelectList)ViewBag.ranks, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label><b>Posted by:</b></label>
+                            @Html.EditorFor(model => model.PostedBy, new { htmlAttributes = new { @class = "form-control generatedBy", Value = ViewBag.generatedBy, disabled = true } })
+                            @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label><b>Activity</b></label>
+                            @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 5, Required = true })
+                            @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-sm" style="background-color:#444D8E;color:white;">Save</button>
+            </div>
+        }
+    </div>
+</div>
+
+
