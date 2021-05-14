@@ -7,11 +7,38 @@
 
 <style>
     .tableheadleft {
-        border-top-left-radius: 15px !important;
+        border-top-left-radius: 15px;
     }
 
     .tableheadright {
-        border-top-right-radius: 15px !important;
+        border-top-right-radius: 15px;
+    }
+
+    .admission-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: #dddddd;
+        height: 10px;
+    }
+
+    .admission-holder::-webkit-scrollbar-track {
+        background: #dddddd !important; /* color of the tracking area */
+    }
+
+    .admission-holder::-webkit-scrollbar-thumb {
+        background: #808080 !important; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid grey !important; /* creates padding around scroll thumb */
+    }
+
+    .admission-holder {
+        height: 70vh;
+        overflow-y: auto;
+    }
+
+    #admissionhead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
     }
 </style>
 <script>
@@ -55,53 +82,53 @@
 
     </div>
     <hr>
-    <div>
-        <table class="table table-responsive table-striped table-hover table-borderless" style="overflow-x: inherit;">
+    <div class="admission-holder">
+        <table class="table table-striped table-hover table-borderless">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft" scope="col">
-                        @Html.DisplayNameFor(model => model.IDAdmission)
+                    <th id="admissionhead" class="tableheadleft" scope="col">
+                        ID
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Resident)
+                    <th id="admissionhead" scope="col">
+                        Resident
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.Phase)
+                    <th id="admissionhead" scope="col">
+                        Phase
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.rank)
+                    <th id="admissionhead" scope="col">
+                        Rank
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.AdmissionDate)
+                    <th id="admissionhead" scope="col">
+                        AdmissionDate
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.TerminationDate)
+                    <th id="admissionhead" scope="col">
+                        TerminationDate
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.IsActive)
+                    <th id="admissionhead" scope="col">
+                        Active
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.TreatmentFee)
+                    <th id="admissionhead" scope="col">
+                        TreatmentFee
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.TotalBilling)
+                    <th id="admissionhead" scope="col">
+                        TotalBilling
                     </th>
-                    <th scope="col">
-                        @Html.DisplayNameFor(model => model.TotalPaid)
+                    <th id="admissionhead" scope="col">
+                        TotalPaid
                     </th>
                     @if (Session["isADG"].ToString() == "Y")
                     {
-                        <th scope="col">
-                            @Html.DisplayNameFor(model => model.OverallBalance)
+                        <th id="admissionhead" scope="col">
+                            OverallBalance
                         </th>
-                        <th scope="col" class="tableheadright action">
-                            Actions
+                        <th id="admissionhead" scope="col" class="tableheadright action">
+                            Action
                         </th>
                     }
                     else
                     {
-                        <th scope="col" class="tableheadright">
-                            @Html.DisplayNameFor(model => model.OverallBalance)
+                        <th id="admissionhead" scope="col" class="tableheadright">
+                            OverallBalance
                         </th>
                     }
 

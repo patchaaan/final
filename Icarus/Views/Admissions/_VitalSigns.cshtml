@@ -12,8 +12,48 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+
+    #vitalsignhead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
+
+    .vitalsign-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: #dddddd;
+        height: 10px;
+    }
+
+    .vitalsign-holder::-webkit-scrollbar-track {
+        background: #dddddd !important; /* color of the tracking area */
+    }
+
+    .vitalsign-holder::-webkit-scrollbar-thumb {
+        background: #808080 !important; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid grey !important; /* creates padding around scroll thumb */
+    }
+
+    .vitalsign-holder {
+        height: 64vh;
+        overflow-y: auto;
+    }
 </style>
 <script>
+    function DeleteVitalSign(id) {
+        $("#idVitalSign").val(id);
+        $('#deleteVitalSignModal').modal().show();
+    }
+
+    function EditVitalSign(id) {
+        var url = $("#editVitalSignModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editVitalSignModal").html(data);
+            $("#editVitalSignModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         $("#vitalInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
@@ -51,43 +91,64 @@
     }
     else
     {
-        <table class="table table-striped table-hover table-borderless">
-            <thead style="background-color: #6C7AE0; color: white;">
-                <tr>
-                    <th class="tableheadleft" width="5%" scope="col">
-                        ID
-                    </th>
-                    <th scope="col" width="10%">
-                        Performed
-                    </th>
-                    <th scope="col" width="5%">
-                        Blood Pressure
-                    </th>
-                    <th scope="col" width="5%">
-                        Temperature
-                    </th>
-                    <th scope="col" width="10%">
-                        Pulse Rate
-                    </th>
-                    <th class="tableheadright" scope="col" width="5%">
-                        Weight
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="vitalTable">
-                @foreach (var item in ViewBag.vitalSigns)
-                {
+        <div class="vitalsign-holder">
+            <table class="table table-striped table-hover table-borderless">
+                <thead style="background-color: #6C7AE0; color: white;">
                     <tr>
-                        <td>@item.IDVitalSign</td>
-                        <td>@item.Performed</td>
-                        <td>@item.BloodPressure</td>
-                        <td>@item.Temperature</td>
-                        <td>@item.PulseRate</td>
-                        <td>@item.Weight</td>
+                        <th id="vitalsignhead" class="tableheadleft" scope="col">
+                            ID
+                        </th>
+                        <th id="vitalsignhead" scope="col">
+                            Performed
+                        </th>
+                        <th id="vitalsignhead" scope="col">
+                            Blood Pressure
+                        </th>
+                        <th id="vitalsignhead" scope="col">
+                            Temperature
+                        </th>
+                        <th id="vitalsignhead" scope="col">
+                            Pulse Rate
+                        </th>
+                        @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                        {
+                            <th id="vitalsignhead" scope="col">
+                                Weight
+                            </th>
+                            <th id="vitalsignhead" class="tableheadright" scope="col">
+                                Action
+                            </th>
+                        }
+                        else
+                        {
+                            <th id="vitalsignhead" class="tableheadright" scope="col" width="5%">
+                                Weight
+                            </th>
+                        }
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="vitalTable">
+                    @foreach (var item in ViewBag.vitalSigns)
+                    {
+                        <tr>
+                            <td>@item.IDVitalSign</td>
+                            <td>@item.Performed</td>
+                            <td>@item.BloodPressure</td>
+                            <td>@item.Temperature</td>
+                            <td>@item.PulseRate</td>
+                            <td>@item.Weight</td>
+                            @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                            {
+                                <td>
+                                    <button class="btn btn-sm btn-warning" onclick="EditVitalSign(@item.IDVitalSign)">Edit</button>
+                                    <button class="btn btn-sm btn-danger" onclick="DeleteVitalSign(@item.IDVitalSign)">Delete</button>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
     <div class="modal fade" id="modalVitalSigns" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -139,8 +200,32 @@
                         </div>
                     </form>
                 }
-
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="deleteVitalSignModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this Vital Sign?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                    @using (Html.BeginForm("DeleteVitalSign", "Admissions", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="number" class="id" id="idVitalSign" style="display:none;" name="id" value="" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editVitalSignModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditVitalSignPartial","Admissions")">
+    </div>
 </div>

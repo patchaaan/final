@@ -442,7 +442,6 @@
     <Content Include="Views\FacilityReports\_CreatePartial.cshtml" />
     <Content Include="Views\Payments\_CreatePartial.cshtml" />
     <Content Include="Views\Staffs\_CreatePartial.cshtml" />
-    <Content Include="Views\Reports\_AssertionSummary.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\AssertionSummaries\Index.cshtml" />
     <Content Include="Views\Vendors\_EditPartial.cshtml" />
@@ -458,6 +457,8 @@
     <Content Include="Views\CodepUpdates\_EditPartial.cshtml" />
     <Content Include="Views\AssertionCategories\_EditPartial.cshtml" />
     <Content Include="Views\Admissions\_EditAssertionPartial.cshtml" />
+    <Content Include="Views\Admissions\_EditVitalSignPartial.cshtml" />
+    <Content Include="Views\Admissions\_EditCommLogPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

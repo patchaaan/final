@@ -34,7 +34,7 @@ namespace Icarus.Controllers
                     } else
                     {
                         var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                        var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                        var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
                         return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IDExpense).ToList());
                     }
                 }
@@ -56,13 +56,13 @@ namespace Icarus.Controllers
                     {
                         ViewBag.clicked = "T";
                         var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                        var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                        var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
                         return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IsVerified).ToList());
                     }
                     else {
                         ViewBag.clicked = "F";
                         var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                        var secondDay = new DateTime(DateTime.Now.Year, 1, 19);
+                        var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
                         return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
                     }
                 }
@@ -111,13 +111,15 @@ namespace Icarus.Controllers
                     ).ToList();
                 int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
                 int idExp = db.tblExpenses.Max(x => x.IDExpense);
+                tblExpens expenses = new tblExpens();
+                expenses.IDExpense = idExp + 1;
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
                 ViewBag.accountsList = new SelectList(account, "Value", "Text");
                 ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
                 ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
                 ViewBag.lastIDCTC = idCTC + 1;
                 ViewBag.lastIDEXP = idExp + 1;
-                return View();
+                return View(expenses);
             }
             return RedirectToAction("Login", "Login");
         }
@@ -133,6 +135,7 @@ namespace Icarus.Controllers
                 if (ModelState.IsValid)
                 {
                     tblExpens.EncodedBy = Session["Username"].ToString();
+                    tblExpens.DatePosted = tblExpens.PostedDate;
                     db.tblExpenses.Add(tblExpens);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -145,6 +148,14 @@ namespace Icarus.Controllers
         [HttpPost]
         public JsonResult CreateAssertion(tblAssertion tblAssertion) {
             db.tblAssertions.Add(tblAssertion);
+            db.SaveChanges();
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult CreateExpensesAssertion(tblExpensesForAssertion tblExpensesForAssertion)
+        {
+            db.tblExpensesForAssertions.Add(tblExpensesForAssertion);
             db.SaveChanges();
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
@@ -163,9 +174,40 @@ namespace Icarus.Controllers
                     return HttpNotFound();
                 }
                 ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                tblExpensesForAssertion expenseasertion = db.tblExpensesForAssertions.Where(x => x.IDExpense == tblExpens.IDExpense).FirstOrDefault();
+                IEnumerable<tblAssertion> assertion = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
+                ViewBag.assertionlist = true;
+                if (!assertion.Any() || assertion == null)
+                {
+                    ViewBag.assertionlist = false;
+                }
+                ViewData["Assertion"] = assertion;
+                var account = db.tblExpensesChartOfAccounts.Select(
+                        s => new {
+                            Text = s.Account + "      " + s.AccountCode,
+                            Value = s.IDAccount
+                        }
+                    ).ToList();
+                var residents = db.vAdmissionBrowses.Select(
+                        s => new {
+                            Text = s.Resident,
+                            Value = s.IDAdmission
+                        }
+                    ).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
                 return View(tblExpens);
             }
             return RedirectToAction("Login", "Login");
+        }
+
+        [HttpPost, ActionName("EditAssertion")]
+        public JsonResult EditAssertion([Bind(Include = "IDAssertion,Description,IDAdmission,AssertionDate,IDAssertionCategory,Qty,Price,Markup,MarkupValue,SubTotal,Notes,PostedDate")] tblAssertion tblAssertion)
+        {
+            db.Entry(tblAssertion).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
         // POST: Expenses/Edit/5
@@ -186,7 +228,6 @@ namespace Icarus.Controllers
                 return View(tblExpens);
             }
             return RedirectToAction("Login", "Login");
-
         }
 
         // GET: Expenses/Delete/5

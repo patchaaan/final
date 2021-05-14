@@ -72,8 +72,7 @@ namespace Icarus.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
-                tblAdmission admission = db.tblAdmissions.SingleOrDefault(x => x.IDAdmission == id);
-                Response.Write("<script>console.log('hello'"+")</script>");
+                tblAdmission admission = db.tblAdmissions.Find(id);
                 IEnumerable<tblAdmissionBilling> admissionBilling = db.tblAdmissionBillings.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionBilling).ToList();
                 tblAdmissionBilling adBilling = new tblAdmissionBilling();
                 adBilling.IDAdmission = admission.IDAdmission;
@@ -442,10 +441,36 @@ namespace Icarus.Controllers
             {
                 db.Entry(tbladmission).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index","Admissions");
+                return RedirectToAction("Details","Admissions", new { id = tbladmission.IDAdmission});
             }
             return View(tbladmission);
+        }
 
+        [HttpGet]
+        public PartialViewResult EditCommLogPartial(int id)
+        {
+            tblAdmissionCommLog commlog = db.tblAdmissionCommLogs.Find(id);
+            return PartialView("_EditcommLogPartial", commlog);
+        }
+
+        [HttpPost, ActionName("EditCommLog")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CommLogEdit([Bind(Include = "IDAdmissionCommLog,PostedBy,IDAdmission,LogDate,Details")] tblAdmissionCommLog tblAdmissionCommLog)
+        {
+            if (Session["Username"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tblAdmissionCommLog).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionCommLog.IDAdmission });
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            return RedirectToAction("Details", "Admissions", new { id = tblAdmissionCommLog.IDAdmission });
         }
 
 
@@ -470,6 +495,31 @@ namespace Icarus.Controllers
             }
             return View(tblAssertion);
         }
+
+        [HttpGet]
+        public PartialViewResult EditVitalSignPartial(int id)
+        {
+            tblAdmissionVitalSign vitalsign = db.tblAdmissionVitalSigns.Find(id);
+            return PartialView("_EditVitalSignPartial", vitalsign);
+        }
+
+        [HttpPost, ActionName("EditVitalSigns")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditVitalSigns([Bind(Include = "IDVitalSign,IDAdmission,Performed,BloodPressure,Temperature,PulseRate,Weight")] tblAdmissionVitalSign tblAdmissionVitalSign)
+        {
+            if (Session["Username"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(tblAdmissionVitalSign).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionVitalSign.IDAdmission });
+
+                }
+            }
+            return View(tblAdmissionVitalSign);
+        }
+
         // GET: Admissions/Delete/5
         //public ActionResult Delete(int? id)
         //{
@@ -507,19 +557,7 @@ namespace Icarus.Controllers
             else {
                 return RedirectToAction("Login", "Login");
             }
-            
-        }
-
-        public ActionResult GenerateBilling(int? id)
-        {
-            return View("GenerateBilling");
-        }
-
-        public virtual PartialViewResult Assertions()
-        {
-            
-            return PartialView("~/Views/Admissions/_Assertions.cshtml");
-        }
+        }      
 
         protected override void Dispose(bool disposing)
         {

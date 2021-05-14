@@ -14,6 +14,22 @@
         border-top-right-radius: 15px !important;
     }
 
+    .payment-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: #dddddd;
+        height: 10px;
+    }
+
+    .payment-holder::-webkit-scrollbar-track {
+        background: #dddddd !important; /* color of the tracking area */
+    }
+
+    .payment-holder::-webkit-scrollbar-thumb {
+        background: #808080 !important; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid grey !important; /* creates padding around scroll thumb */
+    }
+
     #paymenthead {
         font-size: 15px;
     }
@@ -101,7 +117,7 @@
                     {
                         <tr>
                             <td id="tdpay">@item.IDPayment</td>
-                            <td id="tdpay">@item.PaidDate</td>
+                            <td id="tdpay">@item.PaidDate.ToString("MM/dd/yyyy")</td>
                             <td id="tdpay">@item.TotalPaid</td>
                             <td id="tdpay">
                                 @foreach (var method in ViewBag.PaymentMethod)
