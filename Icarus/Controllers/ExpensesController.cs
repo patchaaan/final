@@ -147,17 +147,30 @@ namespace Icarus.Controllers
 
         [HttpPost]
         public JsonResult CreateAssertion(tblAssertion tblAssertion) {
-            db.tblAssertions.Add(tblAssertion);
-            db.SaveChanges();
-            return Json("Success", JsonRequestBehavior.AllowGet);
+            if (ModelState.IsValid)
+            {
+                using (ICARUSDBEntities icarus = new ICARUSDBEntities())
+                {
+
+                    db.tblAssertions.Add(tblAssertion);
+                    db.SaveChanges();
+                    int id = tblAssertion.IDAssertion;
+                    return Json(id, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return Json("Failed", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult CreateExpensesAssertion(tblExpensesForAssertion tblExpensesForAssertion)
         {
-            db.tblExpensesForAssertions.Add(tblExpensesForAssertion);
-            db.SaveChanges();
-            return Json("Success", JsonRequestBehavior.AllowGet);
+            if (ModelState.IsValid)
+            {
+                db.tblExpensesForAssertions.Add(tblExpensesForAssertion);
+                db.SaveChanges();
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Failed", JsonRequestBehavior.AllowGet);
         }
 
         // GET: Expenses/Edit/5
@@ -203,11 +216,38 @@ namespace Icarus.Controllers
         }
 
         [HttpPost, ActionName("EditAssertion")]
-        public JsonResult EditAssertion([Bind(Include = "IDAssertion,Description,IDAdmission,AssertionDate,IDAssertionCategory,Qty,Price,Markup,MarkupValue,SubTotal,Notes,PostedDate")] tblAssertion tblAssertion)
+        public JsonResult EditAssertion([Bind(Include = "IDAssertion,Description,IDAdmission,AssertionDate,IDAssertionCategory,IDChargeToCodep,Qty,Price,Markup,MarkupValue,SubTotal,Notes,PostedDate")] tblAssertion tblAssertion)
         {
-            db.Entry(tblAssertion).State = EntityState.Modified;
-            db.SaveChanges();
-            return Json("Success", JsonRequestBehavior.AllowGet);
+            if (ModelState.IsValid)
+            {
+                    db.Entry(tblAssertion).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json("Sucess");
+            }
+            return Json("Failed");
+        }
+
+        [HttpGet]
+        public PartialViewResult EditAssertionPartial(int id)
+        {
+            var account = db.tblExpensesChartOfAccounts.Select(
+                        s => new {
+                            Text = s.Account + "      " + s.AccountCode,
+                            Value = s.IDAccount
+                        }
+                    ).ToList();
+            var residents = db.vAdmissionBrowses.Select(
+                    s => new {
+                        Text = s.Resident,
+                        Value = s.IDAdmission
+                    }
+                ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.accountsList = new SelectList(account, "Value", "Text");
+            ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+            ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+            tblAssertion tblAssertion = db.tblAssertions.Find(id);
+            return PartialView("_EditAssertionPartial", tblAssertion);
         }
 
         // POST: Expenses/Edit/5

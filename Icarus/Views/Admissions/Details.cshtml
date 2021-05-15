@@ -5,6 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+    $(document).ready(function () {
+        document.title = "Admission Details";
+        var buttons = ["id1", "id2", "id3", "id4", "id5", "id6"];
+        var divs = ["div1", "div2", "div3", "div4", "div5", "div6"];
+        $("." + buttons[0]).prop('disabled', true);
+
+        for (var i = 1; i < divs.length; i++) {
+            $("." + divs[i]).hide();
+        }
+        $(".navs").on('click', function () {
+            var temp = $(this).attr('target');
+            var temp1 = "div" + temp
+            for (var i = 0; i < buttons.length; i++) {
+                if (divs[i] === temp1) {
+                    $("." + buttons[i]).prop('disabled', true);
+                    $("." + divs[temp - 1]).show();
+                }
+                else {
+                    $("." + buttons[i]).prop('disabled', false);
+                    $("." + divs[i]).hide();
+                }
+            }
+        });
+    });
+
+</script>
+
 <div class="row">
     <div class="col col-sm-4 pr-0">
         <div>
@@ -44,30 +72,3 @@
         <br>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        document.title = "Admission Details";
-        var buttons = ["id1", "id2", "id3", "id4", "id5", "id6"];
-        var divs = ["div1", "div2", "div3", "div4", "div5", "div6"];
-        $("." + buttons[0]).prop('disabled', true);
-
-        for (var i = 1; i < divs.length; i++) {
-            $("." + divs[i]).hide();
-        }
-        $(".navs").on('click', function () {
-            var temp = $(this).attr('target');
-            var temp1 = "div" + temp
-            for (var i = 0; i < buttons.length; i++) {
-                if (divs[i] === temp1) {
-                    $("." + buttons[i]).prop('disabled', true);
-                    $("." + divs[temp - 1]).show();
-                }
-                else {
-                    $("." + buttons[i]).prop('disabled', false);
-                    $("." + divs[i]).hide();
-                }
-            }
-        });
-    });
-
-</script>

@@ -1,0 +1,203 @@
+﻿@model Icarus.Models.tblAssertion
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+    function OnSuccess(response) {
+        var assertion = {
+            IDAssertion: '@Model.IDAssertion',
+            Description: $(".editdescription").val(),
+            IDAdmission: $(".editadmission").children("option:selected").val(),
+            AssertionDate: $(".editaddassertiondate").val(),
+            IDAssertionCategory: $(".editcategory").children("option:selected").val(),
+            Qty: $(".editqty").val(),
+            Price: $(".editprice").val(),
+            Markup: $(".editmarkup").val(),
+            MarkupValue: $(".editmarkupvalue").val(),
+            SubTotal: $(".editsubtotal").val(),
+            Notes: $("#editnote").val(),
+            IDChargeToCodep: $(".editidctc").val(),
+            PostedDate: $(".editaddassertiondateposted").val()
+        }
+            $.fn.saveEdited(assertion, $(".editadmission").children("option:selected").html(), $(".editcategory").children("option:selected").html());
+        trial();
+    }
+    function OnFailure(response) {
+        alert("Error occured.");
+    }
+    $(document).ready(function () {
+        $('#editaddassertiondate').val(new Date('@Model.AssertionDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
+        $('#editaddassertiondateposted').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
+        $('#assertionEditModal').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+
+        $(".editcancelButton").on("click", function () {
+            $("#assertionEditModal").find('form').trigger('reset');
+        });
+
+        $(".editmarkup").on("keyup", function () {
+            var price = $(".editprice").val();
+            var qty = $(".editqty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(this).val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".editmarkupvalue").val(markUpValue);
+                $(".editsubtotal").val(subTotal);
+            }
+            else {
+                console.log("Reading")
+                $(".editmarkupvalue").val(0);
+                $(".editsubtotal").val(totalPrice);
+            }
+
+        })
+        $(".editprice").on("keyup", function () {
+            var price = $(this).val();
+            var qty = $(".editqty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(".editmarkup").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".editmarkupvalue").val(markUpValue);
+                $(".editsubtotal").val(subTotal);
+            }
+            else {
+                $(".editmarkupValue").val(0);
+                $(".editsubtotal").val(totalPrice);
+            }
+        });
+        $(".editqty").on("keyup", function () {
+            var price = $(".editprice").val();
+            var qty = $(this).val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(".editmarkup").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".editmarkupvalue").val(markUpValue);
+                $(".editsubtotal").val(subTotal);
+            }
+            else {
+                $(".editmarkupvalue").val(0);
+                $(".editsubtotal").val(totalPrice);
+            }
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="gridSystemModalLabel">Edit Assertion</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        @using (Ajax.BeginForm("EditAssertion", "Expenses", new AjaxOptions
+        {
+            OnSuccess = "OnSuccess",
+            OnFailure = "OnFailure",
+            //LoadingElementId = "progress",
+            HttpMethod = "POST"
+        }))
+        {
+            @Html.HiddenFor(model => model.IDAssertion)
+            <div class="modal-body">
+                <div class="row p-2">
+                    <div class="col-sm-4">
+                        <label><b>ID Admission</b></label>
+                        @Html.DropDownListFor(model => model.IDAdmission, (SelectList)ViewBag.residentList, new { @id = "editadmission", @class = "form-control editadmission" })
+                        <span style="color:red;" id="editadmissionMessage"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Qty</b></label>
+                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @id = "editqty", @type = "number", @class = "form-control editqty", @Min = "0", @Step = "1", oninput = "validity.valid||(value='');", Required = true } })
+                        <span style="color:red;" id="editqtyMessage"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Assertion Category</b></label>
+                        @Html.DropDownListFor(model => model.IDAssertionCategory, (SelectList)ViewBag.category, new { @id = "editcategory", @class = "form-control editcategory" })
+                        <span style="color:red;" id="editassertionCategoryMessage"></span>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-sm-4">
+                        <label><b>Price</b></label>
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice", @type = "number", @class = "form-control editprice", Required = true } })
+                        <span id="editpriceMessage" style="color:red;"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Markup %</b></label>
+                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup", @type = "number", @class = "form-control editmarkup" } })
+                        <span style="color:red;" id="editmarkupMessage"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Markup Value</b></label>
+                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue", @type = "number", @class = "form-control editmarkupvalue", disabled = true } })
+                        <span style="color:red;" id="editmarkupValueMessage"></span>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-sm-4">
+                        <label><b>Subtotal</b></label>
+                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", @class = "form-control editsubtotal", disabled = true } })
+                        <span style="color:red;" id="editsubtotalMessage"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Posted Date</b></label>
+                        @Html.TextBoxFor(model => model.PostedDate, new { @id = "editaddassertiondateposted", @type = "datetime-local", @class = "form-control editaddassertiondateposted", Required = true })
+                        <span id="editpostedDateMessage"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Assrtion Date</b></label>
+                        @Html.TextBoxFor(model => model.AssertionDate, new { @id = "editaddassertiondate", @type = "datetime-local", @class = "form-control editaddassertiondate", Required = true })
+                        <span id="editassertiondate"></span>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label><b>ID ChargeToCodep</b></label>
+                        @Html.EditorFor(model => model.IDChargeToCodep, new { htmlAttributes = new { @id = "editidctc", @type = "number", Value=Model.IDChargeToCodep, @class = "form-control editidctc", disabled = true } })
+                        <span style="color:red;" id="editIDCharge"></span>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        @Html.LabelFor(model => model.Description)
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @id = "editdescription", @class = "form-control editdescription" } })
+                    </div>
+                    <div class="col-sm-4">
+                        <label><b>Notes</b></label>
+                        @Html.TextAreaFor(model => model.Notes, new { @id = "editnote", @class = "form-control editassertionnote", @rows = 5 })
+                        <span style="color:red;" id="editnotesMessage"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger editcancelButton" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary editassertionbutton">Save</button>
+            </div>
+        }
+        @*<div id="progress" class="loader">
+            <div class="center">
+                <img src="~/Content/loader.gif" />
+            </div>
+        </div>*@
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
