@@ -32,6 +32,14 @@
         });
     }
 
+    function Details(id) {
+        var url = $("#detailsModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#detailsModal").html(data);
+            $("#detailsModal").modal().show();
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Resident Browse';
         var aag = "@Session["isAAG"]";
@@ -86,13 +94,7 @@
                     var id = item.IDResident;
                     <tr>
                         <td scope="row">
-                            @Html.ActionLink(
-                                linkText: id.ToString(),
-                                actionName: "Details",
-                                controllerName: "Residents",
-                                routeValues: new { id = id },
-                                htmlAttributes: null
-                            )
+                            <a style="text-decoration:underline;color:blue;cursor:pointer;" ondblclick="Details(@item.IDResident)">@item.IDResident</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Lastname)
@@ -130,6 +132,8 @@
         </table>
     </div>
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","Residents")">
+    </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("DetailsPartial","Residents")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Resident"])

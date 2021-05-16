@@ -23,6 +23,14 @@
         $("#createModal").modal().show();
     }
 
+    function Details(id) {
+        var url = $("#detailsModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#detailsModal").html(data);
+            $("#detailsModal").modal().show();
+        });
+    }
+
     function Edit(id) {
         var url = $("#editModal").data("url");
         $.get(url + "/" + id, function (data) {
@@ -71,6 +79,9 @@
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
                     <th class="tableheadleft" scope="col">
+                        @Html.DisplayNameFor(model => model.IDStaff)
+                    </th>
+                    <th scope="col">
                         @Html.DisplayNameFor(model => model.Lastname)
                     </th>
                     <th scope="col">
@@ -100,14 +111,11 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td scope="row">
-                            @Html.ActionLink(
-                                linkText: item.Lastname.ToString(),
-                                actionName: "Details",
-                                controllerName: "Staffs",
-                                routeValues: new { id = item.IDStaff },
-                                htmlAttributes: null
-                            )
+                        <td>
+                            <a style="text-decoration:underline;color:blue;cursor:pointer;" ondblclick="Details(@item.IDStaff)">@item.IDStaff</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Lastname)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Firstname)
@@ -145,6 +153,8 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("DetailsPartial","Staffs")">
     </div>
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","Staffs")">
     </div>

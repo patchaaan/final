@@ -51,7 +51,13 @@ namespace Icarus.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
-            
+        }
+
+        [HttpGet]
+        public PartialViewResult DetailsPartial(int id)
+        {
+            tblResident resident = db.tblResidents.Find(id);
+            return PartialView("_DetailsPartial", resident);
         }
 
         // GET: Residents/Create

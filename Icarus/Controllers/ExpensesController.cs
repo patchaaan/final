@@ -26,11 +26,9 @@ namespace Icarus.Controllers
 
                     if (start != null && end != null)
                     {
-                        ViewBag.clicked = "F";
                         return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderByDescending(y => y.ExpenseDate).ToList());
                     } else if (start != null && end == null) {
-                        ViewBag.clicked = "F";
-                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start).ToList().OrderByDescending(y => y.IDExpense).ToList());
+                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start).ToList().OrderBy(y => y.ExpenseDate).ToList());
                     } else
                     {
                         var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
@@ -45,34 +43,34 @@ namespace Icarus.Controllers
                 return RedirectToAction("Login", "Login");
             }
         }
-        [HttpGet, ActionName("Verified")]
-        public ActionResult Verified(String clicked)
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    if (clicked == "F")
-                    {
-                        ViewBag.clicked = "T";
-                        var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                        var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
-                        return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IsVerified).ToList());
-                    }
-                    else {
-                        ViewBag.clicked = "F";
-                        var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                        var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
-                        return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
-                    }
-                }
-                return RedirectToAction("Index", "Residents");
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-        }
+        //[HttpGet, ActionName("Verified")]
+        //public ActionResult Verified(String clicked)
+        //{
+        //    if (Session["Username"] != null)
+        //    {
+        //        if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        //        {
+        //            if (clicked == "F")
+        //            {
+        //                ViewBag.clicked = "T";
+        //                var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+        //                var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
+        //                return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IsVerified).ToList());
+        //            }
+        //            else {
+        //                ViewBag.clicked = "F";
+        //                var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+        //                var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
+        //                return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
+        //            }
+        //        }
+        //        return RedirectToAction("Index", "Residents");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Login");
+        //    }
+        //}
 
 
         // GET: Expenses/Details/5

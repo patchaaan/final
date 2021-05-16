@@ -11,9 +11,54 @@
 }
 
 <script>
+    var pressed = true;
+    var organize = 13;
+
     function Delete(id) {
         $("#id").val(id);
         $('#myModal').modal().show();
+    }
+
+    function sortTable() {
+        pressed = !pressed;
+        if (pressed == true) {
+            organize = 0;
+        } else {
+            organize = 13;
+        }
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("myTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[organize];
+                y = rows[i + 1].getElementsByTagName("TD")[organize];
+                //check if the two rows should switch place:
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                }
+
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
     }
 
     $(document).ready(function () {
@@ -26,9 +71,9 @@
             });
         });
 
-        $('table').on('scroll', function () {
-            $("table > *").width($("table").width() + $("table").scrollLeft());
-        });
+        //$('table').on('scroll', function () {
+        //    $("table > *").width($("table").width() + $("table").scrollLeft());
+        //});
     });
 </script>
 
@@ -88,20 +133,15 @@
                 @Html.AntiForgeryToken()
 
                 <div class="d-flex pl-0 pr-0">
-                    <input type="datetime-local" id="dateFrom" name="start" class="form-control" required>
-                    <input type="datetime-local" id="dateTo" name="end" class="form-control ml-1">
+                    <input type="date" id="dateFrom" name="start" class="form-control">
+                    <input type="date" id="dateTo" name="end" class="form-control ml-1">
                     <span><button type="submit" name="submit" class="btn ml-1" style="background-color:#4E58A2;color:white;">Search</button></span>
                 </div>
             }
         </div>
         <div class="col-sm-3">
             <div class="d-flex pull-right">
-
-                @using (Html.BeginForm("Verified", "Expenses", FormMethod.Get))
-                {
-                    <input type="text" class="id" id="id" value="@clicked" style="display:none;" name="clicked" />
-                    <button type="submit" style="background-color:#4E58A2;color:white;" class="btn">Verified</button>
-                }
+                <button style="background-color:#4E58A2;color:white;" onclick="sortTable()" class="btn">Verified</button>                
                 <a class="btn ml-1" style="background-color:#4E58A2;color:white;" href="/Expenses/Create">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     <span>&nbsp;Add Expenses</span>

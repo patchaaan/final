@@ -133,6 +133,13 @@ namespace Icarus.Controllers
             return PartialView("_EditPartial", staff);
         }
 
+        [HttpGet]
+        public PartialViewResult DetailsPartial(int id)
+        {
+            tblStaff staff = db.tblStaffs.Find(id);
+            return PartialView("_DetailsPartial", staff);
+        }
+
         // POST: Staffs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.

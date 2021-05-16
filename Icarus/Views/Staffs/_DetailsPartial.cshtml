@@ -1,0 +1,157 @@
+﻿@model Icarus.Models.tblStaff
+
+<script>
+    $(document).ready(function () {
+        $('#datehired').val(new Date('@Model.DateHired').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('#dateterminated').val(new Date('@Model.DateTerminated').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Staff Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <div class="form">
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Last Name:</b></label>
+                        @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+                        @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>First Name:</b></label>
+                        @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+                        @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Contact Number:</b></label>
+                        @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Date Hired:</b></label>
+                        @Html.TextBoxFor(model => model.DateHired, new {@id="datehired", @type = "datetime-local", @class = "form-control datehired", disabled = true })
+                        @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Date Terminated:</b></label>
+                        @Html.TextBoxFor(model => model.DateTerminated, new {@id="dateterminated", @type = "datetime-local", @class = "form-control dateterminated", disabled = true })
+                        @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Status</b></label>
+                        @Html.DropDownListFor(model => model.Status,
+                                    (
+                                        new[] { new SelectListItem { Text = "Active", Value = "Active" },
+                                        new SelectListItem { Text = "Inactive", Value = "Inactive" }
+                                    }),
+                                    new { @class = "form-control", disabled = true })
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Username:</b></label>
+                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", disabled = true } })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Password:</b></label>
+                        @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+                        {
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "text", @class = "form-control", disabled = true } })
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", @class = "form-control", @Value="********", disabled = true } })
+
+                        }
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Email:</b></label>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @type = "email", autocomplete = "off", @class = "form-control", disabled = true } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Admin Director Group:</b></label>
+                        @Html.DropDownListFor(model => model.isADG,
+                                    (
+                                        new[] { new SelectListItem { Text = "N", Value = "N" },
+                                        new SelectListItem { Text = "Y", Value = "Y" }
+                                    }),
+                                    new { @class = "form-control", disabled = true })
+                        @Html.ValidationMessageFor(model => model.isADG, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Admin Assistant Group:</b></label>
+                        @Html.DropDownListFor(model => model.isAAG,
+                                    (
+                                        new[] { new SelectListItem { Text = "N", Value = "N" },
+                                        new SelectListItem { Text = "Y", Value = "Y" }
+                                    }),
+                                    new { @class = "form-control", disabled = true })
+                        @Html.ValidationMessageFor(model => model.isAAG, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Executive Director Group:</b></label>
+                        @Html.DropDownListFor(model => model.isEDG,
+                                    (
+                                        new[] { new SelectListItem { Text = "N", Value = "N" },
+                                        new SelectListItem { Text = "Y", Value = "Y" }
+                                    }),
+                                    new { @class = "form-control", disabled = true })
+                        @Html.ValidationMessageFor(model => model.isEDG, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Program Group:</b></label>
+                        @Html.DropDownListFor(model => model.isPG,
+                                    (
+                                        new[] { new SelectListItem { Text = "Y", Value = "Y" },
+                                        new SelectListItem { Text = "N", Value = "N" }
+                                    }),
+                                    new { @class = "form-control", disabled = true })
+                        @Html.ValidationMessageFor(model => model.isPG, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Notes:</b></label>
+                        @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5, disabled=true })
+                        @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

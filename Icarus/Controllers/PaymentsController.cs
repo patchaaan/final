@@ -17,8 +17,11 @@ namespace Icarus.Controllers
 
         // GET: Payments
         [Route("Payments/")]
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(DateTime? datefrom, DateTime? dateto)
         {
+            var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+            var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
             if (Session["Username"] != null) {
                 if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
                     var residents = db.vAdmissionBrowses.Select(
@@ -34,12 +37,95 @@ namespace Icarus.Controllers
                     tblPayment payment = new tblPayment();
                     payment.IDPayment = pay + 1;
                     ViewData["Payment"] = payment;
-                    return View(db.vPaymentBrowses.ToList().OrderByDescending(p => p.IDPayment).ToList());
+                    if (datefrom != null && dateto != null) {
+                        ViewBag.clicked = true;
+                        return View(db.vPaymentBrowses.Where(x => x.PaidDate >= datefrom && x.PaidDate <= dateto).ToList().OrderByDescending(p => p.IDPayment).ToList());
+                    }
+                    else if (datefrom != null && dateto == null) {
+                        ViewBag.clicked = true;
+                        return View(db.vPaymentBrowses.Where(x => x.PaidDate >= datefrom).ToList().OrderBy(p => p.IDPayment).ToList());
+                    }
+                    else {
+                        ViewBag.clicked = false;
+                        return View(db.vPaymentBrowses.Where(x => x.PaidDate >= firstDay && x.PaidDate <= secondDay).ToList().OrderByDescending(p => p.IDPayment).ToList());
+                    }
                 }
                 return RedirectToAction("Index","Residents");
             }
             return RedirectToAction("Login", "Login");
         }
+
+        //[HttpGet, ActionName("Verified")]
+        //public ActionResult Verified(DateTime? datefrom, DateTime? dateto, String clicked)
+        //{
+        //    if (Session["Username"] != null)
+        //    {
+        //        if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
+        //        {
+        //            var residents = db.vAdmissionBrowses.Select(
+        //                    s => new
+        //                    {
+        //                        Text = s.Resident,
+        //                        Value = s.IDAdmission
+        //                    }
+        //                ).ToList();
+        //            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+        //            ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+        //            int pay = db.tblPayments.Max(x => x.IDPayment);
+        //            tblPayment payment = new tblPayment();
+        //            payment.IDPayment = pay + 1;
+        //            ViewData["Payment"] = payment;
+        //            //ViewBag.datefrom = @Convert.ToDateTime(datefrom).ToString("dd/MM/yyyy");
+        //            //ViewBag.dateto = @Convert.ToDateTime(dateto).ToString("dd/MM/yyyy");
+        //            var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+        //            var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
+
+        //            if (datefrom != null && dateto != datefrom) {
+        //                ViewBag.datefrom = @Convert.ToDateTime(datefrom).ToString("yyyy-MM-dd");
+        //                ViewBag.dateto = @Convert.ToDateTime(dateto).ToString("yyyy-MM-dd");
+        //                if (clicked == "F")
+        //                {
+        //                    ViewBag.clicked = "T";
+        //                    return View("Index", db.vPaymentBrowses.Where(y => y.PaidDate >= datefrom && y.PaidDate <= dateto).ToList().OrderByDescending(y => y.IsVerified).ToList());
+        //                }
+        //                else
+        //                {
+        //                    ViewBag.clicked = "F";
+        //                    return View("Index", db.vPaymentBrowses.Where(y => y.PaidDate >= datefrom && y.PaidDate <= dateto).ToList());
+        //                }
+        //            } else if (datefrom != null && dateto == datefrom) {
+        //                ViewBag.datefrom = @Convert.ToDateTime(datefrom).ToString("yyyy-MM-dd");
+        //                ViewBag.dateto = @Convert.ToDateTime(datefrom).ToString("yyyy-MM-dd");
+        //                if (clicked == "F")
+        //                {
+        //                    ViewBag.clicked = "T";
+        //                    return View("Index", db.vPaymentBrowses.Where(y => y.PaidDate >= datefrom).ToList().OrderByDescending(y => y.IsVerified).ToList());
+        //                }
+        //                else
+        //                {
+        //                    ViewBag.clicked = "F";
+        //                    return View("Index", db.vPaymentBrowses.Where(y => y.PaidDate >= datefrom).ToList().OrderByDescending(x => x.IDPayment).ToList());
+        //                }
+        //            } else {
+        //                ViewBag.datefrom = @Convert.ToDateTime(DateTime.Now.Date).ToString("yyyy-MM-dd"); ;
+        //                ViewBag.dateto = @Convert.ToDateTime(DateTime.Now.Date).ToString("yyyy-MM-dd"); ;
+        //                if (clicked == "F") {
+        //                    ViewBag.clicked = "T";
+        //                    return View("Index", db.vPaymentBrowses.Where(y => y.PaidDate >= firstDay && y.PaidDate <= secondDay).ToList().OrderByDescending(y => y.IsVerified).ToList());
+        //                }
+        //                else {
+        //                    ViewBag.clicked = "F";
+        //                    return View("Index", db.vPaymentBrowses.Where(y => y.PaidDate >= firstDay && y.PaidDate <= secondDay).ToList().OrderByDescending(y => y.IDPayment).ToList());
+        //                }
+        //            }
+        //        }
+        //        return RedirectToAction("Index", "Residents");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Login");
+        //    }
+        //}
 
         // GET: Payments/Details/5
         public ActionResult Details(int? id)
@@ -63,6 +149,22 @@ namespace Icarus.Controllers
                 return View(tblPayment);
             }
             return RedirectToAction("Login", "Login");
+        }
+
+        [HttpGet]
+        public PartialViewResult DetailsPartial(int id)
+        {
+            var residents = db.vAdmissionBrowses.Select(
+                        s => new
+                        {
+                            Text = s.Resident,
+                            Value = s.IDAdmission
+                        }
+                    ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+            tblPayment payments = db.tblPayments.Find(id);
+            return PartialView("_DetailsPartial", payments);
         }
 
         // GET: Payments/Create

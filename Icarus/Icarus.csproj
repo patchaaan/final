@@ -462,6 +462,9 @@
     <Content Include="Views\Admissions\_EditVitalSignPartial.cshtml" />
     <Content Include="Views\Admissions\_EditCommLogPartial.cshtml" />
     <Content Include="Views\Expenses\_EditAssertionPartial.cshtml" />
+    <Content Include="Views\Residents\_DetailsPartial.cshtml" />
+    <Content Include="Views\Staffs\_DetailsPartial.cshtml" />
+    <Content Include="Views\Payments\_DetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
