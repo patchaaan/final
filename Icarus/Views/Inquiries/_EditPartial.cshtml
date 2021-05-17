@@ -1,16 +1,8 @@
-﻿@model Icarus.Models.tblInquiry
+﻿@model Icarus.Models.tblInquiryCommLog
 
 <script>
     $(document).ready(function () {
-        $('#inquirydate').val(new Date('@Model.InquiryDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#followupon').val(new Date('@Model.FollowupOn').toLocaleString("sv-SE", {
+        $('#commdate').val(new Date('@Model.CommDate').toLocaleString("sv-SE", {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
@@ -35,58 +27,25 @@
             <h3 class="modal-title" id="myModalLabel">Edit Inquiry</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
-        @using (Html.BeginForm("Edit", "Inquiries", FormMethod.Post))
+        @using (Html.BeginForm("CommLogsEdit", "Inquiries", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.IDInquiry)
+            @Html.HiddenFor(model => model.IDInquiryCommLog)
             <div class="modal-body">
                 <div class="form">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-row">
                         <div class="form-group col-sm-4">
-                            <label><b>Inquiry Date:</b></label>
-                            @Html.EditorFor(model => model.InquiryDate, new { htmlAttributes = new { @type = "datetime-local",@id="inquirydate", @class = "form-control", Required = true } })
-                            @Html.ValidationMessageFor(model => model.InquiryDate, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.CommDate, new { htmlAttributes = new { @id = "commdate", @type = "datetime-local", @class = "form-control", Required = true } })
+                            @Html.ValidationMessageFor(model => model.CommDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
-                            <label><b>Contact Number:</b></label>
-                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.InitiatedBy, new { htmlAttributes = new { @id = "initiatedby", @type = "text", @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.CommDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
-                            <label><b>Codep:</b></label>
-                            @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
-                            @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Prospect:</b></label>
-                            @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
-                            @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Follow Up On:</b></label>
-                            @Html.EditorFor(model => model.FollowupOn, new { htmlAttributes = new { @type = "datetime-local",@id="followupon", @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.FollowupOn, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Inquiry Status:</b></label>
-                            @Html.DropDownListFor(modelItem => modelItem.IDInquiryStatus,
-                                             (
-                                                 new[] { new SelectListItem { Text = "Open", Value = "1" },
-                                                 new SelectListItem { Text = "For Followup", Value = "2" },
-                                                 new SelectListItem { Text = "Closed - Converted", Value = "3" },
-                                                 new SelectListItem { Text = "Closed - Did Not Convert", Value = "4" }
-                                             }),
-                                             new { @class = "form-control stopTF" })
-                            @Html.ValidationMessageFor(model => model.IDInquiryStatus, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Details</b></label>
-                            @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5 })
-                            @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                            @Html.TextAreaFor(model => model.CommDetails, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.CommDetails, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>

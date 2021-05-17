@@ -2,14 +2,8 @@
 
 <script>
     $(document).ready(function () {
-        $('#reportdate').val(new Date('@Model.ReportDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var date = new Date('@Model.ReportDate').toISOString().split('T')[0];
+        $("#reportdate").val(date)
 
 
         $(".cancelButton").on("click", function () {
@@ -31,12 +25,14 @@
         @using (Html.BeginForm("Edit", "FacilityReports", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.IDFacilityReport)
+            @Html.HiddenFor(model => model.PostedBy)
             <div class="modal-body">
                 <div class="form">
                     <div class="form-row">
                         <div class="form-group col-sm-4">
                             <label><b>Report Date:</b></label>
-                            @Html.TextBoxFor(model => model.ReportDate, new { @type = "datetime-local", @id="reportdate", @class = "form-control", Required = true })
+                            @Html.TextBoxFor(model => model.ReportDate, new { @id = "reportdate", @type = "date", @class = "form-control", Required = true })
                             @Html.ValidationMessageFor(model => model.ReportDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">

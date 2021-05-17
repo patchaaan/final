@@ -137,7 +137,7 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditPartial(int id)
         {
-            tblResident resident = db.tblResidents.Find(id);
+            tblResidentActivity activity = db.tblResidentActivities.Find(id);
             var residents = db.vAdmissionBrowses.Select(
                             s => new
                             {
@@ -147,7 +147,7 @@ namespace Icarus.Controllers
                         ).ToList();
             ViewBag.residentList = new SelectList(residents, "Value", "Text");
             ViewBag.ranks = new SelectList(db.tblRanks, "Rank", "Rank");
-            return PartialView("_EditPartial", resident);
+            return PartialView("_EditPartial", activity);
         }
 
         // POST: tblResidentActivities/Edit/5

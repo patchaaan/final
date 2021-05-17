@@ -4,72 +4,113 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .tableheadleft {
+        border-top-left-radius: 15px !important;
+    }
 
-<h2>Details</h2>
+    .tableheadright {
+        border-top-right-radius: 15px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#inquirydate').val(new Date('@Model.InquiryDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+    });
+    $('#followupon').val(new Date('@Model.FollowupOn').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+</script>
 
 <div>
-    <h4>tblInquiry</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.InquiryDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InquiryDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Codep)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Codep)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactNo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ContactNo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Prospect)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Prospect)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Details)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Details)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FollowupOn)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FollowupOn)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IDInquiryStatus)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IDInquiryStatus)
-        </dd>
-
-    </dl>
+    <div class="row col-sm-12 pb-4">
+        <div class="col col-sm-3" style="border-right: 2px black solid;">
+            @using (Html.BeginForm("Edit", "Inquiries", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.IDInquiry)
+                <div class="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Inquiry Date:</b></label>
+                            @Html.EditorFor(model => model.InquiryDate, new { htmlAttributes = new {@id="inquirydate", @type = "datetime-local", @class = "form-control", Required = true } })
+                            @Html.ValidationMessageFor(model => model.InquiryDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Contact Number:</b></label>
+                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Codep:</b></label>
+                            @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Prospect:</b></label>
+                            @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Follow Up On:</b></label>
+                            @Html.EditorFor(model => model.FollowupOn, new { htmlAttributes = new {@id="followupon", @type = "datetime-local", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FollowupOn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Inquiry Status:</b></label>
+                            @Html.DropDownListFor(modelItem => modelItem.IDInquiryStatus,
+                                             (
+                                                 new[] { new SelectListItem { Text = "Open", Value = "1" },
+                                                 new SelectListItem { Text = "For Followup", Value = "2" },
+                                                 new SelectListItem { Text = "Closed - Converted", Value = "3" },
+                                                 new SelectListItem { Text = "Closed - Did Not Convert", Value = "4" }
+                                             }),
+                                             new { @class = "form-control stopTF" })
+                            @Html.ValidationMessageFor(model => model.IDInquiryStatus, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-12">
+                            <label><b>Details</b></label>
+                            @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row pull-right">
+                        <div class="d-flex ">
+                            <a class="btn mr-1 btn-sm btn-warning" href="/Inquiries">Go Back</a>
+                            <button type="submit" class="btn ml-1 btn-sm" style="color:white;background-color:#4E58A2;">Update</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col col-sm-9">
+            @Html.Partial("_CommLogs", ViewData["Inquiry"])
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDInquiry }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

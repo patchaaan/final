@@ -42,6 +42,17 @@ namespace Icarus.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 tblInquiry tblInquiry = db.tblInquiries.Find(id);
+                IEnumerable<tblInquiryCommLog> inqcommlog = db.tblInquiryCommLogs.ToList().Where(x => x.IDInquiry == tblInquiry.IDInquiry).ToList();
+                tblInquiryCommLog inquirylog = new tblInquiryCommLog();
+                inquirylog.IDInquiry = tblInquiry.IDInquiry;
+                ViewData["Inquiry"] = inquirylog;
+                ViewData["CommLogs"] = inqcommlog;
+                ViewBag.inqlog = true;
+
+                if (!inqcommlog.Any() || inqcommlog == null) {
+                    ViewBag.inqlog = false;
+                }
+
                 if (tblInquiry == null)
                 {
                     return HttpNotFound();
@@ -92,6 +103,27 @@ namespace Icarus.Controllers
             }
         }
 
+        [HttpPost, ActionName("CommLogCreate")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CommLogCreate([Bind(Include = "IDInquiryCommLog,IDInquiry,CommDate,InitiatedBy,CommDetails")] tblInquiryCommLog commlog)
+        {
+            if (Session["Username"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.tblInquiryCommLogs.Add(commlog);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                }
+
+                return RedirectToAction("Details", new { id = commlog.IDInquiry });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
         // GET: Inquiries/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -117,8 +149,8 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditPartial(int id)
         {
-            tblInquiry inquiry = db.tblInquiries.Find(id);
-            return PartialView("_EditPartial", inquiry);
+            tblInquiryCommLog commlog = db.tblInquiryCommLogs.Find(id);
+            return PartialView("_EditPartial", commlog);
         }
 
         // POST: Inquiries/Edit/5
@@ -134,9 +166,29 @@ namespace Icarus.Controllers
                 {
                     db.Entry(tblInquiry).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Details", new { id = tblInquiry.IDInquiry });
                 }
-                return View(tblInquiry);
+                return RedirectToAction("Details", new { id = tblInquiry.IDInquiry });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
+        [HttpPost, ActionName("CommLogsEdit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CommLogsEdit([Bind(Include = "IDInquiryCommLog,IDInquiry,CommDate,InitiatedBy,CommDetails")] tblInquiryCommLog commlog)
+        {
+            if (Session["Username"] != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(commlog).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                }
+                return RedirectToAction("Details", new { id = commlog.IDInquiry });
             }
             else
             {
@@ -177,6 +229,23 @@ namespace Icarus.Controllers
                 db.tblInquiries.Remove(tblInquiry);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
+        [HttpPost, ActionName("DeleteCommLogs")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCommLogs(int id)
+        {
+            if (Session["Username"] != null)
+            {
+                tblInquiryCommLog commlog = db.tblInquiryCommLogs.Find(id);
+                db.tblInquiryCommLogs.Remove(commlog);
+                db.SaveChanges();
+                return RedirectToAction("Details", new { id = commlog.IDInquiry });
             }
             else
             {

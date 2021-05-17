@@ -270,6 +270,7 @@ namespace Icarus.Controllers
                 {
                     db.Entry(tblPayment).State = EntityState.Modified;
                     db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblPayment.IDAdmission));
                     return RedirectToAction("Index");
                 }
                 return View(tblPayment);

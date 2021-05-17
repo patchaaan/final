@@ -465,6 +465,7 @@
     <Content Include="Views\Residents\_DetailsPartial.cshtml" />
     <Content Include="Views\Staffs\_DetailsPartial.cshtml" />
     <Content Include="Views\Payments\_DetailsPartial.cshtml" />
+    <Content Include="Views\Inquiries\_CommLogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

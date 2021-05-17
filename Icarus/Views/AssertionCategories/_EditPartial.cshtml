@@ -16,17 +16,17 @@
 <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title" id="myModalLabel">Edit Assertion Category</h3>
+            <h5 class="modal-title" id="myModalLabel">Edit Assertion Category</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
-        @using (Html.BeginForm("Edit", "CodepUpdates", FormMethod.Post))
+        @using (Html.BeginForm("Edit", "AssertionCategories", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.IDAssertionCategory)
             <div class="modal-body">
                 <div class="form">
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-12">
                             <label><b>Category</b></label>
                             @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control", Required=true, autocomplete="off" } })
                             @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })

@@ -23,7 +23,7 @@ namespace Icarus.Controllers
                 tblFacilityReport facility = new tblFacilityReport();
                 facility.IDFacilityReport = fac + 1;
                 ViewData["FacReport"] = facility;
-                return View(db.tblFacilityReports.ToList().OrderByDescending(x => x.IDFacilityReport).ToList());
+                return View(db.tblFacilityReports.ToList().OrderByDescending(x => x.IDFacilityReport).OrderByDescending(x => x.ReportDate).ToList());
             }
             return RedirectToAction("Login", "Login");
         }
