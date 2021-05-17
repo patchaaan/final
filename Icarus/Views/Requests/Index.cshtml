@@ -13,6 +13,42 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+    .request-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: #dddddd;
+        height: 10px;
+    }
+
+    .request-holder::-webkit-scrollbar-track {
+        background: #dddddd !important; /* color of the tracking area */
+    }
+
+    .request-holder::-webkit-scrollbar-thumb {
+        background: #808080; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid grey !important; /* creates padding around scroll thumb */
+    }
+
+    .request-holder {
+        height: 76vh;
+        overflow-y: auto;
+        overflow-x: scroll;
+    }
+
+    td, th {
+        min-width: 200px;
+        height: 25px;
+        border: dashed 1px lightblue;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /*max-width: 100px;*/
+    }
+
+    #requesthead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -54,83 +90,87 @@
         </div>
     </div>
     <hr>
-    <table class="table table-striped table-hover table-borderless">
-        <thead style="background-color: #6C7AE0; color: white;">
-            <tr>
-                <th class="tableheadleft" scope="col">IDRequest</th>
-                <th scope="col">DateRequest</th>
-                <th scope="col">DateNeeded</th>
-                <th scope="col">RequestedBy</th>
-                <th scope="col">Request</th>
-                <th scope="col">ApprovedNotes</th>
-                <th scope="col">Budget</th>
-                <th scope="col">ApprovedBy</th>
-                <th scope="col">DateApproved</th>
-                <th scope="col">DateDelivered</th>
-                <th scope="col">Status</th>
-                <th class="tableheadright" scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody id="myTable">
-            @foreach (var item in Model)
-            {
+    <div class="request-holder">
+        <table class="table table-striped table-hover table-borderless">
+            <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <td scope="row">
-                        @Html.ActionLink(
-                            linkText: item.IDRequest.ToString(),
-                            actionName: "Details",
-                            controllerName: "Requests",
-                            routeValues: new { id = item.IDRequest },
-                            htmlAttributes: null
-                        )
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateRequest)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateNeeded)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Request)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApproverNotes)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Budget)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApprovedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateApproved)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateAcc)
-                    </td>
-                    <td>
-                        @foreach (var status in ViewBag.requestStatus)
-                        {
-                            if (status.IDRequestStatus == item.IDRequestStatus)
-                            {
-                                @status.Status
-                            }
-                        }
-                    </td>
-                    <td style="display:flex;">
-                        <button class="btn btn-warning btn-sm mr-1" onclick="Edit(@item.IDRequest)">Edit</button>
-                        @if (Session["isADG"].ToString() == "Y")
-                        {
-                            <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDRequest)">Delete</button>
-                        }
-                    </td>
+                    <th id="requesthead" class="tableheadleft" scope="col">IDRequest</th>
+                    <th id="requesthead" scope="col">DateRequest</th>
+                    <th id="requesthead" scope="col">DateNeeded</th>
+                    <th id="requesthead" scope="col">RequestedBy</th>
+                    <th id="requesthead" scope="col">Request</th>
+                    <th id="requesthead" scope="col">ApprovedNotes</th>
+                    <th id="requesthead" scope="col">Budget</th>
+                    <th id="requesthead" scope="col">ApprovedBy</th>
+                    <th id="requesthead" scope="col">DateApproved</th>
+                    <th id="requesthead" scope="col">DateDelivered</th>
+                    <th id="requesthead" scope="col">Status</th>
+                    <th id="requesthead" class="tableheadright" scope="col">Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td scope="row">
+                            @Html.ActionLink(
+                                linkText: item.IDRequest.ToString(),
+                                actionName: "Details",
+                                controllerName: "Requests",
+                                routeValues: new { id = item.IDRequest },
+                                htmlAttributes: null
+                            )
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateRequest)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateNeeded)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequestedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Request)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApproverNotes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Budget)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApprovedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateApproved)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAcc)
+                        </td>
+                        <td>
+                            @foreach (var status in ViewBag.requestStatus)
+                            {
+                                if (status.IDRequestStatus == item.IDRequestStatus)
+                                {
+                                    @status.Status
+                                }
+                            }
+                        </td>
+                        <td>
+                            <div style="display:flex;">
+                                <button class="btn btn-warning btn-sm mr-1" onclick="Edit(@item.IDRequest)">Edit</button>
+                                @if (Session["isADG"].ToString() == "Y")
+                                {
+                                    <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDRequest)">Delete</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditPartial","Requests")">
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

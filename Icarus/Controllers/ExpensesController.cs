@@ -23,6 +23,8 @@ namespace Icarus.Controllers
             {
                 if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
+                    var total = db.tblExpenses.ToList().Select(x => x.Amount).ToList().Sum();
+                    ViewBag.totalAmount = Math.Round((Double)total, 2);
 
                     if (start != null && end != null)
                     {

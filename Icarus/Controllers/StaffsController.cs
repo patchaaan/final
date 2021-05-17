@@ -78,23 +78,25 @@ namespace Icarus.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password,isADG,isEDG,isPG,isAAG")] tblStaff tblStaff)
+        public JsonResult Create([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password,isADG,isEDG,isPG,isAAG")] tblStaff tblStaff)
         {
-            if (Session["Username"] != null)
-            {
                 if (ModelState.IsValid)
                 {
-                    db.tblStaffs.Add(tblStaff);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    var checkAcount = db.tblStaffs.Where(x => x.Username.Contains(tblStaff.Username)).FirstOrDefault();
+                    if (tblStaff.Password.Length < 8) {
+                    return Json("Password");
+                    }
+                    if (checkAcount != null)
+                    {
+                        return Json(false);
+                    }
+                    else {
+                        db.tblStaffs.Add(tblStaff);
+                        db.SaveChanges();
+                        return Json(true);
+                    }
                 }
-
-                return View(tblStaff);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
+                return Json(tblStaff);
             
         }
 

@@ -12,6 +12,33 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+
+    .update-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: transparent;
+        height: 10px;
+    }
+
+    .update-holder::-webkit-scrollbar-track {
+        background: transparent !important; /* color of the tracking area */
+    }
+
+    .update-holder::-webkit-scrollbar-thumb {
+        background: transparent; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid transparent !important; /* creates padding around scroll thumb */
+    }
+
+    .update-holder {
+        height: 75vh;
+        overflow-y: auto;
+    }
+
+    #updatehead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -55,23 +82,23 @@
         }
     </div>
     <hr>
-    <div>
+    <div class="update-holder">
         <table class="table table-striped table-hover table-borderless">
             <thead class="head" style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th scope="col" class="tableheadleft" width="13%">Date Update</th>
-                    <th scope="col" width="13%">Date Log</th>
-                    <th scope="col" width="8%">Update Type</th>
-                    <th scope="col" width="8%">Updated By</th>
-                    <th scope="col">Update Summary</th>
+                    <th id="updatehead"  scope="col" class="tableheadleft" width="13%">Date Update</thid="updatehead">
+                    <th id="updatehead" scope="col" width="13%">Date Log</th>
+                    <th id="updatehead" scope="col" width="8%">Update Type</th>
+                    <th id="updatehead" scope="col" width="8%">Updated By</th>
+                    <th id="updatehead" scope="col">Update Summary</th>
                     @if (Session["isADG"].ToString() == "Y" || Session["isPG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y")
                     {
-                        <th scope="col" width="15%">Resident</th>
-                        <th scope="col" class="tableheadright text-center" width="10%">Action</th>
+                        <th id="updatehead" scope="col" width="15%">Resident</th>
+                        <th id="updatehead" scope="col" class="tableheadright text-center" width="10%">Action</th>
                     }
                     else
                     {
-                        <th scope="col" class="tableheadright" width="15%">Resident</th>
+                        <th id="updatehead" scope="col" class="tableheadright" width="15%">Resident</th>
                     }
                 </tr>
             </thead>

@@ -37,20 +37,29 @@ namespace Icarus.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(tblStaff tblstaff)
         {
-            var checkLogin = db.tblStaffs.Where(x => x.Username.Equals(tblstaff.Username) && x.Password.Equals(tblstaff.Password)).FirstOrDefault();
+            var checkLogin = db.tblStaffs.Where(x => x.Username.Contains(tblstaff.Username) && x.Password.Contains(tblstaff.Password)).FirstOrDefault();
             if (checkLogin != null)
             {
-                Session["isAAG"] = checkLogin.isAAG.ToString();
-                Session["isADG"] = checkLogin.isADG.ToString();
-                Session["isEDG"] = checkLogin.isEDG.ToString();
-                Session["isPG"] = checkLogin.isPG.ToString();
-                Session["Username"] = tblstaff.Username.ToString();
-                Session["Password"] = checkLogin.Password.ToString();
-                Session["ID"] = checkLogin.IDStaff.ToString();
-
-
-                return RedirectToAction("Index", "Residents");
-
+                if (tblstaff.Username == checkLogin.Username)
+                {
+                    if (tblstaff.Password == checkLogin.Password)
+                    {
+                        Session["isAAG"] = checkLogin.isAAG.ToString();
+                        Session["isADG"] = checkLogin.isADG.ToString();
+                        Session["isEDG"] = checkLogin.isEDG.ToString();
+                        Session["isPG"] = checkLogin.isPG.ToString();
+                        Session["Username"] = tblstaff.Username.ToString();
+                        Session["Password"] = checkLogin.Password.ToString();
+                        Session["ID"] = checkLogin.IDStaff.ToString();
+                        return RedirectToAction("Index", "Residents");
+                    }
+                    else {
+                        ViewBag.Notification = "Invalid Password!";
+                    }
+                }
+                else {
+                    ViewBag.Notification = "Invalid Username!";
+                }
             }
             else {
                 ViewBag.Notification = "Invalid Credentials!";

@@ -31,7 +31,7 @@
     }
 
     .admission-holder {
-        height: 70vh;
+        height: 72vh;
         overflow-y: auto;
     }
 
@@ -39,6 +39,11 @@
         position: sticky;
         top: 0; /* Don't forget this, required for the stickiness */
         background-color: #6C7AE0;
+    }
+
+    .footerdetails {
+        min-height: 4vh;
+        text-align: center;
     }
 </style>
 <script>
@@ -185,11 +190,14 @@
                                 <button class="btn btn-danger btn-sm ml-1" type="button" onclick="Delete(@item.IDAdmission)">Delete</button>
                             </td>
                         }
-
                     </tr>
                 }
             </tbody>
         </table>
+    </div>
+    <div class="footerdetails d-flex align-items-center justify-content-center">
+        <label class="pr-5">Total Active Residents: @ViewBag.totalActive</label>
+        <label class="pl-5">Total Billing: @ViewBag.totalbilling</label>
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Admissions"])

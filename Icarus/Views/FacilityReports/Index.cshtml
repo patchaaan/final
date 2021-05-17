@@ -13,6 +13,33 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+
+    .activity-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: transparent;
+        height: 10px;
+    }
+
+    .activity-holder::-webkit-scrollbar-track {
+        background: transparent !important; /* color of the tracking area */
+    }
+
+    .activity-holder::-webkit-scrollbar-thumb {
+        background: transparent; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid transparent !important; /* creates padding around scroll thumb */
+    }
+
+    .activity-holder {
+        height: 75vh;
+        overflow-y: auto;
+    }
+
+    #activityhead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -59,24 +86,24 @@
         }
     </div>
     <hr>
-    <div>
+    <div class="activity-holder">
         <table class="table table-striped table-hover table-borderless" style="overflow-x: inherit;">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft" scope="col" width="12%">
+                    <th id="activityhead" class="tableheadleft" scope="col" width="12%">
                         @Html.DisplayNameFor(model => model.ReportDate)
                     </th>
-                    <th scope="col">
+                    <th id="activityhead" scope="col">
                         @Html.DisplayNameFor(model => model.Activity)
                     </th>
                     @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
                     {
-                        <th scope="col" width="10%"> @Html.DisplayNameFor(model => model.PostedBy)</th>
-                        <th class="tableheadright text-center" scope="col">Action</th>
+                        <th id="activityhead" scope="col" width="10%"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th id="activityhead" class="tableheadright text-center" scope="col">Action</th>
                     }
                     else
                     {
-                        <th class="tableheadright" width="10%" scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th id="activityhead" class="tableheadright" width="10%" scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
                     }
                 </tr>
             </thead>

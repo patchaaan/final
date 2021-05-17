@@ -13,6 +13,32 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+    .resident-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: transparent;
+        height: 10px;
+    }
+
+    .resident-holder::-webkit-scrollbar-track {
+        background: transparent !important; /* color of the tracking area */
+    }
+
+    .resident-holder::-webkit-scrollbar-thumb {
+        background: transparent; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid transparent !important; /* creates padding around scroll thumb */
+    }
+
+    .resident-holder {
+        height: 75vh;
+        overflow-y: auto;
+    }
+
+    #residenthead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -74,18 +100,18 @@
         }
     </div>
     <hr>
-    <div>
+    <div class="resident-holder">
         <table class="table table-striped table-hover table-borderless">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft" scope="col">@Html.DisplayNameFor(model => model.IDResident)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.Lastname)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.Firstname)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.Middlename)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.Birthdate)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.Age)</th>
-                    <th scope="col" class="sexClass">@Html.DisplayNameFor(model => model.Sex)</th>
-                    <th class="tableheadright text-center action" scope="col">Action</th>
+                    <th id="residenthead" class="tableheadleft" scope="col">@Html.DisplayNameFor(model => model.IDResident)</th>
+                    <th id="residenthead" scope="col">@Html.DisplayNameFor(model => model.Lastname)</th>
+                    <th id="residenthead" scope="col">@Html.DisplayNameFor(model => model.Firstname)</th>
+                    <th id="residenthead" scope="col">@Html.DisplayNameFor(model => model.Middlename)</th>
+                    <th id="residenthead" scope="col">@Html.DisplayNameFor(model => model.Birthdate)</th>
+                    <th id="residenthead" scope="col">@Html.DisplayNameFor(model => model.Age)</th>
+                    <th id="residenthead" scope="col" class="sexClass">@Html.DisplayNameFor(model => model.Sex)</th>
+                    <th id="residenthead" class="tableheadright text-center action" scope="col">Action</th>
                 </tr>
             </thead>
             <tbody id="myTable">

@@ -37,6 +37,9 @@ namespace Icarus.Controllers
                     tblPayment payment = new tblPayment();
                     payment.IDPayment = pay + 1;
                     ViewData["Payment"] = payment;
+                    ViewBag.totalUnverified = db.tblPayments.Where(x => x.IsVerified == "N").ToList().Count();
+                    var totalpaid = db.tblPayments.Where(x => x.IsVerified == "N").Select(y => y.TotalPaid).ToList().Sum();
+                    ViewBag.totalPaidUnverified = Math.Round((Double)totalpaid, 2);
                     if (datefrom != null && dateto != null) {
                         ViewBag.clicked = true;
                         return View(db.vPaymentBrowses.Where(x => x.PaidDate >= datefrom && x.PaidDate <= dateto).ToList().OrderByDescending(p => p.IDPayment).ToList());

@@ -33,6 +33,9 @@ namespace Icarus.Controllers
                 tblAdmission admission = new tblAdmission();
                 admission.IDAdmission = admis + 1;
                 ViewData["Admissions"] = admission;
+                var totalbilling = db.vAdmissionBrowses.ToList().Select(x => x.TotalBilling).ToList().Sum();
+                ViewBag.totalActive = db.vAdmissionBrowses.Where(x => x.IsActive == "Y").ToList().Count();
+                ViewBag.totalbilling = Math.Round((Double)totalbilling, 2);
                 return View(db.vAdmissionBrowses.ToList().OrderByDescending(p => p.IDAdmission).ToList());
             }
             else

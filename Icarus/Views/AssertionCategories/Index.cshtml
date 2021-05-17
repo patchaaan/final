@@ -13,6 +13,32 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+    .activity-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: transparent;
+        height: 10px;
+    }
+
+    .activity-holder::-webkit-scrollbar-track {
+        background: transparent !important; /* color of the tracking area */
+    }
+
+    .activity-holder::-webkit-scrollbar-thumb {
+        background: transparent; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid transparent !important; /* creates padding around scroll thumb */
+    }
+
+    .activity-holder {
+        height: 75vh;
+        overflow-y: auto;
+    }
+
+    #activityhead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -66,14 +92,14 @@
         }
     </div>
     <hr>
-    <div class="d-flex align-items-center justify-content-center">
+    <div class="activity-holder d-flex align-items-center justify-content-center">
         <table class="table table-hover table-striped table-borderless" style="width:50%;">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft text-center category" scope="col">
+                    <th id="activityhead" class="tableheadleft text-center category" scope="col">
                         @Html.DisplayNameFor(model => model.Category)
                     </th>
-                    <th class="tableheadright text-center action" scope="col">
+                    <th id="activityhead" class="tableheadright text-center action" scope="col">
                         Action
                     </th>
                 </tr>

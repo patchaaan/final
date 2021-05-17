@@ -13,6 +13,33 @@
     .tableheadright {
         border-top-right-radius: 15px !important;
     }
+
+    .staff-holder::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+        background-color: #dddddd;
+        height: 10px;
+    }
+
+    .staff-holder::-webkit-scrollbar-track {
+        background: #dddddd !important; /* color of the tracking area */
+    }
+
+    .staff-holder::-webkit-scrollbar-thumb {
+        background: #808080 !important; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid grey !important; /* creates padding around scroll thumb */
+    }
+
+    .staff-holder {
+        height: 72vh;
+        overflow-y: auto;
+    }
+
+    #staffhead {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -21,6 +48,12 @@
     }
     function Add() {
         $("#createModal").modal().show();
+    }
+
+    function Close() {
+        location.reload(false);
+        //location.href = '/Staffs';
+        //$.get('/Staffs', function () {});
     }
 
     function Details(id) {
@@ -74,35 +107,35 @@
         }
     </div>
     <hr>
-    <div>
+    <div class="staff-holder">
         <table class="table table-striped table-hover table-borderless">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th class="tableheadleft" scope="col">
+                    <th class="tableheadleft" id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.IDStaff)
                     </th>
-                    <th scope="col">
+                    <th id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.Lastname)
                     </th>
-                    <th scope="col">
+                    <th id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.Firstname)
                     </th>
-                    <th scope="col">
+                    <th id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.ContactNo)
                     </th>
-                    <th scope="col">
+                    <th id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.DateHired)
                     </th>
-                    <th scope="col">
+                    <th id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.DateTerminated)
                     </th>
-                    <th scope="col">
+                    <th id="staffhead" scope="col">
                         @Html.DisplayNameFor(model => model.Status)
                     </th>
-                    <th scope="col" class="notes">
+                    <th id="staffhead" scope="col" class="notes">
                         @Html.DisplayNameFor(model => model.Notes)
                     </th>
-                    <th class="tableheadright text-center action" scope="col">
+                    <th id="staffhead" class="tableheadright text-center action" scope="col">
                         Action
                     </th>
                 </tr>
