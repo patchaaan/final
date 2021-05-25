@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Icarus.Models.vrptCollectible>
+
+
+@{
+    ViewBag.Title = "Collectibles";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<script>
+    $(document).ready(function() {
+        document.title = "Collectibles";
+    });
+</script>
+<style>
+    .holder {
+        padding: 2%;
+    }
+    thead, tfoot {
+        display: table-row-group
+    }
+    thead, tbody tr:nth-last-child(2) {
+        border-bottom: 2px solid black;
+    }
+    td {
+        height:50px !important;
+    }
+</style>
+
+<div class="holder">
+    <h3>Collectibles</h3>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" width="24%">Resident</th>
+                <th scope="col" width="10%">AdmDate</th>
+                <th scope="col" width="15%">Termination Date</th>
+                <th scope="col" width="10%">TreatmentFee</th>
+                <th scope="col" width="10%">TotalBilling</th>
+                <th scope="col" width="10%">TotalPaid</th>
+                <th scope="col" width="10%">Balance</th>
+                <th scope="col" width="5%">Active</th>
+                <th scope="col" width="20%">LastPaymentInfo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Resident</td>
+                    <td>@item.AdmissionDate.ToString("MM/dd/yyyy")</td>
+                    <td>@item.TerminationDate</td>
+                    <td>@item.TreatmentFee.ToString("0.00")</td>
+                    <td>@item.TotalBilling.ToString("0.00")</td>
+                    <td>@item.TotalPaid.ToString("0.00")</td>
+                    <td>@item.OverallBalance.ToString("0.00")</td>
+                    <td>@item.IsActive</td>
+                    <td>@item.LastPaymentInfo</td>
+                </tr>
+            }
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>Total Collectibles:</td>
+                <td><b>&nbsp;@String.Format("{0:n2}", @Model.Sum(x => x.OverallBalance))</b></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

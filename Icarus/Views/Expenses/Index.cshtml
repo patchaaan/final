@@ -19,6 +19,14 @@
         $('#myModal').modal().show();
     }
 
+    function Details(id) {
+        var url = $("#detailsModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#detailsModal").html(data);
+            $("#detailsModal").modal().show();
+        });
+    }
+
     function sortTable() {
         pressed = !pressed;
         if (pressed == true) {
@@ -71,10 +79,6 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-
-        //$('table').on('scroll', function () {
-        //    $("table > *").width($("table").width() + $("table").scrollLeft());
-        //});
     });
 </script>
 
@@ -211,7 +215,8 @@
 
                     <tr id="item">
                         <td scope="row" style="min-width:75px !important;">
-                            <span onClick="window.location='/Expenses/Details/@item.IDExpense'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDExpense</span>
+                            <span style="color:blue;text-decoration: underline;cursor:pointer;" ondblclick="Details(@item.IDExpense)">@item.IDExpense</span>
+                            @*<span onClick="window.location='/Expenses/Details/@item.IDExpense'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDExpense</span>*@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ExpenseDate)
@@ -267,6 +272,8 @@
     </div>
     <div class="footerdetails">
         <label>Total Amount: <span id="totalAmount"></span></label>
+    </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("DetailsPartial","Expenses")">
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Icarus.Models.vrptPayment>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        document.title = "Payments Collected";
+    });
+</script>
+<style>
+    .holder {
+        padding: 2%;
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    thead, tbody tr:nth-last-child(2) {
+        border-bottom: 2px solid black;
+    }
+
+    td {
+        height: 50px !important;
+    }
+</style>
+
+<div class="holder">
+    <h3>Payments Collected</h3>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" width="5%">ID Pay</th>
+                <th scope="col" width="15%">Resident</th>
+                <th scope="col" width="10%">Paid Date</th>
+                <th scope="col" width="10%">Total Paid</th>
+                <th scope="col" width="10%">Payment Method</th>
+                <th scope="col" width="15%">Pay Details</th>
+                <th scope="col" width="5%">Verified</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IDPayment</td>
+                    <td>@item.Resident</td>
+                    <td>@item.PaidDate.ToString("MM/dd/yyyy")</td>
+                    <td>@item.TotalPaid.ToString("0.00")</td>
+                    <td>@item.PaymentMethod</td>
+                    <td>@item.PayDetails</td>
+                    <td>@item.IsVerified</td>
+                </tr>
+            }
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td><h4><b>Total Collected:</b></h4></td>
+                <td><h4><b>&nbsp;@String.Format("{0:n2}", @Model.Sum(x => x.TotalPaid))</b></h4></td>
+                <td> </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

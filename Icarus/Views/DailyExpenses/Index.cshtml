@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Icarus.Models.vrptExpens>
+
+
+@{
+    ViewBag.Title = "AssertionSummary";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style>
+    .holder {
+        padding: 2%;
+    }
+
+    td {
+        min-height: 100px;
+    }
+
+    thead, tbody tr:nth-last-child(2) {
+        border-bottom: 2px solid black;
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'View Assertion Summary as PDF File';
+    });
+</script>
+
+<div class="holder">
+    <h3>Daily Expenses</h3>
+    <table class="table table-borderless">
+        <thead>
+            <tr>
+                <th scope="col" width="16%">Expense Date</th>
+                <th scope="col" width="8%">OR Number</th>
+                <th scope="col" width="15%">Vendor</th>
+                <th scope="col" width="8%">Amount</th>
+                <th scope="col" width="5%">Encoded By</th>
+                <th scope="col" width="10%">Charge to Codep</th>
+                <th scope="col">Vat Sales</th>
+                <th scope="col" width="8%">Vat Amount</th>
+                <th scope="col" width="8%">Vat Exempt</th>
+                <th scope="col" width="5%">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.ExpenseDate</td>
+                <td>@item.ORNumber</td>
+                <td>@item.Vendor</td>
+                <td>@item.Particulars</td>
+                <td>@item.Amount</td>
+                <td>@item.EncodedBy</td>
+                <td>@item.ChargeToCodep</td>
+                <td>@item.VATSales</td>
+                <td>@item.VATAmount</td>
+                <td>@item.VATExempt</td>
+                <td>@item.Amount</td>
+            </tr>
+            }
+            @**<tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>Total</td>
+                <td>@String.Format("{0:n2}", @Model.Sum(x => x.Cost))</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td class="text-right">@String.Format("{0:n2}", @Model.Sum(x => x.Margin))</td>
+            </tr>*@
+        </tbody>
+    </table>
+</div>

@@ -6,24 +6,402 @@
 }
 
 <script>
+    function dateFormat(d) {
+        //console.log(d);
+        return ((d.getMonth() + 1) + "").padStart(2, "0")
+            + "/" + (d.getDate() + "").padStart(2, "0")
+            + "/" + d.getFullYear();
+    }
+    function trial() {
+        $("#editAssertionModal").modal("hide");
+    }
+
+    function Edit(id) {
+        var url = $("#editAssertionModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#editAssertionModal").html(data);
+            $("#editAssertionModal").modal("show");
+        });
+    }
+
     $(document).ready(function () {
         document.title = 'Edit Expense';
-        $('#expensedate').val(new Date('@Model.ExpenseDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#posteddate').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var now = new Date();
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+        var expensedate = new Date('@Model.ExpenseDate'); // Or the date you'd like converted.
+        var expDate = new Date(expensedate.getTime() - (expensedate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        var posteddate = new Date('@Model.PostedDate'); // Or the date you'd like converted.
+        var pos = new Date(posteddate.getTime() - (posteddate.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
+        $(".expensedate").val(expDate)
+        $(".posteddate").val(pos)
+
+        var tableStart = "<table class='table table-striped table-hover table-borderless'></table>";
+        var tableHeader = "<thead style='background-color: #6C7AE0; color: white;'><tr><th class='tableheadleft'>IDAdmission</th><th>Date</th><th>Description</th><th>Category</th><th>Qty</th><th>Price</th><th>MarkUp%</th><th>MarkUpValue</th><th>MarkupPrice</th><th>Subtotal</th><th>Notes</th><th class='tableheadright'>Action</th></tr></thead><tbody></tbody>";
+        var assertList = [];
+        var rows = [];
+        var totalAmount = 0;
+
+        if ('@ViewBag.EmptyAssertion' == "True") {
+            $('.addAssertion').hide();
+            $('.assertionDate').hide();
+            $('.description').hide();
+            $('.assertionCategory').hide();
+            $('.idToCodep').hide();
+            $('.idExpense').hide();
+            $("#idctc").val(@ViewBag.idctc);
+            $("#idexpense").val(@ViewBag.idexp);
+            var newdate = new Date(); // Or the date you'd like converted.
+            var chargedate = new Date(newdate.getTime() - (newdate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+            $("#chargedate").val(chargedate);
+        }
+        else
+        {
+            $('.addAssertion').show();
+            $('.assertionDate').show();
+            $('.description').show();
+            $('.assertionCategory').show();
+            $('.idToCodep').show();
+            $('.idExpense').show();
+            $("#categoryChooser").val(@ViewBag.assertioncategory);
+            $("#idctc").val(@ViewBag.idctc);
+            $("#idexpense").val(@ViewBag.idexp);
+            $(".description").val('@ViewBag.description');
+            $('.chargeCodep option:not(:selected)').attr('disabled', true);
+            var newdate = new Date('@ViewBag.chargeDate'); // Or the date you'd like converted.
+            console.log("NEW DATE", '@ViewBag.chargeDate');
+            var chargedate = new Date(newdate.getTime() - (newdate.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
+            $("#chargedate").val(chargedate);
+            var model = '@Html.Raw(Json.Encode(@ViewBag.Assertions))';
+            var newModel = JSON.parse(model);
+            console.log(newModel)
+            $.each(newModel, function (index, value) {
+                console.log(value);
+                $("#admission").val(value.IDAdmission)
+                $(".categorychooser").val(value.IDAssertionCategory)
+                console.log("HEHE", value);
+                console.log("ADMISSION", $("#admission option:selected").text());
+                console.log("IGIT", dateFormat(new Date(parseInt((value.AssertionDate).match(/\d+/)[0]))));
+                var assertion = {
+                    IDAssertion: value.IDAssertion,
+                    Description: value.Description,
+                    IDAdmission: value.IDAdmission,
+                    AssertionDate: value.AssertionDate,
+                    IDAssertionCategory: value.IDAssertionCategory,
+                    Qty: value.Qty,
+                    Price: value.Price,
+                    Markup: value.Markup,
+                    MarkupValue: value.MarkupValue,
+                    SubTotal: value.SubTotal,
+                    Notes: value.Notes,
+                    IDChargeToCodep: value.IDChargeToCodep,
+                    PostedDate: value.PostedDate
+                };
+                var note = "";
+                if (value.Notes != null) {
+                    note = value.Notes;
+                }
+                var row = "<tr><td>" + $("#admission option:selected").text() + "</td><td>" + dateFormat(new Date(parseInt((value.AssertionDate).match(/\d+/)[0]))) + "</td><td>" + value.Description + "</td><td>" + $(".categorychooser option:selected").text() + "</td><td>" + value.Qty + "</td><td>" + value.Price + "</td><td>" + value.Markup + "</td><td>" + value.MarkupValue + "</td><td>" + value.SubTotal + "</td><td>" + value.SubTotal + "</td><td>" + note + "</td> <td><button class='btn btn-sm btn-warning' value='" + value.IDAssertion + "' onclick='Edit(" + value.IDAssertion + ")'>Edit</button></td></tr>";
+                rows.push(row);
+                if (jQuery.isEmptyObject(assertList)) {
+                    $(".assertionTable").append(tableStart)
+                    $(".table").append(tableHeader)
+                    $(".table tbody").append(row);
+                }
+                else {
+                    //$('.table tbody tr:last').remove();
+                    $(".table tbody").append(row);
+                }
+                assertList.push(assertion);
+                
+            })
+
+            var total = 0;
+            for (var i = 0; i < assertList.length; i++) {
+                var tofloat = parseFloat(assertList[i].SubTotal);
+                total += tofloat;
+            }
+            var footertable = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><b>Total:</b></td><td><b>" + total + " </b></td><td> </td><td> </td></tr>";
+            $(".chargedtocodep").val(Number(total));
+            $(".table tbody").append(footertable)
+            if (assertList.length == 1) {
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        }
+
+
+        $('.chargeCodep').on('change', function () {
+            if (this.value == "Y") {
+                $('.addAssertion').show();
+                $('.assertionDate').show();
+                $('.assertionCategory').show();
+                $('.idToCodep').show();
+                $('.idExpense').show();
+                $('.description').show();
+                if (assertList.length > 0) {
+                    $(".chargeCodep").prop("disabled", true);
+                    $(".goBack").prop("disabled", true);
+                    $('.goBack').hide();
+                    var total = 0;
+                    for (var i = 0; i < assertList.length; i++) {
+                        var tofloat = parseFloat(assertList[i].SubTotal);
+                        total += tofloat;
+                    }
+                    $(".chargedtocodep").val(Number(total));
+                }
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                $('.addAssertion').hide();
+                $('.assertionDate').hide();
+                $('.assertionCategory').hide();
+                $('.idToCodep').hide();
+                $('.idExpense').hide();
+                $('.description').hide();
+                if (assertList.length > 0) {
+                    $(".chargeCodep").prop("disabled", true)
+                    $(".goBack").prop("disabled", true);
+                    $('.goBack').hide();
+                    var total = 0;
+                    for (var i = 0; i < assertList.length; i++) {
+                        var tofloat = parseFloat(assertList[i].SubTotal);
+                        total += tofloat;
+                    }
+                    $(".chargedtocodep").val(Number(total));
+                }
+                window.scrollTo(0, document.body.scrollTop);
+            }
+        });
+
+
+        $(".markup").on("keyup", function () {
+            var price = $(".price").val();
+            var qty = $(".qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(this).val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markupvalue").val(markUpValue);
+                $(".subtotal").val(subTotal);
+            }
+            else {
+                console.log("Reading")
+                $(".markupvalue").val(0);
+                $(".subtotal").val(totalPrice);
+            }
+        })
+        $(".price").on("keyup", function () {
+            var price = $(this).val();
+            var qty = $(".qty").val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(".markup").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markupvalue").val(markUpValue);
+                $(".subtotal").val(subTotal);
+            }
+            else {
+                $(".markupValue").val(0);
+                $(".subtotal").val(totalPrice);
+            }
+        });
+        $(".qty").on("keyup", function () {
+            var price = $(".price").val();
+            var qty = $(this).val();
+            var totalPrice = price * qty;
+            var markUpPercent = $(".markup").val();
+            if (markUpPercent != 0) {
+                var markUpValue = ((totalPrice * markUpPercent) / 100);
+                var subTotal = totalPrice + markUpValue;
+                $(".markupvalue").val(markUpValue);
+                $(".subtotal").val(subTotal);
+            }
+            else {
+                $(".markupvalue").val(0);
+                $(".subtotal").val(totalPrice);
+            }
+        });
+        $("#vatexempt").on('keypress', function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                event.preventDefault();
+                var vatexempt = $(this).val();
+                var total = Number(totalAmount) + Number(vatexempt);
+                $(".amount").val(total);
+            }
+        });
+        $("#amount").on('keyup', function () {
+            totalAmount = $(this).val();
+        });
+        $("#amount").on('keypress', function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                event.preventDefault();
+                var amount = $(this).val();
+                var vatsales = amount - (amount * .12);
+                var vatamount = amount * .12;
+                if (vatsales % 1 != 0) {
+                    vatsales = vatsales.toFixed(2);
+                }
+                if (vatamount % 1 != 0) {
+                    vatamount = vatamount.toFixed(2);
+                }
+                $("#vatsales").val(vatsales);
+                $("#vatamount").val(vatamount);
+                totalAmount = amount;
+                $(this).val(Number(amount) + Number($("#vatexempt").val()));
+            }
+        });
+
+        $(".cancelButton").on("click", function () {
+            $(".assertionModal").find('form').trigger('reset');
+        });
+
+        $('.assertionModal').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+
+        $('.assertionModal').on('show.bs.modal', function () {
+            $('.assertiondate').val(today);
+            $('.addassertiondateposted').val(today);
+        });
+
+        $(".addAssertion").on('click', function () {
+            var description = $("#description").val();
+            description == '' || description == null ? $("#descriptionMessage").text("Description is required!") : $("#descriptionMessage").text(null);
+            if (description != null && description != '') {
+                $(".assertionModal").modal();
+            }
+        });
+
+        $(".addButton").on('click', function () {
+            var qty = $(".qty").val();
+            var price = $(".price").val();
+            var markup = $(".markup").val();
+            var markupvalue = $(".markupvalue").val();
+            var subtotal = $(".subtotal").val();
+            var assertionnote = $(".assertionnote").val();
+            var assertionDate = $('.assertiondate').val();
+            if (qty == 0 || qty == null) {
+                return $("#qtyMessage").text("Quantity should be greater than zero!");
+            }
+            else {
+                $("#qtyMessage").text(null)
+            }
+
+            if (price == 0 || price == null) {
+                return $("#priceMessage").text("Price should be greater than zero!");
+            }
+            else {
+                $("#priceMessage").text("")
+            }
+
+            if (markupvalue == null || markupvalue == '') {
+                markupvalue = 0.00;
+            }
+
+            if (markup == null || markup == '') {
+                markup = 0.00;
+            }
+
+            if (assertionnote == "") {
+                assertionnote = '';
+            }
+
+            if (assertList.length == 0 || assertList.length == null) {
+                var expensesassertion = { IDChargeToCodep: $("#idctc").val(), ChargeDate: $("#chargedate").val(), IDAssertionCategory: $(".categorychooser").children("option:selected").val(), IDExpense: $("#idexpense").val(), Description: $("#description").val() };
+                $.ajax({
+                    url: '/Expenses/CreateExpensesAssertion',
+                    method: "POST",
+                    data: expensesassertion,
+                    success: function (data) {
+                    },
+                    error: function (err) {
+                    }
+                });
+            }
+
+            var assertion = {
+                Description: $("#description").val(),
+                IDAdmission: $(".admission").children("option:selected").val(),
+                AssertionDate: assertionDate,
+                IDAssertionCategory: $(".categorychooser").children("option:selected").val(),
+                Qty: qty,
+                Price: price,
+                Markup: markup,
+                MarkupValue: markupvalue,
+                SubTotal: subtotal,
+                Notes: assertionnote,
+                IDChargeToCodep: $("#idctc").val(),
+                PostedDate: $(".addassertiondateposted").val()
+            };
+
+            var data = $.parseJSON($.ajax({
+                url: '/Expenses/CreateAssertion',
+                method: "POST",
+                data: assertion,
+                async: false
+            }).responseText);
+
+            var tempAssertion = assertion;
+            tempAssertion.IDAssertion = data;
+            assertion = tempAssertion;
+
+            $("#assertionModal").modal("hide");
+            var row = "<tr><td>" + $(".admission").children("option:selected").html() + "</td><td>" + assertionDate + "</td><td>" + $("#description").val() + "</td><td>" + $(".categorychooser").children("option:selected").html() + "</td><td>" + qty + "</td><td>" + price + "</td><td>" + markup + "</td><td>" + markupvalue + "</td><td>" + subtotal + "</td><td>" + subtotal + "</td><td>" + assertionnote + "</td> <td><button class='btn btn-sm btn-warning' value='" + assertion.IDAssertion + "' onclick='Edit(" + assertion.IDAssertion + ")'>Edit</button></td></tr>";
+            rows.push(row);
+            if (jQuery.isEmptyObject(assertList)) {
+                $(".assertionTable").append(tableStart)
+                $(".table").append(tableHeader)
+                $(".table tbody").append(row);
+            }
+            else {
+                $('.table tbody tr:last').remove();
+                $(".table tbody").append(row);
+            }
+
+            assertList.push(assertion);
+
+            var total = 0;
+            for (var i = 0; i < assertList.length; i++) {
+                var tofloat = parseFloat(assertList[i].SubTotal);
+                total += tofloat;
+            }
+
+            var footertable = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><b>Total:</b></td><td><b>" + total + " </b></td><td> </td><td> </td></tr>";
+            $(".chargedtocodep").val(Number(total));
+            $(".table tbody").append(footertable)
+            if (assertList.length == 1) {
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+            $(".successmodal").modal().show();
+        });
+
+        $.fn.saveEdited = function (data, admission, category) {
+            for (var i = 0; i < assertList.length; i++) {
+                if (data.IDAssertion == assertList[i].IDAssertion) {
+                    console.log("DATA", data)
+                    var date = new Date(data.AssertionDate).toLocaleDateString('en-ZA')
+                    var row = "<tr><td>" + admission + "</td><td>" + date + "</td><td>" + data.Description + "</td><td>" + category + "</td><td>" + Number(data.Qty).toFixed(2) + "</td><td>" + Number(data.Price).toFixed(2) + "</td><td>" + Number(data.Markup).toFixed(2) + "</td><td>" + data.MarkupValue + "</td><td>" + data.SubTotal + "</td><td>" + data.SubTotal + "</td><td>" + data.Notes + "</td> <td><button class='btn btn-sm btn-warning' value='" + data.IDAssertion + "' onclick='Edit(" + data.IDAssertion + ")'>Edit</button></td></tr>";
+                    rows[i] = row;
+                    assertList[i] = data;
+                }
+            }
+            $(".table tbody").empty();
+            $.each(rows, function (index, value) {
+                $(".table tbody").append(value);
+            })
+            var total = 0;
+            for (var i = 0; i < assertList.length; i++) {
+                var tofloat = parseFloat(assertList[i].SubTotal);
+                total += tofloat;
+            }
+            var footertable = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><b>Total:</b></td><td><b>" + total + " </b></td><td> </td><td> </td></tr>";
+            $(".chargedtocodep").val(Number(total));
+            $(".table tbody").append(footertable)
+        }
     });
 
 </script>
@@ -35,7 +413,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.IDExpense)
         @Html.HiddenFor(model => model.EncodedBy)
-        @Html.HiddenFor(model => model.PostedDate)
+        @Html.HiddenFor(model => model.DatePosted)
         <div class="d-flex align-items-center justify-content-between">
             <h2>Edit Expense</h2>
             <div>
@@ -48,15 +426,15 @@
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     <label><b>Date Posted</b></label>
-                    @Html.TextBoxFor(model => model.PostedDate, new {@id="posteddate", @type = "datetime-local", @class = "form-control posteddate", Required = true })
+                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "date", @class = "form-control posteddate", Required = true })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Expense Date</b></label>
-                    @Html.TextBoxFor(model => model.ExpenseDate, new {@id="expensedate", @type = "datetime-local", @class = "form-control expensedate" })
+                    @Html.TextBoxFor(model => model.ExpenseDate, new { @type = "date", @class = "form-control expensedate" })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>OR Number</b></label>
-                    @Html.EditorFor(model => model.ORNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.ORNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                 </div>
             </div>
             <div class="form-row">
@@ -67,64 +445,64 @@
                 <div class="form-group col-sm-4">
                     <label><b>With Receipt</b></label>
                     @Html.DropDownListFor(modelItem => modelItem.WithReceipt,
-                            (
-                                new[] { new SelectListItem { Text = "N", Value = "N" },
+                 (
+                     new[] { new SelectListItem { Text = "N", Value = "N" },
                                 new SelectListItem { Text = "Y", Value = "Y" }
-                            }),
-                            new { @class = "form-control", @Value=Model.WithReceipt, Selected=true })
+                 }),
+                 new { @class = "form-control" })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>ID Account</b></label>
-                    @Html.DropDownListFor(model => model.IDAccount, ViewBag.accountsList as SelectList, new { @class = "form-control", @Value = Model.IDAccount, Selected = true })
+                    @Html.DropDownListFor(model => model.IDAccount, ViewBag.accountsList as SelectList, new { @class = "form-control" })
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     <label><b>Verified</b></label>
                     @Html.DropDownListFor(modelItem => modelItem.IsVerified,
-                            (
-                                new[] { new SelectListItem { Text = "N", Value = "N" },
+                 (
+                     new[] { new SelectListItem { Text = "N", Value = "N" },
                                 new SelectListItem { Text = "Y", Value = "Y" }
-                            }),
-                            new { @class = "form-control", @Value=Model.IsVerified, Selected=true })
+                 }),
+                 new { @class = "form-control" })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Amount</b></label>
-                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @id = "amount", @type = "number", @class = "form-control amount", @Value = "0", Required = true } })
+                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @id = "amount", @type = "number", @class = "form-control amount", Required = true } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>VAT Sales</b></label>
-                    @Html.EditorFor(model => model.VATSales, new { htmlAttributes = new { @id = "vatsales", @type = "number", @class = "form-control vatsales", @Value = "0.00", disabled = true } })
+                    @Html.EditorFor(model => model.VATSales, new { htmlAttributes = new { @id = "vatsales", @type = "number", @class = "form-control vatsales", @readonly = "readonly" } })
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     <label><b>VAT Amount</b></label>
-                    @Html.EditorFor(model => model.VATAmount, new { htmlAttributes = new { @id = "vatamount", @type = "number", @class = "form-control vatamount", @Value = "0.00", disabled = true } })
+                    @Html.EditorFor(model => model.VATAmount, new { htmlAttributes = new { @id = "vatamount", @type = "number", @class = "form-control vatamount", @readonly = "readonly" } })
 
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>VAT Exempt</b></label>
-                    @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @id = "vatexempt", @type = "number", @class = "form-control vatexempt", @Value = "0" } })
+                    @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @id = "vatexempt", @type = "number", @class = "form-control vatexempt" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>TIN</b></label>
-                    @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { id = "tin", @class = "form-control tin" } })
+                    @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { id = "tin", @class = "form-control tin", autocomplete = "off" } })
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     <label><b>Charged To Codep</b></label>
-                    @Html.EditorFor(model => model.ChargedToCodep, new { htmlAttributes = new { @type = "number", @class = "form-control", @Value = "0.00" } })
+                    @Html.EditorFor(model => model.ChargedToCodep, new { htmlAttributes = new { @id = "chargedtocodep", @type = "number", @class = "form-control chargedtocodep", @readonly = "readonly" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Charge To Codep</b></label>
                     @Html.DropDownListFor(modelItem => modelItem.ChargeToCodep,
-                            (
-                                new[] { new SelectListItem { Text = "N", Value = "N" },
+                 (
+                     new[] { new SelectListItem { Text = "N", Value = "N" },
                                 new SelectListItem { Text = "Y", Value = "Y" }
-                            }),
-                            new { @class = "form-control chargeCodep", @Value=Model.ChargeToCodep, Selected=true })
+                 }),
+                 new { @class = "form-control chargeCodep" })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Particulars</b></label>
@@ -133,8 +511,7 @@
             </div>
         </div>
     }
-</div>
-<div class="container">
+
     <div id="assertionButton">
         <button class="btn addAssertion" id="addAssertion" style="background-color:#4E58A2;color:white;">
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
@@ -143,12 +520,12 @@
         <div class="row col-sm-12 mt-4">
             <div class="col-sm-3 pl-0 idToCodep">
                 <label>ID ChargeTo Codep</label>
-                <input class="form-control idctc" id="idctc" value="@ViewBag.lastIDCTC" type="number" disabled />
+                <input class="form-control idctc" id="idctc" value="@ViewBag.ExpensesAssertion" type="number" disabled />
                 <span></span>
             </div>
             <div class="col-sm-3 pl-0 idExpense">
                 <label>ID Expense</label>
-                <input class="form-control idexpense" id="idexpense" value="@ViewBag.lastIDEXP" type="number" disabled />
+                <input class="form-control idexpense" id="idexpense" value="@ViewBag.ExpensesAssertion" type="number" disabled />
             </div>
             <div class="col-sm-3 pl-0 assertionDate">
                 <label>Charge Date</label>
@@ -156,7 +533,7 @@
             </div>
             <div class="col-sm-3 pl-0 assertionCategory">
                 <label>Assertion Category</label>
-                <select class="form-control categorychooser" id="categoryChooser">
+                <select class="form-control categorychooser" selected="@ViewBag.ExpensesAssertion" id="categoryChooser">
                     @foreach (var item in ViewBag.category)
                     {
                         <option value="@item.Value">@item.Text</option>
@@ -167,11 +544,12 @@
         <div class="row col-sm-12 mt-4">
             <div class="col-sm-3 description pl-0">
                 <label><b>Description</b></label>
-                <input class="form-control description" id="description" />
+                <input class="form-control description" id="description" autocomplete="off" />
                 <span id="descriptionMessage" style="color:red;"></span>
             </div>
         </div>
     </div>
+
     <div class="modal fade assertionModal" id="assertionModal" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -247,88 +625,29 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<div class="modal fade assertionEditModal" id="assertionEditModal" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="gridSystemModalLabel">Edit Assertion</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="row p-2">
-                    <div class="col-sm-4">
-                        <label><b>ID Admission</b></label>
-                        <select class="form-control editadmission" id="editadmission">
-                            @foreach (var item in ViewBag.residentList)
-                            {
-                                <option value="@item.Value">@item.Text</option>
-                            }
-                        </select>
-                        <span style="color:red;" id="editadmissionMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Qty</b></label>
-                        <input class="form-control editqty" id="editqty" name="qty" type="number" value="0" min="0" step="1" oninput="validity.valid||(value='');" />
-                        <span style="color:red;" id="editqtyMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Assertion Category</b></label>
-                        <select class="form-control editcategory" id="editcategory" name="category">
-                            @foreach (var item in ViewBag.category)
-                            {
-                                <option value="@item.Value">@item.Text</option>
-                            }
-                        </select>
-                        <span style="color:red;" id="editassertionCategoryMessage"></span>
-                    </div>
-                </div>
-                <div class="row p-2">
-                    <div class="col-sm-4">
-                        <label><b>Price</b></label>
-                        <input class="form-control editprice" id="editprice" name="price" type="number" value="0" />
-                        <span id="editpriceMessage" style="color:red;"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Markup %</b></label>
-                        <input class="form-control editmarkup" id="editmarkup" name="markup" type="number" value="0.00" />
-                        <span style="color:red;" id="editmarkupMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Markup Value</b></label>
-                        <input type="number" class="form-control editmarkupvalue" id="editmarkupvalue" name="markupvalue" disabled value="0.00" />
-                        <span style="color:red;" id="editmarkupValueMessage"></span>
-                    </div>
-                </div>
-                <div class="row p-2">
-                    <div class="col-sm-4">
-                        <label><b>Subtotal</b></label>
-                        <input type="number" class="form-control editsubtotal" id="editsubtotal" value="0" name="subtotal" disabled />
-                        <span style="color:red;" id="editsubtotalMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Posted Date</b></label>
-                        <input type="date" class="form-control editaddassertiondateposted" name="posteddate" id="editposteddate" />
-                        <span id="editpostedDateMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Notes</b></label>
-                        <textarea class="form-control editassertionnote" rows="5" id="editnote"></textarea>
-                        <span style="color:red;" id="editnotesMessage"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger editcancelButton" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary editassertionbutton">Save</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <div class="container">
-    <button class="btn saveallassertion pull-right" style="background-color:#4E58A2;color:white;">Save All Assertion</button>
     <br />
     <br />
     <div class="assertionTable">
 
+    </div>
+    <div class="footerTable"></div>
+</div>
+<div class="modal fade" id="editAssertionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("EditAssertionPartial","Expenses")">
+</div>
+<div class="modal fade successmodal" id="successmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Message</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Successfully added!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

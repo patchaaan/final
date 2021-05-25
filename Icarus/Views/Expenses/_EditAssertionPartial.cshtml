@@ -4,7 +4,7 @@
 <script>
     function OnSuccess(response) {
         var assertion = {
-            IDAssertion: '@Model.IDAssertion',
+            IDAssertion: Number('@Model.IDAssertion'),
             Description: $(".editdescription").val(),
             IDAdmission: $(".editadmission").children("option:selected").val(),
             AssertionDate: $(".editaddassertiondate").val(),
@@ -114,11 +114,11 @@
         {
             OnSuccess = "OnSuccess",
             OnFailure = "OnFailure",
-            //LoadingElementId = "progress",
             HttpMethod = "POST"
         }))
         {
             @Html.HiddenFor(model => model.IDAssertion)
+            @Html.HiddenFor(model => model.IDChargeToCodep)
             <div class="modal-body">
                 <div class="row p-2">
                     <div class="col-sm-4">
@@ -128,7 +128,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label><b>Qty</b></label>
-                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @id = "editqty", @type = "number", @class = "form-control editqty", @Min = "0", @Step = "1", oninput = "validity.valid||(value='');", Required = true } })
+                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @id = "editqty", @type = "number", Value=Model.Qty, @class = "form-control editqty", @Min = "0", @Step = "1", oninput = "validity.valid||(value='');", Required = true } })
                         <span style="color:red;" id="editqtyMessage"></span>
                     </div>
                     <div class="col-sm-4">
@@ -140,24 +140,24 @@
                 <div class="row p-2">
                     <div class="col-sm-4">
                         <label><b>Price</b></label>
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice", @type = "number", @class = "form-control editprice", Required = true } })
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice",Value=Model.Price, @type = "number", @class = "form-control editprice", Required = true } })
                         <span id="editpriceMessage" style="color:red;"></span>
                     </div>
                     <div class="col-sm-4">
                         <label><b>Markup %</b></label>
-                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup", @type = "number", @class = "form-control editmarkup" } })
+                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup",Value=Model.Markup, @type = "number", @class = "form-control editmarkup" } })
                         <span style="color:red;" id="editmarkupMessage"></span>
                     </div>
                     <div class="col-sm-4">
                         <label><b>Markup Value</b></label>
-                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue", @type = "number", @class = "form-control editmarkupvalue", disabled = true } })
+                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue",Value=Model.MarkupValue, @type = "number", @class = "form-control editmarkupvalue" } })
                         <span style="color:red;" id="editmarkupValueMessage"></span>
                     </div>
                 </div>
                 <div class="row p-2">
                     <div class="col-sm-4">
                         <label><b>Subtotal</b></label>
-                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", @class = "form-control editsubtotal", disabled = true } })
+                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", Value=Model.SubTotal, @class = "form-control editsubtotal"} })
                         <span style="color:red;" id="editsubtotalMessage"></span>
                     </div>
                     <div class="col-sm-4">

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -45,35 +46,6 @@ namespace Icarus.Controllers
                 return RedirectToAction("Login", "Login");
             }
         }
-        //[HttpGet, ActionName("Verified")]
-        //public ActionResult Verified(String clicked)
-        //{
-        //    if (Session["Username"] != null)
-        //    {
-        //        if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-        //        {
-        //            if (clicked == "F")
-        //            {
-        //                ViewBag.clicked = "T";
-        //                var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-        //                var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
-        //                return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IsVerified).ToList());
-        //            }
-        //            else {
-        //                ViewBag.clicked = "F";
-        //                var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-        //                var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
-        //                return View("Index", db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList());
-        //            }
-        //        }
-        //        return RedirectToAction("Index", "Residents");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login", "Login");
-        //    }
-        //}
-
 
         // GET: Expenses/Details/5
         public ActionResult Details(int? id)
@@ -151,9 +123,9 @@ namespace Icarus.Controllers
             {
                 using (ICARUSDBEntities icarus = new ICARUSDBEntities())
                 {
-
                     db.tblAssertions.Add(tblAssertion);
                     db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
                     int id = tblAssertion.IDAssertion;
                     return Json(id, JsonRequestBehavior.AllowGet);
                 }
@@ -182,19 +154,35 @@ namespace Icarus.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 tblExpens tblExpens = db.tblExpenses.Find(id);
+                int idexpense = tblExpens.IDExpense;
                 if (tblExpens == null)
                 {
                     return HttpNotFound();
                 }
-                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
                 tblExpensesForAssertion expenseasertion = db.tblExpensesForAssertions.Where(x => x.IDExpense == tblExpens.IDExpense).FirstOrDefault();
-                IEnumerable<tblAssertion> assertion = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
-                ViewBag.assertionlist = true;
-                if (!assertion.Any() || assertion == null)
+                if (expenseasertion == null)
                 {
-                    ViewBag.assertionlist = false;
+                    tblExpensesForAssertion newexpense = new tblExpensesForAssertion();
+                    int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
+                    newexpense.IDChargeToCodep = idCTC + 1;
+                    newexpense.IDExpense = idexpense;
+                    ViewBag.idctc = idCTC + 1;
+                    ViewBag.idexp = tblExpens.IDExpense;
+                    ViewBag.EmptyAssertion = true;
+                    ViewData["Assertions"] = null;
                 }
-                ViewData["Assertion"] = assertion;
+                else {
+                    IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
+                    ViewBag.EmptyAssertion = false;
+                    ViewBag.idctc = expenseasertion.IDChargeToCodep;
+                    ViewBag.idexp = expenseasertion.IDExpense;
+                    ViewBag.assertioncategory = expenseasertion.IDAssertionCategory;
+                    ViewBag.description = expenseasertion.Description;
+                    ViewBag.chargeDate = expenseasertion.ChargeDate;
+                    ViewData["Assertions"] = assertions;
+                }
+
+                ViewData["ExpenseAssertion"] = expenseasertion;
                 var account = db.tblExpensesChartOfAccounts.Select(
                         s => new {
                             Text = s.Account + "      " + s.AccountCode,
@@ -210,6 +198,7 @@ namespace Icarus.Controllers
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
                 ViewBag.accountsList = new SelectList(account, "Value", "Text");
                 ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
                 return View(tblExpens);
             }
             return RedirectToAction("Login", "Login");
@@ -222,10 +211,35 @@ namespace Icarus.Controllers
             {
                     db.Entry(tblAssertion).State = EntityState.Modified;
                     db.SaveChanges();
-                    return Json("Sucess");
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
+                return Json("Sucess");
             }
             return Json("Failed");
         }
+
+        [HttpGet]
+        public PartialViewResult DetailsPartial(int id)
+        {
+            tblExpens expense = db.tblExpenses.Find(id);
+            var account = db.tblExpensesChartOfAccounts.Select(
+                        s => new {
+                            Text = s.Account + "      " + s.AccountCode,
+                            Value = s.IDAccount
+                        }
+                    ).ToList();
+            var residents = db.vAdmissionBrowses.Select(
+                    s => new {
+                        Text = s.Resident,
+                        Value = s.IDAdmission
+                    }
+                ).ToList();
+            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            ViewBag.accountsList = new SelectList(account, "Value", "Text");
+            ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+            ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+            return PartialView("_DetailsPartial", expense);
+        }
+
 
         [HttpGet]
         public PartialViewResult EditAssertionPartial(int id)

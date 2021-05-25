@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Icarus.Models.vrptExpens>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<script>
+    $(document).ready(function() {
+        document.title = "Expenses Date Range";
+    });
+</script>
+<style>
+    .holder {
+        padding: 2%;
+    }
+
+    thead, tfoot {
+        display: table-row-group
+    }
+
+    thead, tbody tr:nth-last-child(1) {
+        border-bottom: 2px solid black;
+    }
+
+    td {
+        height: 50px !important;
+    }
+</style>
+
+<div class="holder">
+    <h3>Collectibles</h3>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" width="1%">IDExp</th>
+                <th scope="col" width="10%">ExpDate</th>
+                <th scope="col" width="2%" style="text-align:center;">ORNumber</th>
+                <th scope="col" width="10%">Vendor</th>
+                <th scope="col" width="10%" style="text-align:center;">Particulars</th>
+                <th scope="col" width="10%" style="text-align:right;">Account</th>
+                <th scope="col" width="8%" style="text-align:right;">VATSales</th>
+                <th scope="col" width="5%" style="text-align:right;">VATAmount</th>
+                <th scope="col" width="5%" style="text-align:right;">VATExempt</th>
+                <th scope="col" width="5%" style="text-align:right;">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> </td>
+                <td><h4><b>Expenses</b></h4></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                if (item.ChargeToCodep == "N")
+                {
+                    <tr>
+                        <td>@item.IDExpense</td>
+                        <td>@item.ExpenseDate</td>
+                        <td style="text-align:center;">@item.ORNumber</td>
+                        <td>@item.Vendor</td>
+                        <td style="text-align:center;">@item.Particulars</td>
+                        <td style="text-align:right;">@item.Account</td>
+                        <td style="text-align:right;">@item.VATSales</td>
+                        <td style="text-align:right;">@item.VATAmount</td>
+                        <td style="text-align:right;">@item.VATExempt</td>
+                        <td style="text-align:right;">@item.Amount.ToString("0.00")</td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td><h4><b>Category Total:</b></h4></td>
+                <td><h4><b>&nbsp;@String.Format("{0:n2}", @Model.Where(x => x.ChargeToCodep == "N").Sum(x => x.Amount))</b></h4></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td><h4><b>Charge To Codep</b></h4></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td></td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            @if (Model.Where(x => x.ChargeToCodep == "Y").Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.ChargeToCodep == "Y")
+                    {
+                        <tr>
+                            <td>@item.IDExpense</td>
+                            <td>@item.ExpenseDate</td>
+                            <td style="text-align:center;">@item.ORNumber</td>
+                            <td>@item.Vendor</td>
+                            <td style="text-align:center;">@item.Particulars</td>
+                            <td style="text-align:right;">@item.Account</td>
+                            <td style="text-align:right;">@item.VATSales</td>
+                            <td style="text-align:right;">@item.VATAmount</td>
+                            <td style="text-align:right;">@item.VATExempt</td>
+                            <td style="text-align:right;">@item.Amount.ToString("0.00")</td>
+                        </tr>
+                    }
+                }
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td><h4><b>Category Total:</b></h4></td>
+                    <td><h4><b>&nbsp;@String.Format("{0:n2}", @Model.Where(x => x.ChargeToCodep == "Y").Sum(x => x.Amount))</b></h4></td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <label class="pull-right">Grand Total: &nbsp;&nbsp;@String.Format("{0:n2}", @Model.Sum(x => x.Amount))</label>
+</div>

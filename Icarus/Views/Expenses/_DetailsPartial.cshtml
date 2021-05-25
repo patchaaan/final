@@ -1,0 +1,135 @@
+﻿@model Icarus.Models.tblExpens
+
+<script>
+    $(document).ready(function () {
+        $('#posteddate').val(new Date('@Model.DatePosted').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+        $('#expensedate').val(new Date('@Model.ExpenseDate').toLocaleString("sv-SE", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).replace(" ", "T"));
+
+        $(".cancelButton").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+        $(".close").on("click", function () {
+            $(".modal-dialog").find('form').trigger('reset');
+        });
+    });
+</script>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Expense Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <div class="form">
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Date Posted</b></label>
+                        @Html.TextBoxFor(model => model.PostedDate, new {@id="posteddate", @type = "datetime-local", @class = "form-control posteddate", disabled = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Expense Date</b></label>
+                        @Html.TextBoxFor(model => model.ExpenseDate, new {@id="expensedate", @type = "datetime-local", @class = "form-control expensedate", disabled = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>OR Number</b></label>
+                        @Html.EditorFor(model => model.ORNumber, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Vendor</b></label>
+                        @Html.DropDownListFor(model => model.IDVendor, (SelectList)ViewBag.vendors, new { @class = "form-control", disabled = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>With Receipt</b></label>
+                        @Html.DropDownListFor(modelItem => modelItem.WithReceipt,
+                     (
+                         new[] { new SelectListItem { Text = "N", Value = "N" },
+                                    new SelectListItem { Text = "Y", Value = "Y" }
+                     }),
+                     new { @class = "form-control", disabled = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>ID Account</b></label>
+                        @Html.DropDownListFor(model => model.IDAccount, ViewBag.accountsList as SelectList, new { @class = "form-control", disabled = true })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Verified</b></label>
+                        @Html.DropDownListFor(modelItem => modelItem.IsVerified,
+                     (
+                         new[] { new SelectListItem { Text = "N", Value = "N" },
+                                    new SelectListItem { Text = "Y", Value = "Y" }
+                     }),
+                     new { @class = "form-control", disabled = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Amount</b></label>
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @id = "amount", @type = "number", @class = "form-control amount", disabled = true } })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>VAT Sales</b></label>
+                        @Html.EditorFor(model => model.VATSales, new { htmlAttributes = new { @id = "vatsales", @type = "number", @class = "form-control vatsales", disabled = true } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>VAT Amount</b></label>
+                        @Html.EditorFor(model => model.VATAmount, new { htmlAttributes = new { @id = "vatamount", @type = "number", @class = "form-control vatamount", disabled = true } })
+
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>VAT Exempt</b></label>
+                        @Html.EditorFor(model => model.VATExempt, new { htmlAttributes = new { @id = "vatexempt", @type = "number", @class = "form-control vatexempt", disabled = true } })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>TIN</b></label>
+                        @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { id = "tin", @class = "form-control tin", disabled = true } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-4">
+                        <label><b>Charged To Codep</b></label>
+                        @Html.EditorFor(model => model.ChargedToCodep, new { htmlAttributes = new { @id = "chargedtocodep", @type = "number", @class = "form-control chargedtocodep", disabled = true } })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Charge To Codep</b></label>
+                        @Html.DropDownListFor(modelItem => modelItem.ChargeToCodep,
+                     (
+                         new[] { new SelectListItem { Text = "N", Value = "N" },
+                                    new SelectListItem { Text = "Y", Value = "Y" }
+                     }),
+                     new { @class = "form-control chargeCodep", disabled = true })
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label><b>Particulars</b></label>
+                        @Html.TextAreaFor(model => model.Particulars, new { @class = "form-control", @rows = 5, disabled = true })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+
+
+
