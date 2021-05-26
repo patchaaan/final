@@ -45,8 +45,20 @@
         min-height: 4vh;
         text-align: center;
     }
+
+    .border {
+        border-color: blue;
+        border-width: 1px;
+        border-style: solid;
+    }
+
+    #id.blue {
+        border: 1px solid blue;
+    }
+
 </style>
 <script>
+    var oldid = null;
     function Delete(id) {
         $("#id").val(id);
         $('#myModal').modal().show();
@@ -54,6 +66,17 @@
 
     function Add() {
         $("#createModal").modal().show();
+    }
+
+    function store(id){
+        $(".generatebillingid").val(id);
+        console.log("CLICKED", id);
+        $('.generatebillingbutton').removeAttr("type").attr("type", "submit");
+        document.getElementById(id).style.border = "1px solid blue";
+        if (oldid != null) {
+            document.getElementById(oldid).style.border = "none";
+        }
+        oldid = id;
     }
 
     $(document).ready(function () {
@@ -74,11 +97,19 @@
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
         @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
         {
-            <div>
-                <a class="btn" style="background-color:#4E58A2;color:white;">
-                    <span>Generate Billing</span>
-                </a>
-                <a class="btn" style="background-color:#4E58A2;color:white;" onclick="Add()">
+        <div class="d-flex">
+            @if (Session["isAAG"].ToString() == "Y") {
+                using (Html.BeginForm("GenerateBilling", "Admissions", FormMethod.Get, new { target = "_blank" }))
+                {
+                    <div class="form">
+                        <input style="display:none;" type="number" name="id" id="generatebillingid" class="generatebillingid" />
+                        <button class="btn mr-1 generatebillingbutton" id="generatebillingbutton" type="button" style="background-color:#4E58A2;color:white;">
+                            <span>Generate Billing</span>
+                        </button>
+                    </div>
+                }
+            }
+                <a class="btn ml-1" style="background-color:#4E58A2;color:white;" onclick="Add()">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     <span>&nbsp;Add Admission</span>
                 </a>
@@ -145,7 +176,14 @@
                     var id = item.IDAdmission;
                     <tr>
                         <td scope="row">
-                            <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" value="@item.IDAdmission" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                            @if (Session["isAAG"].ToString() == "Y")
+                            {
+                                <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" onclick="store(@item.IDAdmission)" id="@item.IDAdmission" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                            }
+                            else
+                            {
+                                <span ondblclick="window.location='/Admissions/Details/@item.IDAdmission'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDAdmission</span>
+                            }
                         </td>
                         <td>
                             @Html.ActionLink(

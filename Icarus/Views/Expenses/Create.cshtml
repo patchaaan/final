@@ -412,7 +412,7 @@
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>OR Number</b></label>
-                    @Html.EditorFor(model => model.ORNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                    @Html.EditorFor(model => model.ORNumber, new { htmlAttributes = new { @type="number", @class = "form-control", autocomplete = "off" } })
                 </div>
             </div>
             <div class="form-row">
@@ -465,13 +465,13 @@
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>TIN</b></label>
-                    @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { id = "tin", @class = "form-control tin", autocomplete = "off" } })
+                    @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @type="number", id = "tin", @class = "form-control tin", autocomplete = "off" } })
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-sm-4">
                     <label><b>Charged To Codep</b></label>
-                    @Html.EditorFor(model => model.ChargedToCodep, new { htmlAttributes = new { @id = "chargedtocodep", @type = "number", @class = "form-control chargedtocodep", @Value = "0.00", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.ChargedToCodep, new { htmlAttributes = new { @id = "chargedtocodep", @type = "number", @class = "form-control chargedtocodep", @Value = "0", @readonly = "readonly" } })
                 </div>
                 <div class="form-group col-sm-4">
                     <label><b>Charge To Codep</b></label>
@@ -561,24 +561,24 @@
                         <div class="row p-2">
                             <div class="col-sm-4">
                                 <label><b>Price</b></label>
-                                <input class="form-control price" name="price" type="number" value="0" />
+                                <input class="form-control price" name="price" step="any" type="number" value="0" />
                                 <span id="priceMessage" style="color:red;"></span>
                             </div>
                             <div class="col-sm-4">
                                 <label><b>Markup %</b></label>
-                                <input class="form-control markup" name="markup" type="number" value="0.00" />
+                                <input class="form-control markup" name="markup" step="any" type="number" value="0.00" />
                                 <span id="markupMessage"></span>
                             </div>
                             <div class="col-sm-4">
                                 <label><b>Markup Value</b></label>
-                                <input type="number" class="form-control markupvalue" name="markupvalue" disabled value="0.00" />
+                                <input type="number" class="form-control markupvalue" step="any" name="markupvalue" disabled value="0.00" />
                                 <span id="markupValueMessage"></span>
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-sm-4">
                                 <label><b>Subtotal</b></label>
-                                <input type="number" class="form-control subtotal" value="0" name="subtotal" disabled />
+                                <input type="number" class="form-control subtotal" step="any" value="0" name="subtotal" disabled />
                                 <span id="subtotalMessage"></span>
                             </div>
                             <div class="col-sm-4">

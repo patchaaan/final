@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
+using Rotativa;
 
 namespace Icarus.Controllers
 {
@@ -40,6 +41,44 @@ namespace Icarus.Controllers
             }
             else
             {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GenerateBilling(int? id) {
+            if (Session["Username"] != null) {
+                DateTime today = DateTime.Today.AddDays(-30);
+                tblAdmissionBilling billing = db.tblAdmissionBillings.Where(x => x.IDAdmission == id).OrderByDescending(x => x.BillingDate).FirstOrDefault();
+                tblPayment payment = db.tblPayments.Where(x => x.IDAdmission == id).OrderByDescending(x => x.PaidDate).FirstOrDefault();
+                IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate >= billing.BillingDate.Date.AddDays(-30) && x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
+                vAdmissionBrowse browse = db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault();
+                ViewData["Assertions"] = assertions;
+                ViewBag.Billing = billing;
+                ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
+                ViewBag.SumAll = assertions.Sum(x => x.SubTotal) + billing.Amount;
+                tblStaff staff = db.tblStaffs.Find(Int32.Parse(Session["ID"].ToString()));
+                ViewBag.PreparedBy = staff.Firstname.ToString() + " " + staff.Lastname.ToString();
+                if (payment != null)
+                {
+                    ViewBag.PaidDate = payment.PaidDate.ToString("MM/dd/yyyy");
+                    ViewBag.TotalPaid = Math.Round((Double)payment.TotalPaid, 2);
+                }
+                else {
+                    ViewBag.PaidDate = null;
+                    ViewBag.TotalPaid = null;
+                }
+
+                string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                var report = new ViewAsPdf(db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault())
+                {
+                    PageOrientation = Rotativa.Options.Orientation.Portrait,
+                    PageSize = Rotativa.Options.Size.A4,
+                    CustomSwitches = footer
+                };
+                return report;
+            }
+            else {
                 return RedirectToAction("Login", "Login");
             }
         }

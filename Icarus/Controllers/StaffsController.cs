@@ -155,6 +155,13 @@ namespace Icarus.Controllers
                 {
                     db.Entry(tblStaff).State = EntityState.Modified;
                     db.SaveChanges();
+                    Session["isAAG"] = tblStaff.isAAG.ToString();
+                    Session["isADG"] = tblStaff.isADG.ToString();
+                    Session["isEDG"] = tblStaff.isEDG.ToString();
+                    Session["isPG"] = tblStaff.isPG.ToString();
+                    Session["Username"] = tblStaff.Username.ToString();
+                    Session["Password"] = tblStaff.Password.ToString();
+                    Session["ID"] = tblStaff.IDStaff.ToString();
                     return RedirectToAction("Index");
                 }
                 return View(tblStaff);

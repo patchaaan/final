@@ -24,7 +24,7 @@
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title" id="myModalLabel">Edit Inquiry</h3>
+            <h3 class="modal-title" id="myModalLabel">Edit Communication Log</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         @using (Html.BeginForm("CommLogsEdit", "Inquiries", FormMethod.Post))
@@ -35,15 +35,25 @@
             <div class="modal-body">
                 <div class="form">
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
+                            <label><b>CommLog Date</b></label>
                             @Html.EditorFor(model => model.CommDate, new { htmlAttributes = new { @id = "commdate", @type = "datetime-local", @class = "form-control", Required = true } })
                             @Html.ValidationMessageFor(model => model.CommDate, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
-                            @Html.EditorFor(model => model.InitiatedBy, new { htmlAttributes = new { @id = "initiatedby", @type = "text", @class = "form-control", autocomplete = "off", Required = true } })
-                            @Html.ValidationMessageFor(model => model.CommDate, "", new { @class = "text-danger" })
+                        <div class="form-group col-sm-6">
+                            <label><b>Initiated By:</b></label>
+                            @Html.DropDownListFor(model => model.InitiatedBy,
+                                    (
+                                        new[] { new SelectListItem { Text = "BOH Staff", Value = "BOH Staff" },
+                                        new SelectListItem { Text = "Codep", Value = "Codep" }
+                                    }),
+                                    new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.InitiatedBy, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label><b>CommLog Details</b></label>
                             @Html.TextAreaFor(model => model.CommDetails, new { @class = "form-control", @rows = 5 })
                             @Html.ValidationMessageFor(model => model.CommDetails, "", new { @class = "text-danger" })
                         </div>

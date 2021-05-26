@@ -33,7 +33,7 @@
         var expensedate = new Date('@Model.ExpenseDate'); // Or the date you'd like converted.
         var expDate = new Date(expensedate.getTime() - (expensedate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
         var posteddate = new Date('@Model.PostedDate'); // Or the date you'd like converted.
-        var pos = new Date(posteddate.getTime() - (posteddate.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
+        var pos = new Date(posteddate.getTime() - (posteddate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
         $(".expensedate").val(expDate)
         $(".posteddate").val(pos)
 
@@ -389,6 +389,8 @@
                     assertList[i] = data;
                 }
             }
+
+            $(".goback").hide();
             $(".table tbody").empty();
             $.each(rows, function (index, value) {
                 $(".table tbody").append(value);
@@ -417,7 +419,7 @@
         <div class="d-flex align-items-center justify-content-between">
             <h2>Edit Expense</h2>
             <div>
-                <a type="button" class="btn btn-warning" href="/Expenses">Go Back</a>
+                <a type="button" class="btn btn-warning goback" id="goback" href="/Expenses">Go Back</a>
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </div>
@@ -577,24 +579,24 @@
                             </div>
                             <div class="col-sm-4">
                                 <label><b>Qty</b></label>
-                                <input class="form-control qty" name="qty" type="number" value="0" min="0" step="1" oninput="validity.valid||(value='');" />
+                                <input class="form-control qty" name="qty" type="number" value="0" min="0" oninput="validity.valid||(value='');" />
                                 <span style="color:red;" id="qtyMessage"></span>
                             </div>
                         </div>
                         <div class="row p-2">
                             <div class="col-sm-4">
                                 <label><b>Price</b></label>
-                                <input class="form-control price" name="price" type="number" value="0" />
+                                <input class="form-control price" name="price" type="number" step="any" value="0" />
                                 <span id="priceMessage" style="color:red;"></span>
                             </div>
                             <div class="col-sm-4">
                                 <label><b>Markup %</b></label>
-                                <input class="form-control markup" name="markup" type="number" value="0.00" />
+                                <input class="form-control markup" name="markup" type="number" step="any" value="0.00" />
                                 <span id="markupMessage"></span>
                             </div>
                             <div class="col-sm-4">
                                 <label><b>Markup Value</b></label>
-                                <input type="number" class="form-control markupvalue" name="markupvalue" disabled value="0.00" />
+                                <input type="number" class="form-control markupvalue" step="any" name="markupvalue" disabled value="0.00" />
                                 <span id="markupValueMessage"></span>
                             </div>
                         </div>

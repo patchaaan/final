@@ -60,12 +60,12 @@
                     <div class="form-row">
                         <div class="form-group col-sm-4">
                             <label><b>Date Hired:</b></label>
-                            @Html.TextBoxFor(model => model.DateHired, new { @id="datehired", @type = "datetime-local datehired", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.DateHired, new { @id="datehired", @type = "datetime-local", @class = "form-control datehired" })
                             @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Date Terminated:</b></label>
-                            @Html.TextBoxFor(model => model.DateTerminated, new { @id="dateterminated", @type = "datetime-local dateterminated", @class = "form-control" })
+                            @Html.TextBoxFor(model => model.DateTerminated, new { @id="dateterminated", @type = "datetime-local", @class = "form-control  dateterminated" })
                             @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">

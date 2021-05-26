@@ -140,24 +140,24 @@
                 <div class="row p-2">
                     <div class="col-sm-4">
                         <label><b>Price</b></label>
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice",Value=Model.Price, @type = "number", @class = "form-control editprice", Required = true } })
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice",Value=Model.Price, @step="any", @type = "number", @class = "form-control editprice", Required = true } })
                         <span id="editpriceMessage" style="color:red;"></span>
                     </div>
                     <div class="col-sm-4">
                         <label><b>Markup %</b></label>
-                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup",Value=Model.Markup, @type = "number", @class = "form-control editmarkup" } })
+                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup",Value=Model.Markup, @step = "any", @type = "number", @class = "form-control editmarkup" } })
                         <span style="color:red;" id="editmarkupMessage"></span>
                     </div>
                     <div class="col-sm-4">
                         <label><b>Markup Value</b></label>
-                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue",Value=Model.MarkupValue, @type = "number", @class = "form-control editmarkupvalue" } })
+                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue",Value=Model.MarkupValue, @step = "any", @type = "number", @class = "form-control editmarkupvalue" } })
                         <span style="color:red;" id="editmarkupValueMessage"></span>
                     </div>
                 </div>
                 <div class="row p-2">
                     <div class="col-sm-4">
                         <label><b>Subtotal</b></label>
-                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", Value=Model.SubTotal, @class = "form-control editsubtotal"} })
+                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", @step = "any", Value =Model.SubTotal, @class = "form-control editsubtotal"} })
                         <span style="color:red;" id="editsubtotalMessage"></span>
                     </div>
                     <div class="col-sm-4">

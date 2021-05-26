@@ -133,7 +133,7 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditPartial(int id)
         {
-            tblPayment payment = db.tblPayments.Find(id);
+            tblCodepUpdate update = db.tblCodepUpdates.Find(id);
             var residents = db.vAdmissionBrowses.Select(
                             s => new
                             {
@@ -142,7 +142,7 @@ namespace Icarus.Controllers
                             }
                         ).ToList();
             ViewBag.residentList = new SelectList(residents, "Value", "Text");
-            return PartialView("_EditPartial", payment);
+            return PartialView("_EditPartial", update);
         }
 
         // POST: CodepUpdates/Edit/5
