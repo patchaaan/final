@@ -7,7 +7,6 @@
 
 <script>
     function dateFormat(d) {
-        //console.log(d);
         return ((d.getMonth() + 1) + "").padStart(2, "0")
             + "/" + (d.getDate() + "").padStart(2, "0")
             + "/" + d.getFullYear();
@@ -70,19 +69,13 @@
             $(".description").val('@ViewBag.description');
             $('.chargeCodep option:not(:selected)').attr('disabled', true);
             var newdate = new Date('@ViewBag.chargeDate'); // Or the date you'd like converted.
-            console.log("NEW DATE", '@ViewBag.chargeDate');
             var chargedate = new Date(newdate.getTime() - (newdate.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
             $("#chargedate").val(chargedate);
             var model = '@Html.Raw(Json.Encode(@ViewBag.Assertions))';
             var newModel = JSON.parse(model);
-            console.log(newModel)
             $.each(newModel, function (index, value) {
-                console.log(value);
                 $("#admission").val(value.IDAdmission)
                 $(".categorychooser").val(value.IDAssertionCategory)
-                console.log("HEHE", value);
-                console.log("ADMISSION", $("#admission option:selected").text());
-                console.log("IGIT", dateFormat(new Date(parseInt((value.AssertionDate).match(/\d+/)[0]))));
                 var assertion = {
                     IDAssertion: value.IDAssertion,
                     Description: value.Description,
@@ -186,7 +179,6 @@
                 $(".subtotal").val(subTotal);
             }
             else {
-                console.log("Reading")
                 $(".markupvalue").val(0);
                 $(".subtotal").val(totalPrice);
             }
@@ -382,7 +374,6 @@
         $.fn.saveEdited = function (data, admission, category) {
             for (var i = 0; i < assertList.length; i++) {
                 if (data.IDAssertion == assertList[i].IDAssertion) {
-                    console.log("DATA", data)
                     var date = new Date(data.AssertionDate).toLocaleDateString('en-ZA')
                     var row = "<tr><td>" + admission + "</td><td>" + date + "</td><td>" + data.Description + "</td><td>" + category + "</td><td>" + Number(data.Qty).toFixed(2) + "</td><td>" + Number(data.Price).toFixed(2) + "</td><td>" + Number(data.Markup).toFixed(2) + "</td><td>" + data.MarkupValue + "</td><td>" + data.SubTotal + "</td><td>" + data.SubTotal + "</td><td>" + data.Notes + "</td> <td><button class='btn btn-sm btn-warning' value='" + data.IDAssertion + "' onclick='Edit(" + data.IDAssertion + ")'>Edit</button></td></tr>";
                     rows[i] = row;

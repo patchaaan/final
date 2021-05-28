@@ -27,11 +27,11 @@
                 <div class="form-row">
                     <div class="form-group col-sm-4">
                         <label><b>Date Requested</b></label>
-                        @Html.TextBoxFor(model => model.DateRequest, new { @type = "datetime-local", @class = "form-control datetimepicker", Required = true })
+                        @Html.TextBoxFor(model => model.DateRequest, new { @type = "date", @class = "form-control datetimepicker", Required = true })
                     </div>
                     <div class="form-group col-sm-4">
                         <label><b>Date Needed</b></label>
-                        @Html.TextBoxFor(model => model.DateNeeded, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                        @Html.TextBoxFor(model => model.DateNeeded, new { @type = "date", @class = "form-control datetimepicker" })
                     </div>
                     <div class="form-group col-sm-4">
                         <label><b>Requested by:</b></label>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label><b>Date Approved</b></label>
-                        @Html.TextBoxFor(model => model.DateApproved, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                        @Html.TextBoxFor(model => model.DateApproved, new { @type = "date", @class = "form-control datetimepicker" })
                     </div>
                 </div>
                 <div class="form-row">
@@ -60,7 +60,7 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label><b>Date Accepted</b></label>
-                        @Html.TextBoxFor(model => model.DateAcc, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                        @Html.TextBoxFor(model => model.DateAcc, new { @type = "date", @class = "form-control datetimepicker" })
                     </div>
                 </div>
                 <div class="form-row">

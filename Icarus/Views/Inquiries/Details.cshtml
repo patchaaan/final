@@ -23,8 +23,7 @@
             minute: "2-digit",
             second: "2-digit"
         }).replace(" ", "T"));
-    });
-    $('#followupon').val(new Date('@Model.FollowupOn').toLocaleString("sv-SE", {
+        $('#followupon').val(new Date('@Model.FollowupOn').toLocaleString("sv-SE", {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
@@ -32,6 +31,8 @@
             minute: "2-digit",
             second: "2-digit"
         }).replace(" ", "T"));
+    });
+    
 </script>
 
 <div>
@@ -53,7 +54,7 @@
                     <div class="form-row">
                         <div class="form-group col-sm-12">
                             <label><b>Contact Number:</b></label>
-                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", @class = "form-control" } })
+                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", minlength = "9", maxlength = "15", @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                         </div>
                     </div>

@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Icarus.Models.vExpensesBrowse>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    var currentYear = 0;
+    var count = 0;
+}
+<style>
+    .holder {
+        padding: 2%;
+    }
+
+    td {
+        min-height: 100px;
+    }
+
+    /*thead, tbody tr:nth-last-child(2) {
+        border-bottom: 2px solid black;
+    }*/
+
+    thead, tfoot {
+        display: table-row-group
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.title = 'Expenses Per Month';
+    });
+</script>
+<div class="holder">
+    <h3>Expenses Per Month</h3>
+    <table class="table">
+        <thead style="border-bottom: 1px solid black !important;">
+            <tr>
+                <th scope="col" width="8%">
+                    <h4>Year</h4>
+                </th>
+                <th scope="col" width="10%">
+                    <h4>Month</h4>
+                </th>
+                <th scope="col" width="15%">
+                    <h4>Total Paid</h4>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Select(k => new { k.ExpenseDate.Value.Year, k.ExpenseDate.Value.Month, k.Amount }).GroupBy(x => new { x.Year, x.Month }, (key, group) => new
+            {
+                Year = key.Year,
+                Month = key.Month,
+                TotalPaid = group.Sum(k => k.Amount)
+            }))
+            {
+                DateTime strDate = new DateTime(2000, item.Month, 1);
+                if (currentYear != item.Year)
+                {
+                    <tr style="border-top: 1px solid black !important;">
+                        <td>
+                            <h4>
+                                <b>@item.Year</b>
+                            </h4>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {
+                        currentYear = item.Year;
+                    }
+                }
+                <tr style="border-top: 2px solid white !important;">
+                    <td scope="row"></td>
+                    <td>
+                        @strDate.ToString("MMMM")
+                    </td>
+                    <td>
+                        @String.Format("{0:n2}", item.TotalPaid)
+                    </td>
+                </tr>
+                if (count == Model.Where(x => x.ExpenseDate.Value.Year == item.Year).Select(k => new { k.ExpenseDate.Value.Year, k.ExpenseDate.Value.Month, k.Amount }).GroupBy(x => new { x.Year, x.Month }, (key, group) => new
+                {
+                    Year = key.Year,
+                    Month = key.Month,
+                    TotalPaid = group.Sum(k => k.Amount)
+                }).Count() - 1)
+                {
+                    <tr style="border-top: 1px solid black !important;">
+                        <td></td>
+                        <td><b>Year Total:</b></td>
+                        <td><b>@String.Format("{0:n2}", @Model.Where(x => x.ExpenseDate.Value.Year == currentYear).Sum(x => x.Amount))</b></td>
+                    </tr>
+                    {
+                        count = -1;
+                    }
+                }
+                {
+                    count = count + 1;
+                    currentYear = item.Year;
+                }
+            }
+            <tr style="border-top: 1px solid black !important;">
+                <td></td>
+                <td><b>Report Total:</b></td>
+                <td><b>@String.Format("{0:n2}", @Model.Sum(x => x.Amount))</b></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

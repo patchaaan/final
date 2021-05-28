@@ -9,6 +9,9 @@
 <script>
     $(document).ready(function () {
         document.title = 'Reports Browse';
+        var today = new Date();
+        var now = new Date(new Date(today.getTime() - (today.getTimezoneOffset() * 60000))).toISOString().substring(0, 10);
+        $("#paypermonthfrom").val(now);
         $(".assertionSumm").change(function () {
             var button = '<button class="btn btn-primary ml-1" type="submit">Open Report</button>';
             if (this.checked) {
@@ -37,21 +40,6 @@
                 var secondInput = '<input class="form-control ml-1" type="date" name="dateto" />';
                 $('#expensedaterangeID').empty();
                 $('#expensedaterangeID').append(firstInput + secondInput + button);
-            }
-        });
-        $(".paymentsdaterangecheckbox").change(function () {
-            var button = '<button class="btn btn-primary ml-1" type="submit">Open Report</button>';
-            if (this.checked) {
-                var firstInput = '<input class="form-control" id="datefrom" type="datetime-local" name="datefrom" required />';
-                var secondInput = '<input class="form-control ml-1" type="datetime-local" name="dateto" />';
-                $('#paymentscollectedrangeID').empty();
-                $('#paymentscollectedrangeID').append(firstInput + secondInput + button);
-            }
-            else {
-                var firstInput = '<input class="form-control" id="datefrom" type="date" name="datefrom" required />';
-                var secondInput = '<input class="form-control ml-1" type="date" name="dateto" />';
-                $('#paymentscollectedrangeID').empty();
-                $('#paymentscollectedrangeID').append(firstInput + secondInput + button);
             }
         });
     });
@@ -113,7 +101,7 @@
             </div>
         </div>
         <div class="col col-md-6">
-            <a class="btn btn-lg w-50" style="background-color:#6C7AE0;color:white;" href="/ExpensesUnbilledToCodep" target="_blank"><b>Expenses - Unbilled to Codep</b></a>
+            <a class="btn btn-lg w-50" style="background-color:#6C7AE0;color:white;" data-target="_blank" href="/ExpensesUnbilledtoCodep" target="_blank"><b>Expenses - Unbilled to Codep</b></a>
         </div>
     </div>
     <div class="row" style="height: 23vh">
@@ -122,8 +110,15 @@
                 <span><b>Expenses Per Month</b></span>
             </button>
             <div class="collapse" id="expensespermonth">
-                <div class="well">
-                    This is a trial.
+                <div class="">
+                    @using (Html.BeginForm("Index", "ExpensesPerMonth", FormMethod.Get, new { target = "_blank" }))
+                    {
+                        <div class="form" id="paymentscollectedrangeID" style="display:flex;">
+                            <input class="form-control paypermonthfrom" id="paypermonthfrom" type="date" name="datefrom" required />
+                            <input class="form-control ml-1 paypermonthto" id="paypermonthto" type="date" name="dateto" />
+                            <button class="btn btn-primary ml-1">Open Report</button>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -157,7 +152,16 @@
             </button>
             <div class="collapse" id="paymentspermonth">
                 <div class="well">
-                    This is a trial.
+                    <div class="">
+                        @using (Html.BeginForm("Index", "PaymentsPerMonth", FormMethod.Get, new { target = "_blank" }))
+                        {
+                            <div class="form" id="paymentscollectedrangeID" style="display:flex;">
+                                <input class="form-control paypermonthfrom" id="paypermonthfrom" type="date" name="datefrom" required />
+                                <input class="form-control ml-1 paypermonthto" id="paypermonthto" type="date" name="dateto"/>
+                                <button class="btn btn-primary ml-1">Open Report</button>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

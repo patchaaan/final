@@ -139,10 +139,12 @@
     <Compile Include="Controllers\DailyExpensesController.cs" />
     <Compile Include="Controllers\ExpensesController.cs" />
     <Compile Include="Controllers\ExpensesDateRangeController.cs" />
+    <Compile Include="Controllers\ExpensesPerMonthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InquiriesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PaymentsCollectedDateRangeController.cs" />
+    <Compile Include="Controllers\PaymentsPerMonthController.cs" />
     <Compile Include="Controllers\RequestsController.cs" />
     <Compile Include="Controllers\ResidentsController.cs" />
     <Compile Include="Controllers\FacilityReportsController.cs" />
@@ -173,6 +175,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ICARUS.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\PaymentsPerMonth.cs" />
     <Compile Include="Models\tblAdmission.cs">
       <DependentUpon>ICARUS.tt</DependentUpon>
     </Compile>
@@ -476,6 +479,8 @@
     <Content Include="Views\PaymentsCollectedDateRange\Index.cshtml" />
     <Content Include="Views\ExpensesUnbilledtoCodep\Index.cshtml" />
     <Content Include="Views\Expenses\_AssertionPartial.cshtml" />
+    <Content Include="Views\PaymentsPerMonth\Index.cshtml" />
+    <Content Include="Views\ExpensesPerMonth\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

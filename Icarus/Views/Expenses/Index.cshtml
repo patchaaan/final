@@ -151,10 +151,12 @@
         <div class="col-sm-3">
             <div class="d-flex pull-right">
                 <button style="background-color:#4E58A2;color:white;" onclick="sortTable()" class="btn">Verified</button>
-                <a class="btn ml-1" style="background-color:#4E58A2;color:white;" href="/Expenses/Create">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    <span>&nbsp;Add Expenses</span>
-                </a>
+                @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+                    <a class="btn ml-1" style="background-color:#4E58A2;color:white;" href="/Expenses/Create">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        <span>&nbsp;Add Expenses</span>
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -262,7 +264,9 @@
                         <td>
                             <center>
                                 <a class="btn btn-sm btn-warning" href="/Expenses/Edit/@item.IDExpense">Edit</a>
-                                <button type="button" class="btn btn-sm btn-danger" onclick="Delete(@item.IDExpense)">Delete</button>
+                                @if (Session["isADG"].ToString() == "Y") {
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="Delete(@item.IDExpense)">Delete</button>
+                                }
                             </center>
                         </td>
                     </tr>

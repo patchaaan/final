@@ -1,13 +1,14 @@
-﻿@model IEnumerable<Icarus.Models.vrptExpens>
+﻿@model IEnumerable<Icarus.Models.vrptUnderChargedExpens>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout2.cshtml";
+    Decimal total = 0;
 }
 
 <script>
     $(document).ready(function () {
-        document.title = "Payments Collected";
+        document.title = "Expenses - Not Billed to Codep";
     });
 </script>
 <style>
@@ -47,20 +48,22 @@
                 <tr>
                     <td>@item.IDExpense</td>
                     <td>@item.Vendor</td>
-                    @*<td>@item.ExpenseDate.ToString("MM/dd/yyyy")</td>
+                    <td>@item.ExpenseDate</td>
                     <td>@item.Amount.ToString("0.00")</td>
-                    <td>@item.</td>
-                    <td>@item.PayDetails</td>
-                    <td>@item.IsVerified</td>*@
+                    <td>@item.ChargedToCodep</td>
+                    <td>@(item.Amount - item.ChargedToCodep)</td>
                 </tr>
+                {
+                    total = total + (item.Amount - item.ChargedToCodep);
+                }
             }
             <tr>
                 <td> </td>
                 <td> </td>
                 <td> </td>
                 <td> </td>
-                <td><h4><b>Total Collected:</b></h4></td>
-                @*<td><h4><b>&nbsp;@String.Format("{0:n2}", @Model.Sum(x => x.TotalPaid))</b></h4></td>*@
+                <td><h4><b>Total:</b></h4></td>
+                <td><h4><b>&nbsp;@String.Format("{0:n2}", total)</b></h4></td>
                 <td> </td>
             </tr>
         </tbody>

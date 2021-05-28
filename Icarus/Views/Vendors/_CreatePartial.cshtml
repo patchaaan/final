@@ -36,14 +36,14 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Contact Number</b></label>
-                            @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new {@type="number", @class = "form-control", minlength = "9", maxlength = "15", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-4">
                             <label><b>TIN</b></label>
-                            @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                            @Html.EditorFor(model => model.TIN, new { htmlAttributes = new { @type="number", @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.TIN, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">

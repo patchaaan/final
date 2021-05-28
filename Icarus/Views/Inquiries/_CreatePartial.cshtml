@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Contact Number:</b></label>
-                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", @class = "form-control" } })
+                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", minlength = "9", maxlength = "15", @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">

@@ -69,29 +69,32 @@ namespace Icarus.Controllers
         public ActionResult Create()
         {
             if (Session["Username"] != null) {
-                var account = db.tblExpensesChartOfAccounts.Select(
-                        s => new {
-                            Text = s.Account +"      "+s.AccountCode,
-                            Value = s.IDAccount
-                        }
-                    ).ToList();
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
-                int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
-                int idExp = db.tblExpenses.Max(x => x.IDExpense);
-                tblExpens expenses = new tblExpens();
-                expenses.IDExpense = idExp + 1;
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.accountsList = new SelectList(account, "Value", "Text");
-                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-                ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
-                ViewBag.lastIDCTC = idCTC + 1;
-                ViewBag.lastIDEXP = idExp + 1;
-                return View(expenses);
+                if (Session["isAAG"].ToString() == "Y" || Session["isADG"].ToString() == "Y") {
+                    var account = db.tblExpensesChartOfAccounts.Select(
+                            s => new {
+                                Text = s.Account + "      " + s.AccountCode,
+                                Value = s.IDAccount
+                            }
+                        ).ToList();
+                    var residents = db.vAdmissionBrowses.Select(
+                            s => new {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
+                    int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
+                    int idExp = db.tblExpenses.Max(x => x.IDExpense);
+                    tblExpens expenses = new tblExpens();
+                    expenses.IDExpense = idExp + 1;
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                    ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                    ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                    ViewBag.lastIDCTC = idCTC + 1;
+                    ViewBag.lastIDEXP = idExp + 1;
+                    return View(expenses);
+                }
+                return RedirectToAction("Index","Residents");
             }
             return RedirectToAction("Login", "Login");
         }
@@ -149,57 +152,60 @@ namespace Icarus.Controllers
         public ActionResult Edit(int? id)
         {
             if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblExpens tblExpens = db.tblExpenses.Find(id);
-                int idexpense = tblExpens.IDExpense;
-                if (tblExpens == null)
-                {
-                    return HttpNotFound();
-                }
-                tblExpensesForAssertion expenseasertion = db.tblExpensesForAssertions.Where(x => x.IDExpense == tblExpens.IDExpense).FirstOrDefault();
-                if (expenseasertion == null)
-                {
-                    tblExpensesForAssertion newexpense = new tblExpensesForAssertion();
-                    int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
-                    newexpense.IDChargeToCodep = idCTC + 1;
-                    newexpense.IDExpense = idexpense;
-                    ViewBag.idctc = idCTC + 1;
-                    ViewBag.idexp = tblExpens.IDExpense;
-                    ViewBag.EmptyAssertion = true;
-                    ViewData["Assertions"] = null;
-                }
-                else {
-                    IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
-                    ViewBag.EmptyAssertion = false;
-                    ViewBag.idctc = expenseasertion.IDChargeToCodep;
-                    ViewBag.idexp = expenseasertion.IDExpense;
-                    ViewBag.assertioncategory = expenseasertion.IDAssertionCategory;
-                    ViewBag.description = expenseasertion.Description;
-                    ViewBag.chargeDate = expenseasertion.ChargeDate;
-                    ViewData["Assertions"] = assertions;
-                }
+                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    tblExpens tblExpens = db.tblExpenses.Find(id);
+                    int idexpense = tblExpens.IDExpense;
+                    if (tblExpens == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    tblExpensesForAssertion expenseasertion = db.tblExpensesForAssertions.Where(x => x.IDExpense == tblExpens.IDExpense).FirstOrDefault();
+                    if (expenseasertion == null)
+                    {
+                        tblExpensesForAssertion newexpense = new tblExpensesForAssertion();
+                        int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
+                        newexpense.IDChargeToCodep = idCTC + 1;
+                        newexpense.IDExpense = idexpense;
+                        ViewBag.idctc = idCTC + 1;
+                        ViewBag.idexp = tblExpens.IDExpense;
+                        ViewBag.EmptyAssertion = true;
+                        ViewData["Assertions"] = null;
+                    }
+                    else {
+                        IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
+                        ViewBag.EmptyAssertion = false;
+                        ViewBag.idctc = expenseasertion.IDChargeToCodep;
+                        ViewBag.idexp = expenseasertion.IDExpense;
+                        ViewBag.assertioncategory = expenseasertion.IDAssertionCategory;
+                        ViewBag.description = expenseasertion.Description;
+                        ViewBag.chargeDate = expenseasertion.ChargeDate;
+                        ViewData["Assertions"] = assertions;
+                    }
 
-                ViewData["ExpenseAssertion"] = expenseasertion;
-                var account = db.tblExpensesChartOfAccounts.Select(
-                        s => new {
-                            Text = s.Account + "      " + s.AccountCode,
-                            Value = s.IDAccount
-                        }
-                    ).ToList();
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.accountsList = new SelectList(account, "Value", "Text");
-                ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
-                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-                return View(tblExpens);
+                    ViewData["ExpenseAssertion"] = expenseasertion;
+                    var account = db.tblExpensesChartOfAccounts.Select(
+                            s => new {
+                                Text = s.Account + "      " + s.AccountCode,
+                                Value = s.IDAccount
+                            }
+                        ).ToList();
+                    var residents = db.vAdmissionBrowses.Select(
+                            s => new {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                    ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                    ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                    return View(tblExpens);
+                }
+                return RedirectToAction("Index", "Residents");
             }
             return RedirectToAction("Login", "Login");
         }
