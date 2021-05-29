@@ -85,11 +85,12 @@
                 <h5>@Model.AdmissionDate.ToString("MM/dd/yyyy")</h5>
             </div>
             <div class="col-xs-3 pl-5 ml-0 mr-0 pr-0" style="text-align: right;">
-                <h5>Previous Balance</h5>
+                <h5>Overall Balance</h5>
             </div>
             <div class="col-xs-3 pb-0 mr-0 pr-0" style="text-align: right;">
-                <h5>-39.63</h5>
+                <h5>@Model.OverallBalance</h5>
             </div>
+
         </div>
         <div class="row col-xs-12 mr-0 pr-0">
             <div class="col-xs-2 pl-0 ml-0 pr-0 mr-0">
@@ -97,12 +98,6 @@
             </div>
             <div class="col-xs-4">
                 <h5><span id="billingdate" class="billingdate">@date.ToString("MM/dd/yyyy")</span></h5>
-            </div>
-            <div class="col-xs-3 pl-5 ml-0 mr-0 pr-0" style="text-align: right;">
-                <h5>Overall Balance</h5>
-            </div>
-            <div class="col-xs-3 pb-0 mr-0 pr-0" style="text-align: right;">
-                <h5>@Model.OverallBalance</h5>
             </div>
         </div>
     </div>
@@ -138,24 +133,49 @@
         <b>A - Treatment Fee</b>
         <div class="container pl-5 ml-5">
             <div class="row">
-                <div class="col-xs-2 text-center">
-                    <h5>@ViewBag.Billing.BillingDate.ToString("MM/dd/yyyy")</h5>
-                </div>
-                <div class="col-xs-2 text-left">
-                    <h5>@ViewBag.Billing.Notes</h5>
-                </div>
-                <div class="col-xs-1 text-center">
-                    <h5>1.00</h5>
-                </div>
-                <div class="col-xs-2 text-right">
-                    <h5>@ViewBag.Billing.Amount.ToString("0.00")</h5>
-                </div>
-                <div class="col-xs-2 text-right">
-                    <h5>@ViewBag.Billing.Amount.ToString("0.00")</h5>
-                </div>
-                <div class="col-xs-3">
-                    <h5>Month of @ViewBag.Billing.BillingDate.ToString("MMMM")</h5>
-                </div>
+                @if (ViewBag.billing != null)
+                {
+                    <div class="col-xs-2 text-center">
+                        <h5>@ViewBag.Billing.BillingDate.ToString("MM/dd/yyyy")</h5>
+                    </div>
+                    <div class="col-xs-2 text-left">
+                        <h5>@ViewBag.Billing.Notes</h5>
+                    </div>
+                    <div class="col-xs-1 text-center">
+                        <h5>1.00</h5>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <h5>@ViewBag.Billing.Amount.ToString("0.00")</h5>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <h5>@ViewBag.Billing.Amount.ToString("0.00")</h5>
+                    </div>
+                    <div class="col-xs-3">
+                        <h5>Month of @ViewBag.Billing.BillingDate.ToString("MMMM")</h5>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-2 text-center">
+                        <h5></h5>
+                    </div>
+                    <div class="col-xs-2 text-left">
+                        <h5></h5>
+                    </div>
+                    <div class="col-xs-1 text-center">
+                        <h5></h5>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <h5></h5>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <h5></h5>
+                    </div>
+                    <div class="col-xs-3">
+                        <h5></h5>
+                    </div>
+                }
+
             </div>
             <hr class="mr-5" style="width:95%;border-top: 2px solid black;margin-bottom:5px;margin-top:5px;float:left;" />
             <div class="row">
@@ -171,7 +191,7 @@
                     <h5>Group Total</h5>
                 </div>
                 <div class="col-xs-3">
-                    <h5><b>@ViewBag.Billing.Amount.ToString("0.00")</b></h5>
+                    <h5><b></b></h5>
                 </div>
             </div>
         </div>

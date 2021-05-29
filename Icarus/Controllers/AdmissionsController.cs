@@ -50,13 +50,25 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 DateTime today = DateTime.Today.AddDays(-30);
                 tblAdmissionBilling billing = db.tblAdmissionBillings.Where(x => x.IDAdmission == id).OrderByDescending(x => x.BillingDate).FirstOrDefault();
+                if (billing == null)
+                {
+                    ViewBag.Billing = null;
+                    IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
+                    ViewData["Assertions"] = assertions;
+                    ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
+                    ViewBag.SumAll = assertions.Sum(x => x.SubTotal);
+                }
+                else {
+                    ViewBag.Billing = billing;
+                    //DateTime billingdate = new DateTime(billing.BillingDate.Year, billing.BillingDate.Month, billing.BillingDate.Day);
+                    IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate >= billing.BillingDate.Date.AddDays(-30) && x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
+                    ViewData["Assertions"] = assertions;
+                    ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
+                    ViewBag.SumAll = assertions.Sum(x => x.SubTotal) + billing.Amount;
+
+                }
                 tblPayment payment = db.tblPayments.Where(x => x.IDAdmission == id).OrderByDescending(x => x.PaidDate).FirstOrDefault();
-                IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate >= billing.BillingDate.Date.AddDays(-30) && x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
-                vAdmissionBrowse browse = db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault();
-                ViewData["Assertions"] = assertions;
-                ViewBag.Billing = billing;
-                ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
-                ViewBag.SumAll = assertions.Sum(x => x.SubTotal) + billing.Amount;
+                //vAdmissionBrowse browse = db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault();
                 tblStaff staff = db.tblStaffs.Find(Int32.Parse(Session["ID"].ToString()));
                 ViewBag.PreparedBy = staff.Firstname.ToString() + " " + staff.Lastname.ToString();
                 if (payment != null)

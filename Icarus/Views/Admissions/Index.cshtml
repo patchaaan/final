@@ -70,11 +70,15 @@
 
     function store(id){
         $(".generatebillingid").val(id);
-        console.log("CLICKED", id);
         $('.generatebillingbutton').removeAttr("type").attr("type", "submit");
         document.getElementById(id).style.border = "1px solid blue";
         if (oldid != null) {
             document.getElementById(oldid).style.border = "none";
+        }
+        if (oldid == id) {
+            document.getElementById(id).style.border = "none";
+            $('.generatebillingbutton').removeAttr("submit").attr("type", "button");
+            return oldid = 0;
         }
         oldid = id;
     }
