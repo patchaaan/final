@@ -9,7 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 using Rotativa;
-
+using System.IO;
+using System.Security.Cryptography;
 namespace Icarus.Controllers
 {
     public class AdmissionsController : Controller
@@ -165,8 +166,8 @@ namespace Icarus.Controllers
 
                 ViewBag.residentName = resident.Firstname + " " + resident.Nickname + " " + resident.Lastname;
 
+                ViewData["attachmentTypes"] = db.tblAdmissionAttachmentTypes.ToList();
 
-                
                 ViewData["AssertionCategories"] = assertionListsCategory;
                 ViewData["PaymentMethod"] = paymentMethod;
                 ViewData["AdmissionBilling"] = admissionBilling;
@@ -573,6 +574,65 @@ namespace Icarus.Controllers
             }
             return View(tblAdmissionVitalSign);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FileAttachment(HttpPostedFileBase file, FormCollection data, tblAdmissionAttachment dbfiles)
+        {
+            try
+            {
+                if (file.ContentLength > 0)
+                {
+                    var filename = Path.GetFileName(file.FileName);
+                    var fileExtension = Path.GetExtension(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/uploads"), filename);
+                    var enc = Path.Combine(Server.MapPath("~/Content/uploads"), fileExtension);
+                    file.SaveAs(path);
+
+                    dbfiles.Description = data["Description"];
+                    dbfiles.Filename = filename;
+
+                    db.tblAdmissionAttachments.Add(dbfiles);
+                    db.SaveChanges();
+                    ViewBag.success = "File Uploaded!";
+                    return RedirectToAction("Details", "Admissions", new { id = dbfiles.IDAdmission });
+                }
+                else
+                {
+                    ViewBag.error = "Select a File!";
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.error = "Error " + e;
+            }
+            return RedirectToAction("Details", "Admissions", new { id = dbfiles.IDAdmission });
+        }
+
+        [HttpPost, ActionName("DeleteAttachment")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAttachment(int id) {
+            if (Session["Username"] != null)
+            {
+                tblAdmissionAttachment attachment = db.tblAdmissionAttachments.Find(id);
+                string file_name = attachment.Filename.ToString();
+                string path = Server.MapPath("~/Content/uploads" + file_name);
+                FileInfo file = new FileInfo(path);
+                if (file.Exists)//check file exsit or not  
+                {
+                    file.Delete();
+                }
+                db.tblAdmissionAttachments.Remove(attachment);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Admissions", new { id = attachment.IDAdmission });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        }
+
+
 
         // GET: Admissions/Delete/5
         //public ActionResult Delete(int? id)

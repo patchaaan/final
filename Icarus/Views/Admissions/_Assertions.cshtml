@@ -57,9 +57,9 @@
     }*/
 </style>
 <script>
-    function Delete(id) {
-        $("#id").val(id);
-        $('#deleteModal').modal().show();
+    function DeleteAssertion(id) {
+        $("#assertionID").val(id);
+        $('#deleteAssertionModal').modal().show();
     }
 
     function Edit(id) {
@@ -238,7 +238,7 @@
                                 <td id="td">
                                     <button class="btn btn-sm btn-warning" onclick="Edit(@item.IDAssertion)">Edit</button>
                                     @if (Session["isADG"].ToString() == "Y") {
-                                        <button class="btn btn-danger btn-sm text-center" type="button" onclick="Delete(@item.IDAssertion)">Delete</button>
+                                        <button class="btn btn-danger btn-sm text-center" type="button" onclick="DeleteAssertion(@item.IDAssertion)">Delete</button>
                                     }
                                 </td>
                             }
@@ -332,7 +332,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="deleteAssertionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -347,7 +347,7 @@
                     @using (Html.BeginForm("DeleteAssertion", "Admissions", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
-                        <input type="number" class="id" id="id" style="display:none;" name="id" value="" />
+                        <input type="number" class="id" id="assertionID" style="display:none;" name="id" value="" />
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     }
                 </div>

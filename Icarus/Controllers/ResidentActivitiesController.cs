@@ -32,9 +32,10 @@ namespace Icarus.Controllers
                 int resact = db.tblResidentActivities.Max(x => x.IDResidentActivityLog);
                 tblResidentActivity residentact = new tblResidentActivity();
                 residentact.IDResidentActivityLog = resact + 1;
-                ViewData["ResidentAct"] = residentact;
+                //ViewData["ResidentAct"] = residentact;
+                ViewData["ActivitiesList"] = db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList();
 
-                return View(db.tblResidentActivities.ToList().OrderByDescending(x => x.IDResidentActivityLog).ToList());
+                return View(residentact);
             }
             return RedirectToAction("Login", "Login");
         }
