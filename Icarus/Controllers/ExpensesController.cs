@@ -148,6 +148,18 @@ namespace Icarus.Controllers
             return Json("Failed", JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult EditExpensesAssertion(tblExpensesForAssertion tblExpensesForAssertion)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(tblExpensesForAssertion).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Failed", JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Expenses/Edit/5
         public ActionResult Edit(int? id)
         {

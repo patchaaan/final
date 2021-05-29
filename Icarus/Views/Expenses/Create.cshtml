@@ -36,7 +36,6 @@
         white-space: nowrap;
     }
 </style>
-<script src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
     function trial() {
         $("#editAssertionModal").modal("hide");
@@ -63,37 +62,17 @@
         $('.dateassertion').val(today);
         $('.addassertiondateposted').val(today);
         $('.addAssertion').hide();
-        $('.assertionDate').hide();
-        $('.description').hide();
-        $('.assertionCategory').hide();
-        $('.idToCodep').hide();
-        $('.idExpense').hide();
-        //$('.posteddate').val(new Date().toLocaleString("sv-SE", {
-        //    year: "numeric",
-        //    month: "2-digit",
-        //    day: "2-digit",
-        //    hour: "2-digit",
-        //    minute: "2-digit",
-        //    second: "2-digit"
-        //}).replace(" ", "T"));
-        //$('.expensedate').val(new Date().toLocaleString("sv-SE", {
-        //    year: "numeric",
-        //    month: "2-digit",
-        //    day: "2-digit",
-        //    hour: "2-digit",
-        //    minute: "2-digit",
-        //    second: "2-digit"
-        //}).replace(" ", "T"));
+        //$('.assertionDate').hide();
+        //$('.description').hide();
+        //$('.assertionCategory').hide();
+        //$('.idToCodep').hide();
+        //$('.idExpense').hide();
         var tableStart = "<table class='table table-striped table-hover table-borderless'></table>";
         var tableHeader = "<thead style='background-color: #6C7AE0; color: white;'><tr><th class='tableheadleft'>IDAdmission</th><th>Date</th><th>Description</th><th>Category</th><th>Qty</th><th>Price</th><th>MarkUp%</th><th>MarkUpValue</th><th>MarkupPrice</th><th>Subtotal</th><th>Notes</th><th class='tableheadright'>Action</th></tr></thead><tbody></tbody>";
         var assertList = [];
         var rows = [];
         var totalAmount = 0;
-        var oneditindex = null;
-        var added = false;
-        var lastindexadded = null;
-        var edittheadded = false;
-        var editedbefore = [];
+        var expenseassertionarray = [];
 
         $(".markup").on("keyup", function () {
             var price = $(".price").val();
@@ -107,7 +86,6 @@
                 $(".subtotal").val(subTotal);
             }
             else {
-                console.log("Reading")
                 $(".markupvalue").val(0);
                 $(".subtotal").val(totalPrice);
             }
@@ -149,12 +127,6 @@
 
         $('.chargeCodep').on('change', function () {
             if (this.value == "Y") {
-                $('.addAssertion').show();
-                $('.assertionDate').show();
-                $('.assertionCategory').show();
-                $('.idToCodep').show();
-                $('.idExpense').show();
-                $('.description').show();
                 if (assertList.length > 0) {
                     $(".chargeCodep").prop("disabled", true);
                     $(".goBack").prop("disabled", true);
@@ -168,12 +140,12 @@
                 }
                 window.scrollTo(0, document.body.scrollHeight);
             } else {
-                $('.addAssertion').hide();
-                $('.assertionDate').hide();
-                $('.assertionCategory').hide();
-                $('.idToCodep').hide();
-                $('.idExpense').hide();
-                $('.description').hide();
+                if (assertList.length > 0) {
+                    $('.addAssertion').show();
+                }
+                else {
+                    $(".addAssertion").hide();
+                }
                 if (assertList.length > 0) {
                     $(".chargeCodep").prop("disabled", true)
                     $(".goBack").prop("disabled", true);
@@ -288,19 +260,6 @@
                 assertionnote = '';
             }
 
-            if (assertList.length == 0 || assertList.length == null) {
-                var expensesassertion = { IDChargeToCodep: $("#idctc").val(), ChargeDate: $("#chargedate").val(), IDAssertionCategory: $(".categorychooser").children("option:selected").val(), IDExpense: $("#idexpense").val(), Description: $("#description").val() };
-                $.ajax({
-                    url: '/Expenses/CreateExpensesAssertion',
-                    method: "POST",
-                    data: expensesassertion,
-                    success: function (data) {
-                    },
-                    error: function (err) {
-                    }
-                });
-            }
-
             var assertion = {
                 Description: $("#description").val(),
                 IDAdmission: $(".admission").children("option:selected").val(),
@@ -339,7 +298,7 @@
                 $('.table tbody tr:last').remove();
                 $(".table tbody").append(row);
             }
-            
+
             assertList.push(assertion);
 
             var total = 0;
@@ -355,6 +314,54 @@
                 window.scrollTo(0, document.body.scrollHeight);
             }
             $(".successmodal").modal().show();
+        });
+
+        $("#description").on("keypress", function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                var description = $("#description").val();
+                var chargedate = $('.dateassertion').val();
+                description == '' || description == null ? $("#descriptionMessage").text("Description is required!") : $("#descriptionMessage").text(null);
+                chargedate == '' || description == null ? $("#chargeDateMessage").text("Charge Date is required!") : $("#chargeDateMessage").text(null);
+                if ((description != null && description != '') && (chargedate != null && chargedate != "")) {
+                    var expensesassertion = { IDChargeToCodep: $("#idctc").val(), ChargeDate: $("#chargedate").val(), IDAssertionCategory: $(".categorychooser").children("option:selected").val(), IDExpense: $("#idexpense").val(), Description: $("#description").val() };
+                    if (!jQuery.isEmptyObject(expenseassertionarray)) {
+                        $.ajax({
+                            url: '/Expenses/EditExpensesAssertion',
+                            method: "POST",
+                            data: expensesassertion,
+                            success: function (data) {
+                                if (data == "Success") {
+                                    expenseassertionarray[0] = expensesassertion;
+                                    $('.createButton').removeAttr("type").attr("type", "submit");
+                                }
+                            },
+                            error: function (err) {
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: '/Expenses/CreateExpensesAssertion',
+                            method: "POST",
+                            data: expensesassertion,
+                            success: function (data) {
+                                if (data == "Success") {
+                                    expenseassertionarray.push(expensesassertion);
+                                    $('.createButton').removeAttr("type").attr("type", "submit");
+                                }
+                            },
+                            error: function (err) {
+                            }
+                        });
+                    }
+                    if ($(".chargeCodep").val() == "Y") {
+                        $(".addAssertion").show();
+                    } else {
+                        $(".addAssertion").hide();
+                    }
+                    event.preventDefault();
+                }
+            }
         });
 
 
@@ -396,7 +403,7 @@
             <h2>Create Expense</h2>
             <div>
                 <a type="button" class="btn btn-warning goBack" href="/Expenses">Go Back</a>
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="button" value="Create" class="btn btn-primary createButton" />
             </div>
         </div>
         <hr />
@@ -507,6 +514,7 @@
             <div class="col-sm-3 pl-0 assertionDate">
                 <label>Charge Date</label>
                 <input class="form-control dateassertion" id="chargedate" type="date" />
+                <span id="chargeDateMessage" style="color:red;"></span>
             </div>
             <div class="col-sm-3 pl-0 assertionCategory">
                 <label>Assertion Category</label>
@@ -517,14 +525,15 @@
                     }
                 </select>
             </div>
-        </div>
-        <div class="row col-sm-12 mt-4">
             <div class="col-sm-3 description pl-0">
                 <label><b>Description</b></label>
                 <input class="form-control description" id="description" autocomplete="off" />
                 <span id="descriptionMessage" style="color:red;"></span>
             </div>
         </div>
+        @*<div class="row col-sm-12 mt-4">
+            
+        </div>*@
     </div>
 
     <div class="modal fade assertionModal" id="assertionModal" role="dialog">
