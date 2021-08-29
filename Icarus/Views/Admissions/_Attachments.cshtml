@@ -169,10 +169,6 @@
                     <form>
                         <div class="modal-body">
                             <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.IDAdmission)
-                                    @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
-                                </div>
                                 <div class="form-group col-sm-4 files">
                                     <label><b>Uploaded File</b></label>
                                     <div class="button-wrap">
@@ -184,12 +180,12 @@
                                     <label><b>Attachment Type</b></label>
                                     @Html.DropDownListFor(model => model.IDAttachmentType, ViewBag.attachmentType as SelectList, new { @class = "form-control" })
                                 </div>
-                            </div>
-                            <div class="form-row">
                                 <div class="form-group col-sm-4">
                                     <label><b>File Name</b></label>
-                                    @Html.EditorFor(model => model.Filename, new { htmlAttributes = new { @class = "form-control fileName", autocomplete="off" } })
+                                    @Html.EditorFor(model => model.Filename, new { htmlAttributes = new { @class = "form-control fileName", autocomplete = "off" } })
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-sm-4">
                                     @Html.LabelFor(model => model.Description)
                                     @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = 5 })
@@ -198,7 +194,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <input type="submit" value="upload" class="btn btn-primary">
+                            <input type="submit" value="Upload" class="btn btn-primary">
                         </div>
                     </form>
                 }

@@ -56,6 +56,31 @@
         border: 1px solid blue;
     }
 
+    th {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+        height: 30px;
+    }
+
+    td, th {
+        min-width: 200px;
+        border: dashed 1px lightblue;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /*max-width: 100px;*/
+    }
+
+    td {
+        height: 50px;
+    }
+
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden
+    }
+
 </style>
 <script>
     var oldid = null;
@@ -139,27 +164,27 @@
                         Rank
                     </th>
                     <th id="admissionhead" scope="col">
-                        AdmissionDate
+                        Admission Date
                     </th>
                     <th id="admissionhead" scope="col">
-                        TerminationDate
+                        Termination Date
                     </th>
                     <th id="admissionhead" scope="col">
                         Active
                     </th>
                     <th id="admissionhead" scope="col">
-                        TreatmentFee
+                        Treatment Fee
                     </th>
                     <th id="admissionhead" scope="col">
-                        TotalBilling
+                        Total Billing
                     </th>
                     <th id="admissionhead" scope="col">
-                        TotalPaid
+                        Total Paid
                     </th>
                     @if (Session["isADG"].ToString() == "Y")
                     {
                         <th id="admissionhead" scope="col">
-                            OverallBalance
+                            Overall Balance
                         </th>
                         <th id="admissionhead" scope="col" class="tableheadright action">
                             Action
@@ -168,7 +193,7 @@
                     else
                     {
                         <th id="admissionhead" scope="col" class="tableheadright">
-                            OverallBalance
+                            Overall Balance
                         </th>
                     }
 
@@ -238,8 +263,8 @@
         </table>
     </div>
     <div class="footerdetails d-flex align-items-center justify-content-center">
-        <label class="pr-5">Total Active Residents: @ViewBag.totalActive</label>
-        <label class="pl-5">Total Billing: @ViewBag.totalbilling</label>
+        <label class="pr-5"><b>Total Active Residents: @ViewBag.totalActive</b></label>
+        <label class="pl-5"><b>Total Billing: @ViewBag.totalbilling</b></label>
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Admissions"])

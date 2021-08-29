@@ -269,26 +269,28 @@
 
                             <div class="form-row">
                                 <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.IDAdmission)
-                                    @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
+                                    <label><b>Assertion Category</b></label>
+                                    @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control" })
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label><b>Assertion Date</b></label>
                                     @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
                                 </div>
                                 <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.Qty)
-                                    @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @class = "form-control qty" } })
+                                    <label><b>Posted Date</b></label>
+                                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
                                 </div>
+
+                                
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-sm-4">
-                                    <label><b>Assertion Category</b></label>
-                                    @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control" })
+                                    @Html.LabelFor(model => model.Qty)
+                                    @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control qty", onkeydown = "if(event.key==='.'){event.preventDefault();}", onpaste = "let pasteData = event.clipboardData.getData('text'); if(pasteData){pasteData.replace(/[^0-9]*/g,'');} " } })
                                 </div>
                                 <div class="form-group col-sm-4">
                                     @Html.LabelFor(model => model.Price)
-                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @class = "form-control price" } })
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number",@Value="0", @class = "form-control price" } })
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <label><b>Markup %</b></label>
@@ -303,18 +305,13 @@
                                 <div class="form-group col-sm-4">
                                     @Html.LabelFor(model => model.SubTotal)
                                     @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @class = "form-control subTotal" } })
-
                                 </div>
-                                <div class="form-group col-sm-4">
-                                    <label><b>Posted Date</b></label>
-                                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
-                                </div>
-                            </div>
-                            <div class="form-row">
                                 <div class="form-group col-sm-4">
                                     @Html.LabelFor(model => model.Description)
                                     @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-sm-4">
                                     @Html.LabelFor(model => model.Notes)
                                     @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })

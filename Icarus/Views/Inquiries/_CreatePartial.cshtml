@@ -11,7 +11,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Create Inquiry Log</h3>
@@ -24,34 +24,36 @@
                 <div class="form">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-md-6">
                             <label><b>Inquiry Date:</b></label>
                             @Html.EditorFor(model => model.InquiryDate, new { htmlAttributes = new { @type = "datetime-local", @class = "form-control", Required = true } })
                             @Html.ValidationMessageFor(model => model.InquiryDate, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Contact Number:</b></label>
-                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", minlength = "9", maxlength = "15", @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Codep:</b></label>
-                            @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
-                            @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Prospect:</b></label>
-                            @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
-                            @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-md-6">
                             <label><b>Follow Up On:</b></label>
                             @Html.EditorFor(model => model.FollowupOn, new { htmlAttributes = new { @type = "datetime-local", @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.FollowupOn, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label><b>Codep:</b></label>
+                            @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label><b>Contact Number:</b></label>
+                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type = "number", autocomplete = "off", minlength = "9", maxlength = "15", @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label><b>Prospect:</b></label>
+                            @Html.EditorFor(model => model.Prospect, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            @Html.ValidationMessageFor(model => model.Prospect, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
                             <label><b>Inquiry Status:</b></label>
                             @Html.DropDownListFor(modelItem => modelItem.IDInquiryStatus,
                                              (
@@ -65,7 +67,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-md-6">
                             <label><b>Details</b></label>
                             @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5 })
                             @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })

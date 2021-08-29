@@ -23,7 +23,7 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                var residents = db.tblResidents.Select(
+                var residents = db.tblResidents.OrderByDescending(x => x.IDResident).Select(
                     s => new
                     {
                         Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
@@ -31,10 +31,19 @@ namespace Icarus.Controllers
                     }).ToList();
                 ViewBag.residentList = new SelectList(residents, "Value", "Text");
                 ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
-                int admis = db.tblAdmissions.Max(x => x.IDAdmission);
-                tblAdmission admission = new tblAdmission();
-                admission.IDAdmission = admis + 1;
-                ViewData["Admissions"] = admission;
+                var admis = db.tblAdmissions.ToList().OrderByDescending(x => x.IDAdmission).FirstOrDefault();
+
+                if (admis == null) {
+                    tblAdmission admission = new tblAdmission();
+                    admission.IDAdmission = 1;
+                    ViewData["Admissions"] = admission;
+                }
+                else {
+                    tblAdmission admission = new tblAdmission();
+                    admission.IDAdmission = admis.IDAdmission + 1;
+                    ViewData["Admissions"] = admission;
+                }
+                
                 var totalbilling = db.vAdmissionBrowses.ToList().Select(x => x.TotalBilling).ToList().Sum();
                 ViewBag.totalActive = db.vAdmissionBrowses.Where(x => x.IsActive == "Y").ToList().Count();
                 ViewBag.totalbilling = Math.Round((Double)totalbilling, 2);

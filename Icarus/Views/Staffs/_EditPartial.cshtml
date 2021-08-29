@@ -1,23 +1,35 @@
 ﻿@model Icarus.Models.tblStaff
 
 <script>
+    function OnSuccess(response) {
+        if (response == "Password") {
+            $("#passwordmessage").text("Password should be atleast 8 characters!");
+            $("#usernamemessage").text("");
+        } else {
+            if (response == true) {
+                $("#usernamemessage").text(null);
+                location.reload();
+            } else {
+                $("#usernamemessage").text("Username is already taken!");
+            }
+        }
+
+
+    }
+    function OnFailure(response) {
+        alert("Error occured.");
+    }
+
     $(document).ready(function () {
-        $('#datehired').val(new Date('@Model.DateHired').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#dateterminated').val(new Date('@Model.DateTerminated').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var datehired = new Date('@Model.DateHired'); // Or the date you'd like converted.
+        var hireddate = new Date(datehired.getTime() - (datehired.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $('.datehired').val(hireddate);
+
+        if ('@Model.DateTerminated' != null) {
+            var dateterminated = new Date('@Model.DateTerminated'); // Or the date you'd like converted.
+            var terminateddate = new Date(dateterminated.getTime() - (dateterminated.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+            $('.dateterminated').val(terminateddate);
+        }
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
         });
@@ -33,7 +45,12 @@
             <h3 class="modal-title" id="myModalLabel">Edit Staff</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
-        @using (Html.BeginForm("Edit", "Staffs", FormMethod.Post))
+        @using (Ajax.BeginForm("Edit", "Staffs", new AjaxOptions
+        {
+            OnSuccess = "OnSuccess",
+            OnFailure = "OnFailure",
+            HttpMethod = "POST"
+        }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.IDStaff)
@@ -42,30 +59,30 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-row">
                         <div class="form-group col-sm-4">
-                            <label><b>Last Name:</b></label>
-                            @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            <label><b>Last Name: <span style="color:red;">*</span></b></label>
+                            @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { placeholder = "Enter Lastname", @class = "form-control", autocomplete = "off", Required = true } })
                             @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
-                            <label><b>First Name:</b></label>
-                            @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
+                            <label><b>First Name: <span style="color:red;">*</span></b></label>
+                            @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { placeholder = "Enter Firstname", @class = "form-control", autocomplete = "off", Required = true } })
                             @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Contact Number:</b></label>
-                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @type="number", @class = "form-control", autocomplete = "off" } })
+                            @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { placeholder = "Enter Contact Number", @type = "number", @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-4">
-                            <label><b>Date Hired:</b></label>
-                            @Html.TextBoxFor(model => model.DateHired, new { @id="datehired", @type = "datetime-local", @class = "form-control datehired" })
+                            <label><b>Date Hired: <span style="color:red;">*</span></b></label>
+                            @Html.TextBoxFor(model => model.DateHired, new { @type = "date", @class = "form-control datehired", Required = true })
                             @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Date Terminated:</b></label>
-                            @Html.TextBoxFor(model => model.DateTerminated, new { @id="dateterminated", @type = "datetime-local", @class = "form-control  dateterminated" })
+                            @Html.TextBoxFor(model => model.DateTerminated, new { @type = "date", @class = "form-control dateterminated" })
                             @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group col-sm-4">
@@ -81,18 +98,18 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-4">
-                            <label><b>Username:</b></label>
-                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", Required = true } })
-                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            <label><b>Username: <span style="color:red;">*</span></b></label>
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Enter Username", Required = true } })
+                            <span style="color:red;font-size:12px;" id="usernamemessage"></span>
                         </div>
                         <div class="form-group col-sm-4">
-                            <label><b>Password:</b></label>
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", @class = "form-control", Required = true } })
-                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            <label><b>Password: <span style="color:red;">*</span></b></label>
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", autocomplete = "new-password", placeholder = "Enter Password", @class = "form-control password", Required = true } })
+                            <span style="color:red;font-size:12px;" id="passwordmessage"></span>
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Email:</b></label>
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @type = "email", autocomplete = "off", @class = "form-control" } })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Enter Email", @type = "email", autocomplete = "off", @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>

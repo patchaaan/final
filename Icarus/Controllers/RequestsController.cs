@@ -27,6 +27,7 @@ namespace Icarus.Controllers
                 tblRequest request = new tblRequest();
                 request.IDRequest = req + 1;
                 ViewData["Request"] = request;
+
                 return View(db.tblRequests.ToList().OrderByDescending(x => x.IDRequest).ToList());
             }
             else {

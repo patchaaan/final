@@ -101,7 +101,7 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Assertion Date</b></label>
-                            @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @id = "assertiondate", @class = "form-control assertiondate" })
+                            @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @id = "assertiondate", @class = "form-control assertiondate", Required=true })
                         </div>
                         <div class="form-group col-sm-4">
                             @Html.LabelFor(model => model.Qty)
@@ -125,16 +125,16 @@
                     <div class="form-row">
                         <div class="form-group col-sm-4">
                             <label><b>Markup Value</b></label>
-                            @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @id = "markUpValue", @class = "form-control markUpValue", Value = Model.MarkupValue } })
+                            @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @readonly = "readonly", @id = "markUpValue", @class = "form-control markUpValue", Value = Model.MarkupValue } })
                         </div>
                         <div class="form-group col-sm-4">
                             @Html.LabelFor(model => model.SubTotal)
-                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @id = "subTotal", @class = "form-control subTotal", Value = Model.SubTotal } })
+                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @readonly = "readonly", @id = "subTotal", @class = "form-control subTotal", Value = Model.SubTotal } })
 
                         </div>
                         <div class="form-group col-sm-4">
                             <label><b>Posted Date</b></label>
-                            @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @id = "posteddate", @class = "form-control posteddate" })
+                            @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @id = "posteddate", @class = "form-control posteddate", Required=true})
                         </div>
                     </div>
                     <div class="form-row">

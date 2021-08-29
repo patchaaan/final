@@ -84,7 +84,7 @@ namespace Icarus.Controllers
                 {
                     var checkAcount = db.tblStaffs.Where(x => x.Username.Contains(tblStaff.Username)).FirstOrDefault();
                     if (tblStaff.Password.Length < 8) {
-                    return Json("Password");
+                        return Json("Password");
                     }
                     if (checkAcount != null)
                     {
@@ -153,18 +153,33 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblStaff).State = EntityState.Modified;
-                    db.SaveChanges();
-                    Session["isAAG"] = tblStaff.isAAG.ToString();
-                    Session["isADG"] = tblStaff.isADG.ToString();
-                    Session["isEDG"] = tblStaff.isEDG.ToString();
-                    Session["isPG"] = tblStaff.isPG.ToString();
-                    Session["Username"] = tblStaff.Username.ToString();
-                    Session["Password"] = tblStaff.Password.ToString();
-                    Session["ID"] = tblStaff.IDStaff.ToString();
-                    return RedirectToAction("Index");
+                    var checkAcount = db.tblStaffs.Where(x => x.Username.Contains(tblStaff.Username)).FirstOrDefault();
+                    if (tblStaff.Password.Length < 8)
+                    {
+                        return Json("Password");
+                    }
+                    else if (checkAcount != null)
+                    {
+                        return Json(false);
+                    }
+                    else
+                    {
+                        db.Entry(tblStaff).State = EntityState.Modified;
+                        db.SaveChanges();
+                        if (tblStaff.IDStaff.ToString() == Session["ID"].ToString())
+                        {
+                            Session["isAAG"] = tblStaff.isAAG.ToString();
+                            Session["isADG"] = tblStaff.isADG.ToString();
+                            Session["isEDG"] = tblStaff.isEDG.ToString();
+                            Session["isPG"] = tblStaff.isPG.ToString();
+                            Session["Username"] = tblStaff.Username.ToString();
+                            Session["Password"] = tblStaff.Password.ToString();
+                            Session["ID"] = tblStaff.IDStaff.ToString();
+                        }
+                        return Json(true);
+                    }
                 }
-                return View(tblStaff);
+                return RedirectToAction("Index");
             }
             else
             {
@@ -172,29 +187,6 @@ namespace Icarus.Controllers
             }
             
         }
-
-        // GET: Staffs/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (Session["Username"] != null)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        tblStaff tblStaff = db.tblStaffs.Find(id);
-        //        if (tblStaff == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(tblStaff);
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login", "Login");
-        //    }
-            
-        //}
 
         // POST: Staffs/Delete/5
         [HttpPost, ActionName("Delete")]

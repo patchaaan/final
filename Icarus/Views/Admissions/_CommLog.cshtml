@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Admission Browse";
+    Model.PostedBy = ViewBag.generatedBy;
 }
 
 <style>
@@ -146,7 +147,7 @@
         </div>
     }
     <div class="modal fade" id="modalCommLog" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add CommLog</h4>
@@ -159,25 +160,14 @@
                     @Html.HiddenFor(model => model.PostedBy)
                     <form>
                         <div class="modal-body">
-
                             <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.IDAdmission)
-                                    @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", Value = Model.IDAdmission, disabled = true } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    <label><b>Posted By:</b></label>
-                                    @Html.EditorFor(model => model.PostedBy, new { htmlAttributes = new { @class = "form-control", Value = ViewBag.generatedBy, disabled = true } })
-                                </div>
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-md-6">
                                     <label><b>Log Date</b></label>
-                                    @Html.TextBoxFor(model => model.LogDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                    @Html.TextBoxFor(model => model.LogDate, new { @type = "datetime-local", @class = "form-control datetimepicker", Required=true})
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-md-6">
                                     @Html.LabelFor(model => model.Details)
-                                    @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5 })
+                                    @Html.TextAreaFor(model => model.Details, new { @class = "form-control", @rows = 5, Required = true })
                                 </div>
                             </div>
                         </div>
