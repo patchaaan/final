@@ -113,9 +113,11 @@
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
+                    var inquiryDate = item.InquiryDate == null ? "" : ((DateTime)item.InquiryDate).ToShortDateString();
+
                     <tr>
                         <td >
-                            @Html.DisplayFor(modelItem => item.InquiryDate)
+                            @inquiryDate
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Codep)

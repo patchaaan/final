@@ -15,7 +15,7 @@
     }
 
     .payment-holder::-webkit-scrollbar {
-        width: 12px; /* width of the entire scrollbar */
+        width: 5px; /* width of the entire scrollbar */
         background-color: #dddddd;
         height: 10px;
     }
@@ -34,14 +34,31 @@
         font-size: 15px;
     }
 
+    th {
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        background-color: #6C7AE0;
+        height: 30px;
+    }
+
+    td, th {
+        min-width: 200px;
+        border: dashed 1px lightblue;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /*max-width: 100px;*/
+    }
+
     td {
-        font-size: 14px;
+        height: 50px;
     }
 
     .payment-holder {
         overflow-y: auto;
         height: 64vh;
     }
+
+
 </style>
 <script>
     $(document).ready(function () {
@@ -87,13 +104,13 @@
                             ID
                         </th>
                         <th id="paymenthead" scope="col">
-                            PaidDate
+                            Paid Date
                         </th>
                         <th id="paymenthead" scope="col">
-                            PaidAmount
+                            Paid Amount
                         </th>
                         <th id="paymenthead" scope="col">
-                            PaymentMethod
+                            Payment Method
                         </th>
                         <th id="paymenthead" scope="col">
                             Bank
@@ -102,10 +119,10 @@
                             Notes
                         </th>
                         <th id="paymenthead" scope="col">
-                            CheckNo
+                            Check Number
                         </th>
                         <th id="paymenthead" scope="col">
-                            CheckDate
+                            Check Date
                         </th>
                         <th id="paymenthead" class="tableheadright" scope="col">
                             Verified
@@ -118,7 +135,7 @@
                         <tr>
                             <td id="tdpay">@item.IDPayment</td>
                             <td id="tdpay">@item.PaidDate.ToString("MM/dd/yyyy")</td>
-                            <td id="tdpay">@item.TotalPaid</td>
+                            <td id="tdpay">@item.TotalPaid.ToString("0.00")</td>
                             <td id="tdpay">
                                 @foreach (var method in ViewBag.PaymentMethod)
                                 {

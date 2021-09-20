@@ -118,6 +118,7 @@
                 @foreach (var item in Model)
                 {
                     var id = item.IDResident;
+                    var bday = item.Birthdate == null ? "" : ((DateTime)item.Birthdate).ToShortDateString();
                     <tr>
                         <td scope="row">
                             <a style="text-decoration:underline;color:blue;cursor:pointer;" ondblclick="Details(@item.IDResident)">@item.IDResident</a>
@@ -132,7 +133,7 @@
                             @Html.DisplayFor(modelItem => item.Middlename)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Birthdate)
+                            @bday
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Age)

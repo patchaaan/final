@@ -104,11 +104,14 @@
                 <tbody id="myTable">
                     @foreach (var item in ViewBag.AdmissionBilling)
                     {
+                        var billingDate = item.BillingDate == null ? "" : ((DateTime)item.BillingDate).ToShortDateString();
+                        var generatedDate = item.GeneratedDate == null ? "" : ((DateTime)item.GeneratedDate).ToShortDateString();
+
                         <tr>
                             <td>@item.IDAdmissionBilling</td>
-                            <td>@item.BillingDate</td>
-                            <td>@item.GeneratedDate</td>
-                            <td>@item.Amount</td>
+                            <td>@billingDate</td>
+                            <td>@generatedDate</td>
+                            <td>@item.Amount.ToString("0.00")</td>
                             <td>@item.Notes</td>
                             <td>@item.GeneratedBy</td>
                         </tr>

@@ -2,14 +2,12 @@
 
 <script>
     $(document).ready(function () {
-        $('#birthdate').val(new Date('@Model.Birthdate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+
+        var newDate = new Date('@Model.Birthdate');
+        var day = ("0" + newDate.getDate()).slice(-2);
+        var month = ("0" + (newDate.getMonth() + 1)).slice(-2);
+        var date = newDate.getFullYear() + "-" + (month) + "-" + (day);
+        $('#birthdate').val(date);
 
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
@@ -20,77 +18,85 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Resident Details</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
+            @{
+                var bday = Model.Birthdate == null ? "" : ((DateTime)Model.Birthdate).ToShortDateString();
+            }
             <div class="form">
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Lastname</b></label>
+                    <div class="form-group col-sm-6">
+                        <label><b>Last Name</b></label>
                         @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control", disabled=true} })
                         @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Firstname</b></label>
+                    <div class="form-group col-sm-6">
+                        <label><b>First Name</b></label>
                         @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Middlename</b></label>
+                    
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label><b>Middle Name</b></label>
                         @Html.EditorFor(model => model.Middlename, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Middlename, "", new { @class = "text-danger" })
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Nickname</b></label>
                         @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Nickname, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Birthdate</b></label>
-                        @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @id = "birthdate", @type = "datetime-local", @class = "form-control", disabled=true } })
+                        @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @id = "birthdate", @type = "date", @class = "form-control", disabled=true } })
                         @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Age</b></label>
                         @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @type = "number", @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Sex</b></label>
                         @Html.DropDownListFor(model => model.Sex,
                                 (
                                     new[] { new SelectListItem { Text = "Female", Value = "Female" },
                                     new SelectListItem { Text = "Male", Value = "Male" }
                                 }),
-                                new { @class = "form-control", Value=Model.Sex, Selected=true, disabled = true })
+                                new { @class = "form-control", Value = Model.Sex, Selected = true, disabled = true })
                         @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Codep</b></label>
                         @Html.EditorFor(model => model.Codep, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Codep, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label><b>Contact Number</b></label>
+                        @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control", disabled = true } })
+                        @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-6">
                         <label><b>Relationship</b></label>
                         @Html.EditorFor(model => model.Relationship, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Relationship, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Contact Number</b></label>
-                        @Html.EditorFor(model => model.ContactNumber, new { htmlAttributes = new { @class = "form-control", disabled = true } })
-                        @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Email</b></label>
                         @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @type = "email", @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })

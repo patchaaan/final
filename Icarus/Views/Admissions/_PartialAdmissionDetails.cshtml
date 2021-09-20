@@ -45,56 +45,56 @@
 
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Resident
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         <input class="form-control" value="@ViewBag.residentName" disabled />
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Admission Date
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.EditorFor(model => model.AdmissionDate, new { htmlAttributes = new { @id = "admissiondate", @type = "datetime-local", @class = "form-control" } })
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Termination Date
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.EditorFor(model => model.TerminationDate, new { htmlAttributes = new { @id = "termdate", @type = "datetime-local", @class = "form-control" } })
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Active
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.DropDownListFor(modelItem => modelItem.IsActive,
                             (
                                 new[] { new SelectListItem { Text = "Y", Value = "Y" },
@@ -107,14 +107,14 @@
             <div class="p-1"></div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
-                                Stop T.F. Billing?
+                                Stop Treatment Fee Billing? (Y/N)
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.DropDownListFor(modelItem => modelItem.StopTFBilling,
                             (
                                 new[] { new SelectListItem { Text = "Y", Value = "Y" },
@@ -126,14 +126,14 @@
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Phase
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.DropDownListFor(modelItem => modelItem.Phase,
                             (
                                 new[] { new SelectListItem { Text = "N", Value = "N" },
@@ -150,28 +150,28 @@
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Rank
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.DropDownListFor(model => model.IDRank, ViewBag.ranks as SelectList, new { @class = "form-control", Value = Model.IDRank, Selected = Model.IDRank })
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Notes
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.TextAreaFor(
                             model => model.Notes,
                             new { @class = "form-control notes", Value = Model.Notes }
@@ -181,14 +181,14 @@
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Treatment Fee
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.EditorFor(model => model.TreatmentFee, new { htmlAttributes = new { @type = "number", @class = "form-control", @value = Model.TreatmentFee } })
 
                     </div>
@@ -196,14 +196,14 @@
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Total Billing
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.EditorFor(model => model.TotalBilling, new { htmlAttributes = new { @type = "number", @class = "form-control", @value = Model.TotalBilling, disabled = true } })
 
                     </div>
@@ -211,28 +211,28 @@
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Total Paid
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @type = "number", @class = "form-control", @value = Model.TotalPaid, disabled = true } })
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-12">
                 <div class="row">
-                    <div class="col col-md-4 my-auto">
+                    <div class="col col-md-5 my-auto">
                         <p class="my-auto">
                             <b>
                                 Overall Balance
                             </b>
                         </p>
                     </div>
-                    <div class="col col-md-8">
+                    <div class="col col-md-7">
                         @Html.EditorFor(model => model.OverallBalance, new { htmlAttributes = new { @type = "number", @class = "form-control", @value = Model.OverallBalance, disabled = true } })
                     </div>
                 </div>

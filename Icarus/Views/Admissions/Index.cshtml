@@ -203,6 +203,9 @@
                 @foreach (var item in Model)
                 {
                     var id = item.IDAdmission;
+                    var admissionDate = item.AdmissionDate == null ? "" : ((DateTime)item.AdmissionDate).ToShortDateString();
+                    var terminationDate = item.TerminationDate == null ? "" : ((DateTime)item.TerminationDate).ToShortDateString();
+
                     <tr>
                         <td scope="row">
                             @if (Session["isAAG"].ToString() == "Y")
@@ -231,10 +234,10 @@
                             @Html.DisplayFor(modelItem => item.rank)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.AdmissionDate)
+                            @admissionDate
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TerminationDate)
+                            @terminationDate
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.IsActive)

@@ -213,9 +213,11 @@
                 <tbody id="thisTable">
                     @foreach (var item in ViewBag.AssertionsLists)
                     {
+                        var postedDate = item.PostedDate == null ? "" : ((DateTime)item.PostedDate).ToShortDateString();
+
                         <tr>
                             <td id="td">@item.IDChargeToCodep</td>
-                            <td id="td">@item.PostedDate</td>
+                            <td id="td">@postedDate</td>
                             <td id="td">@item.Description</td>
                             <td id="td">
                                 @foreach (var category in ViewBag.AssertionCategories)
@@ -226,12 +228,12 @@
                                     }
                                 }
                             </td>
-                            <td id="td">@item.Qty</td>
-                            <td id="td">@item.Price</td>
-                            <td id="td">@item.Markup</td>
-                            <td id="td">@item.MarkupValue</td>
-                            <td id="td">@item.SubTotal</td>
-                            <td id="td">@item.SubTotal</td>
+                            <td id="td">@item.Qty.ToString("0")</td>
+                            <td id="td">@item.Price.ToString("0.00")</td>
+                            <td id="td">@item.Markup.ToString("0.00")</td>
+                            <td id="td">@item.MarkupValue.ToString("0.00")</td>
+                            <td id="td">@item.SubTotal.ToString("0.00")</td>
+                            <td id="td">@item.SubTotal.ToString("0.00")</td>
                             @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                             {
                                 <td id="td">@item.Notes</td>
@@ -254,7 +256,7 @@
         </div>
     }
     <div class="modal fade" id="assertionModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="gridSystemModalLabel">Add Assertion</h4>
@@ -268,51 +270,53 @@
                         <div class="modal-body">
 
                             <div class="form-row">
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-md-6">
                                     <label><b>Assertion Category</b></label>
                                     @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control" })
                                 </div>
-                                <div class="form-group col-sm-4">
-                                    <label><b>Assertion Date</b></label>
-                                    @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    <label><b>Posted Date</b></label>
-                                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
-                                </div>
-
-                                
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.Qty)
-                                    @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control qty", onkeydown = "if(event.key==='.'){event.preventDefault();}", onpaste = "let pasteData = event.clipboardData.getData('text'); if(pasteData){pasteData.replace(/[^0-9]*/g,'');} " } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.Price)
-                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number",@Value="0", @class = "form-control price" } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    <label><b>Markup %</b></label>
-                                    @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @class = "form-control markupPercent", Value = 20 } })
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-sm-4">
-                                    <label><b>Markup Value</b></label>
-                                    @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @class = "form-control markUpValue" } })
-                                </div>
-                                <div class="form-group col-sm-4">
-                                    @Html.LabelFor(model => model.SubTotal)
-                                    @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @class = "form-control subTotal" } })
-                                </div>
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-md-6">
                                     @Html.LabelFor(model => model.Description)
                                     @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-md-6">
+                                    <label><b>Assertion Date</b></label>
+                                    @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label><b>Posted Date</b></label>
+                                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.Qty)
+                                    @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control qty", onkeydown = "if(event.key==='.'){event.preventDefault();}", onpaste = "let pasteData = event.clipboardData.getData('text'); if(pasteData){pasteData.replace(/[^0-9]*/g,'');} " } })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.Price)
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control price" } })
+                                </div>
+                                
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label><b>Markup %</b></label>
+                                    @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @class = "form-control markupPercent", Value = 20 } })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label><b>Markup Value</b></label>
+                                    @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @class = "form-control markUpValue" } })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.SubTotal)
+                                    @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @class = "form-control subTotal" } })
+                                </div>
+                                <div class="form-group col-md-6">
                                     @Html.LabelFor(model => model.Notes)
                                     @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
                                 </div>
