@@ -153,12 +153,12 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var checkAcount = db.tblStaffs.Where(x => x.Username.Contains(tblStaff.Username)).FirstOrDefault();
+                    var checkAcount = db.tblStaffs.AsNoTracking().Where(x => x.Username == tblStaff.Username).FirstOrDefault();
                     if (tblStaff.Password.Length < 8)
                     {
                         return Json("Password");
                     }
-                    else if (checkAcount != null)
+                    else if (checkAcount != null && tblStaff.IDStaff != checkAcount.IDStaff)
                     {
                         return Json(false);
                     }
@@ -187,6 +187,13 @@ namespace Icarus.Controllers
             }
             
         }
+
+
+        //[HttpPost, ActionName("EditUsername")]
+        //public JsonResult EditUsername()
+        //{
+        //    return JsonResult = null;
+        //}
 
         // POST: Staffs/Delete/5
         [HttpPost, ActionName("Delete")]

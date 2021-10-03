@@ -50,6 +50,10 @@
         /*max-width: 100px;*/
     }
 
+    .required {
+        color: red;
+    }
+
     /*html, body {
         margin: 0;
         height: 100%;
@@ -181,13 +185,13 @@
                             Price
                         </th>
                         <th id="head" scope="col">
-                            MarkUp %
+                            Markup %
                         </th>
                         <th id="head" scope="col">
                             Markup Value
                         </th>
                         <th id="head" scope="col">
-                            MarkUp Price
+                            Markup Price
                         </th>
                         <th id="head" scope="col">
                             Subtotal
@@ -272,49 +276,48 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label><b>Assertion Category</b></label>
-                                    @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control", required = true })
                                 </div>
                                 <div class="form-group col-md-6">
-                                    @Html.LabelFor(model => model.Description)
-                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label><b>Assertion Date</b></label>
-                                    @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label><b>Posted Date</b></label>
-                                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @class = "form-control datetimepicker" })
+                                    <label>Description <span class="required">*</span></label>
+                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", required = true } })
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    @Html.LabelFor(model => model.Qty)
-                                    @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control qty", onkeydown = "if(event.key==='.'){event.preventDefault();}", onpaste = "let pasteData = event.clipboardData.getData('text'); if(pasteData){pasteData.replace(/[^0-9]*/g,'');} " } })
+                                    <label>Assertion Date <span class="required">*</span></label>
+                                    @Html.TextBoxFor(model => model.AssertionDate, new { @type = "date", @class = "form-control datetimepicker", required = true })
                                 </div>
                                 <div class="form-group col-md-6">
-                                    @Html.LabelFor(model => model.Price)
-                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control price" } })
+                                    <label>Posted Date <span class="required">*</span></label>
+                                    @Html.TextBoxFor(model => model.PostedDate, new { @type = "date", @class = "form-control datetimepicker", required = true })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Quantity <span class="required">*</span></label>
+                                    @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @Value = "0", required = true, @class = "form-control qty", onkeydown = "if(event.key==='.'){event.preventDefault();}", onpaste = "let pasteData = event.clipboardData.getData('text'); if(pasteData){pasteData.replace(/[^0-9]*/g,'');} " } })
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Price <span class="required">*</span></label>
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control price", required = true } })
                                 </div>
                                 
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label><b>Markup %</b></label>
-                                    @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @class = "form-control markupPercent", Value = 20 } })
+                                    <label>Markup % <span class="required">*</span></label>
+                                    @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @class = "form-control markupPercent", Value = 20, required = true } })
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><b>Markup Value</b></label>
-                                    @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @class = "form-control markUpValue" } })
+                                    @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @class = "form-control markUpValue", @readonly = "readonly" } })
                                 </div>
                             </div>
                             <div class="form-row">
-                                
                                 <div class="form-group col-md-6">
                                     @Html.LabelFor(model => model.SubTotal)
-                                    @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @class = "form-control subTotal" } })
+                                    @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @class = "form-control subTotal", @readonly = "readonly" } })
                                 </div>
                                 <div class="form-group col-md-6">
                                     @Html.LabelFor(model => model.Notes)

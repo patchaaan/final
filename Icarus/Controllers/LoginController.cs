@@ -38,7 +38,7 @@ namespace Icarus.Controllers
         public ActionResult Login(tblStaff tblstaff)
         {
             var checkLogin = db.tblStaffs.Where(x => x.Username.Contains(tblstaff.Username) && x.Password.Contains(tblstaff.Password)).FirstOrDefault();
-            if (checkLogin != null)
+            if (checkLogin != null && checkLogin.Status != "Inactive")
             {
                 if (tblstaff.Username == checkLogin.Username)
                 {
@@ -61,7 +61,12 @@ namespace Icarus.Controllers
                     ViewBag.Notification = "Invalid Username!";
                 }
             }
-            else {
+            else if (checkLogin != null && checkLogin.Status == "Inactive")
+            {
+                ViewBag.Notification = "Account is disabled!";
+            }
+            else
+            {
                 ViewBag.Notification = "Invalid Credentials!";
             }
 

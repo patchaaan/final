@@ -43,7 +43,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Create Staff</h3>
@@ -61,34 +61,36 @@
                 <div class="form">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Last Name: <span style="color:red;">*</span></b></label>
                             @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { placeholder = "Enter Lastname", @class = "form-control", autocomplete = "off", Required = true } })
                             @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>First Name: <span style="color:red;">*</span></b></label>
                             @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { placeholder = "Enter Firstname", @class = "form-control", autocomplete = "off", Required = true } })
                             @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label><b>Date Hired: <span style="color:red;">*</span></b></label>
+                            @Html.TextBoxFor(model => model.DateHired, new { @type = "date", @class = "form-control datehired", Required = true })
+                            @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label><b>Date Terminated:</b></label>
+                            @Html.TextBoxFor(model => model.DateTerminated, new { @type = "date", @class = "form-control dateterminated" })
+                            @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
                             <label><b>Contact Number:</b></label>
                             @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { placeholder = "Enter Contact Number", @type = "number", @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Date Hired: <span style="color:red;">*</span></b></label>
-                            @Html.TextBoxFor(model => model.DateHired, new { @type = "date", @class = "form-control", Required = true })
-                            @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Date Terminated:</b></label>
-                            @Html.TextBoxFor(model => model.DateTerminated, new { @type = "date", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Status</b></label>
                             @Html.DropDownListFor(model => model.Status,
                                         (
@@ -100,24 +102,24 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Username: <span style="color:red;">*</span></b></label>
                             @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", placeholder = "Enter Username", Required = true } })
                             <span style="color:red;font-size:12px;" id="usernamemessage"></span>
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Password: <span style="color:red;">*</span></b></label>
                             @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", autocomplete = "new-password", placeholder = "Enter Password", @class = "form-control password", Required = true } })
                             <span style="color:red;font-size:12px;" id="passwordmessage"></span>
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
                             <label><b>Email:</b></label>
                             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Enter Email", @type = "email", autocomplete = "off", @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Admin Director Group:</b></label>
                             @Html.DropDownListFor(model => model.isADG,
                                         (
@@ -127,7 +129,10 @@
                                         new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.isADG, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-sm-6">
                             <label><b>Admin Assistant Group:</b></label>
                             @Html.DropDownListFor(model => model.isAAG,
                                         (
@@ -137,7 +142,7 @@
                                         new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.isAAG, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Executive Director Group:</b></label>
                             @Html.DropDownListFor(model => model.isEDG,
                                         (
@@ -149,7 +154,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Program Group:</b></label>
                             @Html.DropDownListFor(model => model.isPG,
                                         (
@@ -159,7 +164,7 @@
                                         new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.isPG, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Notes:</b></label>
                             @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
                             @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })

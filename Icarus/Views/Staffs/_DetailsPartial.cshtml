@@ -27,7 +27,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Staff Details</h3>
@@ -36,34 +36,36 @@
         <div class="modal-body">
             <div class="form">
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Last Name:</b></label>
                         @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>First Name:</b></label>
                         @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label><b>Date Hired:</b></label>
+                        @Html.TextBoxFor(model => model.DateHired, new { @id = "datehired", @type = "datetime-local", @class = "form-control datehired", disabled = true })
+                        @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label><b>Date Terminated:</b></label>
+                        @Html.TextBoxFor(model => model.DateTerminated, new { @id = "dateterminated", @type = "datetime-local", @class = "form-control dateterminated", disabled = true })
+                        @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Contact Number:</b></label>
                         @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Date Hired:</b></label>
-                        @Html.TextBoxFor(model => model.DateHired, new {@id="datehired", @type = "datetime-local", @class = "form-control datehired", disabled = true })
-                        @Html.ValidationMessageFor(model => model.DateHired, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Date Terminated:</b></label>
-                        @Html.TextBoxFor(model => model.DateTerminated, new {@id="dateterminated", @type = "datetime-local", @class = "form-control dateterminated", disabled = true })
-                        @Html.ValidationMessageFor(model => model.DateTerminated, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Status</b></label>
                         @Html.DropDownListFor(model => model.Status,
                                     (
@@ -75,12 +77,12 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Username:</b></label>
                         @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Password:</b></label>
                         @if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                         {
@@ -88,19 +90,18 @@
                         }
                         else
                         {
-                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", @class = "form-control", @Value="********", disabled = true } })
-
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @type = "password", @class = "form-control", @Value = "********", disabled = true } })
                         }
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Email:</b></label>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @type = "email", autocomplete = "off", @class = "form-control", disabled = true } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Admin Director Group:</b></label>
                         @Html.DropDownListFor(model => model.isADG,
                                     (
@@ -110,7 +111,9 @@
                                     new { @class = "form-control", disabled = true })
                         @Html.ValidationMessageFor(model => model.isADG, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Admin Assistant Group:</b></label>
                         @Html.DropDownListFor(model => model.isAAG,
                                     (
@@ -120,7 +123,7 @@
                                     new { @class = "form-control", disabled = true })
                         @Html.ValidationMessageFor(model => model.isAAG, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Executive Director Group:</b></label>
                         @Html.DropDownListFor(model => model.isEDG,
                                     (
@@ -132,7 +135,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Program Group:</b></label>
                         @Html.DropDownListFor(model => model.isPG,
                                     (
@@ -142,7 +145,7 @@
                                     new { @class = "form-control", disabled = true })
                         @Html.ValidationMessageFor(model => model.isPG, "", new { @class = "text-danger" })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Notes:</b></label>
                         @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5, disabled=true })
                         @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })

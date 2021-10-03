@@ -2,31 +2,19 @@
 
 <script>
     $(document).ready(function () {
-        $('#checkdate').val(new Date('@Model.CheckDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#paiddate').val(new Date('@Model.PaidDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#posteddate').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var paiddate = new Date('@Model.PaidDate');
+        var datepaid = new Date(paiddate.getTime() - (paiddate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $('.paiddate').val(datepaid);
 
+        var posteddate = new Date('@Model.PostedDate');
+        var dateposted = new Date(posteddate.getTime() - (posteddate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $('.posteddate').val(dateposted);
+
+        if ('@Model.CheckDate' != null) {
+            var datecheck = new Date('@Model.CheckDate'); // Or the date you'd like converted.
+            var checkdate = new Date(datecheck.getTime() - (datecheck.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+            $('.checkdate').val(checkdate);
+        }
 
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
@@ -38,7 +26,13 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<style>
+    .required {
+        color: red;
+    }
+</style>
+
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Edit Payment</h3>
@@ -52,46 +46,49 @@
                 <div class="form">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Paid Date</b></label>
-                            @Html.EditorFor(model => model.PaidDate, new { htmlAttributes = new { @type = "datetime-local",@id="paiddate", @class = "form-control", Required = true } })
+                        <div class="form-group col-sm-6">
+                            <label>Paid Date <span class="required"> *</span></label>
+                            @Html.EditorFor(model => model.PaidDate, new { htmlAttributes = new { @type = "date",@id="paiddate", @class = "form-control paiddate", Required = true } })
                             @Html.ValidationMessageFor(model => model.PaidDate, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>ID Admission</b></label>
                             @Html.DropDownListFor(model => model.IDAdmission, (SelectList)ViewBag.residentList, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.IDAdmission, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Total Paid</b></label>
+                        
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>Total Paid <span class="required"> *</span></label>
                             @Html.EditorFor(model => model.TotalPaid, new { htmlAttributes = new { @type = "number", @class = "form-control", Required = true } })
                             @Html.ValidationMessageFor(model => model.TotalPaid, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Payment Method</b></label>
                             @Html.DropDownListFor(model => model.IDPaymentMethod, (SelectList)ViewBag.paymentMethod, new { @class = "form-control", Value = Model.IDPaymentMethod, Selected = Model.IDPaymentMethod })
                             @Html.ValidationMessageFor(model => model.IDPaymentMethod, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
                             <label><b>Bank</b></label>
                             @Html.EditorFor(model => model.Bank, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Check No</b></label>
+                        <div class="form-group col-sm-6">
+                            <label><b>Check #</b></label>
                             @Html.EditorFor(model => model.CheckNo, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.CheckNo, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Check Date</b></label>
-                            @Html.EditorFor(model => model.CheckDate, new { htmlAttributes = new { @type = "datetime-local",@id="checkdate", @class = "form-control" } })
+                            @Html.EditorFor(model => model.CheckDate, new { htmlAttributes = new { @type = "date",@id="checkdate", @class = "form-control checkdate" } })
                             @Html.ValidationMessageFor(model => model.CheckDate, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Verified</b></label>
                             @Html.DropDownListFor(modelItem => modelItem.IsVerified,
                                      (
@@ -101,14 +98,14 @@
                                      new { @class = "form-control active", Value = Model.IsVerified, Text = Model.IsVerified, Selected = true })
                             @Html.ValidationMessageFor(model => model.IsVerified, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Posted Date</b></label>
-                            @Html.EditorFor(model => model.PostedDate, new { htmlAttributes = new { @type = "datetime-local",@id="posteddate", @class = "form-control", Required = true } })
-                            @Html.ValidationMessageFor(model => model.PostedDate, "", new { @class = "text-danger" })
-                        </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
+                            <label>Posted Date <span class="required"> *</span></label>
+                            @Html.EditorFor(model => model.PostedDate, new { htmlAttributes = new { @type = "date", @id = "posteddate", @class = "form-control posteddate", Required = true } })
+                            @Html.ValidationMessageFor(model => model.PostedDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-sm-6">
                             <label><b>Notes</b></label>
                             @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
                             @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })

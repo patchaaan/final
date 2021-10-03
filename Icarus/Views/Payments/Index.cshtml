@@ -176,32 +176,34 @@
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
                     <th class="tableheadleft" scope="col">ID</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.PaidDate)</th>
+                    <th scope="col">Paid Date</th>
                     <th scope="col">Admission</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.TotalPaid)</th>
-                    <th scope="col">PaymentMethod</th>
+                    <th scope="col">Total Paid</th>
+                    <th scope="col">Payment Method</th>
                     <th scope="col">@Html.DisplayNameFor(model => model.Bank)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.CheckNo)</th>
-                    <th scope="col">@Html.DisplayNameFor(model => model.CheckDate)</th>
+                    <th scope="col">Check #</th>
+                    <th scope="col">Check Date</th>
                     <th scope="col">@Html.DisplayNameFor(model => model.Notes)</th>
                     <th scope="col">Verified</th>
 
                     @if (Session["isADG"].ToString() == "Y")
                     {
-                        <th scope="col">@Html.DisplayNameFor(model => model.PostedDate)</th>
+                        <th scope="col">Posted Date</th>
                         <th class="tableheadright text-center" scope="col">Action</th>
                     }
                     else
                     {
-                        <th class="tableheadright" scope="col">@Html.DisplayNameFor(model => model.PostedDate)</th>
+                        <th class="tableheadright" scope="col">Posted Date</th>
                     }
                 </tr>
             </thead>
             <tbody id="myBody">
                 @foreach (var item in Model)
                 {
+                    var paidDate = item.PaidDate == null ? "" : ((DateTime)item.PaidDate).ToShortDateString();
+                    var postedDate = item.PostedDate == null ? "" : ((DateTime)item.PostedDate).ToShortDateString();
+                    var checkDate = item.CheckDate == null ? "" : ((DateTime)item.CheckDate).ToShortDateString();
                     <tr>
-
                         <td>
                             @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                             {
@@ -213,7 +215,7 @@
                             }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.PaidDate)
+                            @paidDate
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Resident)
@@ -231,7 +233,7 @@
                             @Html.DisplayFor(modelItem => item.CheckNo)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CheckDate)
+                            @checkDate
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Notes)
@@ -240,7 +242,7 @@
                             @Html.DisplayFor(modelItem => item.IsVerified)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.PostedDate)
+                            @postedDate
                         </td>
                         @if (Session["isADG"].ToString() == "Y")
                         {
