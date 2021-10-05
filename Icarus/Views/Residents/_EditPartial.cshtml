@@ -2,60 +2,9 @@
 
 <script>
     $(document).ready(function () {
-        var firstname = $(".firstname").val();
-        var lastname = $(".lastname").val();
-        var relationship = $(".relationship").val();
-        var codep = $(".codep").val();
-        var birthdate = $(".birthdate").val();
         var bday = new Date('@Model.Birthdate'); // Or the date you'd like converted.
         var datebday = new Date(bday.getTime() - (bday.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
         $(".birthdate").val(datebday);
-        if ((firstname != null || firstname != '') && (lastname != null || lastname != '') && (relationship != null || relationship != '') && (codep != null || codep != '') && (birthdate != null || birthdate != '')) {
-            $('.createButton').removeAttr("type").attr("type", "submit");
-        } else {
-            $('.createButton').removeAttr("type").attr("type", "button");
-        }
-        $(".cancelButton").on("click", function () {
-            $(".modal-dialog").find('form').trigger('reset');
-        });
-        $(".close").on("click", function () {
-            $(".modal-dialog").find('form').trigger('reset');
-        });
-
-
-
-        $(".lastname").on("keyup", function () {
-            lastname = $(this).val();
-            $.fn.Create();
-        });
-
-        $(".firstname").on("keyup", function () {
-            firstname = $(this).val();
-            $.fn.Create();
-        });
-
-        $(".birthdate").on("keyup", function () {
-            birthdate = $(this).val();
-            $.fn.Create();
-        });
-
-        $(".codep").on("keyup", function () {
-            codep = $(this).val();
-            $.fn.Create();
-        });
-
-        $(".relationship").on("keyup", function () {
-            relationship = $(this).val();
-            $.fn.Create();
-        });
-
-        $.fn.Create = function () {
-            if ((firstname != null || firstname != '') && (lastname != null || lastname != '') && (relationship != null || relationship != '') && (codep != null || codep != '') && (birthdate != null || birthdate != '')) {
-                $('.createButton').removeAttr("type").attr("type", "submit");
-            } else {
-                $('.createButton').removeAttr("type").attr("type", "button");
-            }
-        }
     });
 </script>
 
@@ -147,7 +96,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger btn-sm cancelButton" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-sm createButton" style="background-color:#444D8E;color:white;">Save</button>
+                <button type="submit" class="btn btn-sm createButton" style="background-color:#444D8E;color:white;">Save</button>
             </div>
         }
     </div>

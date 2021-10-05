@@ -35,6 +35,10 @@
         top: 0; /* Don't forget this, required for the stickiness */
         background-color: #6C7AE0;
     }
+
+    .required {
+        color: red;
+    }
 </style>
 <script>
     function Delete(id) {
@@ -137,7 +141,7 @@
                         <div class="form">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label><b>CommLog Date</b></label>
+                                    <label>CommLog Date <span class="required">*</span></label>
                                     @Html.EditorFor(model => model.CommDate, new { htmlAttributes = new { @id = "inquirydate", @type = "datetime-local", @class = "form-control", Required = true } })
                                     @Html.ValidationMessageFor(model => model.CommDate, "", new { @class = "text-danger" })
                                 </div>
@@ -156,8 +160,8 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label><b>CommLog Details</b></label>
-                                    @Html.TextAreaFor(model => model.CommDetails, new { @class = "form-control", @rows = 5 })
+                                    <label>CommLog Details <span class="required">*</span></label>
+                                    @Html.TextAreaFor(model => model.CommDetails, new { @class = "form-control", @rows = 5, Required = true })
                                     @Html.ValidationMessageFor(model => model.CommDetails, "", new { @class = "text-danger" })
                                 </div>
                             </div>

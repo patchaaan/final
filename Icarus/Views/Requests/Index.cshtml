@@ -94,16 +94,15 @@
         <table class="table table-striped table-hover table-borderless">
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
-                    <th id="requesthead" class="tableheadleft" scope="col">IDRequest</th>
-                    <th id="requesthead" scope="col">DateRequest</th>
-                    <th id="requesthead" scope="col">DateNeeded</th>
-                    <th id="requesthead" scope="col">RequestedBy</th>
+                    <th id="requesthead"  class="tableheadleft" scope="col">Date Request</th>
+                    <th id="requesthead" scope="col">Date Needed</th>
+                    <th id="requesthead" scope="col">Requested by</th>
                     <th id="requesthead" scope="col">Request</th>
-                    <th id="requesthead" scope="col">ApprovedNotes</th>
+                    <th id="requesthead" scope="col">Approved Notes</th>
                     <th id="requesthead" scope="col">Budget</th>
-                    <th id="requesthead" scope="col">ApprovedBy</th>
-                    <th id="requesthead" scope="col">DateApproved</th>
-                    <th id="requesthead" scope="col">DateDelivered</th>
+                    <th id="requesthead" scope="col">Approved By</th>
+                    <th id="requesthead" scope="col">Date Approved</th>
+                    <th id="requesthead" scope="col">Date Delivered</th>
                     <th id="requesthead" scope="col">Status</th>
                     <th id="requesthead" class="tableheadright" scope="col">Action</th>
                 </tr>
@@ -111,18 +110,14 @@
             <tbody id="myTable">
                 @foreach (var item in Model)
                 {
+                    var dateapproved = item.DateApproved == null ? "" : ((DateTime)item.DateApproved).ToShortDateString();
+                    var daterequest = item.DateRequest == null ? "" : ((DateTime)item.DateRequest).ToShortDateString();
+                    var dateaccepted = item.DateAcc == null ? "" : ((DateTime)item.DateAcc).ToShortDateString();
+
+
                     <tr>
-                        <td scope="row">
-                            @Html.ActionLink(
-                                linkText: item.IDRequest.ToString(),
-                                actionName: "Details",
-                                controllerName: "Requests",
-                                routeValues: new { id = item.IDRequest },
-                                htmlAttributes: null
-                            )
-                        </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateRequest)
+                            @daterequest
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.DateNeeded)
@@ -143,10 +138,10 @@
                             @Html.DisplayFor(modelItem => item.ApprovedBy)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateApproved)
+                            @dateapproved
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateAcc)
+                            @dateaccepted
                         </td>
                         <td>
                             @foreach (var status in ViewBag.requestStatus)

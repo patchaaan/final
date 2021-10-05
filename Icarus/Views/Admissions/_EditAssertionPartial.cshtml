@@ -2,23 +2,13 @@
 
 <script>
     $(document).ready(function () {
-        $('#assertiondate').val(new Date('@Model.AssertionDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var assertiondate = new Date('@Model.AssertionDate'); // Or the date you'd like converted.
+        var dateassertion = new Date(assertiondate.getTime() - (assertiondate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $('.assertiondate').val(dateassertion);
 
-        $('#posteddate').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var posteddate = new Date('@Model.PostedDate'); // Or the date you'd like converted.
+        var dateposted = new Date(posteddate.getTime() - (posteddate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $('.posteddate').val(dateposted);
 
 
         $(".cancelButton").on("click", function () {
@@ -81,7 +71,13 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<style>
+    .required {
+        color: red;
+    }
+</style>
+
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Edit Assertion Category</h3>
@@ -95,54 +91,53 @@
             <div class="modal-body">
                 <div class="form">
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            @Html.LabelFor(model => model.IDAdmission)
-                            @Html.EditorFor(model => model.IDAdmission, new { htmlAttributes = new { @class = "form-control", @id = "idadmission", Value = Model.IDAdmission, disabled = true } })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Assertion Date</b></label>
-                            @Html.TextBoxFor(model => model.AssertionDate, new { @type = "datetime-local", @id = "assertiondate", @class = "form-control assertiondate", Required=true })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            @Html.LabelFor(model => model.Qty)
-                            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @id = "qty", @class = "form-control qty", Value = Model.Qty } })
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Assertion Category</b></label>
                             @Html.DropDownListFor(model => model.IDAssertionCategory, ViewBag.assertions as SelectList, new { @class = "form-control" })
                         </div>
-                        <div class="form-group col-sm-4">
-                            @Html.LabelFor(model => model.Price)
-                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @id = "price", @class = "form-control price", Value = Model.Price } })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Markup %</b></label>
-                            @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @id = "markupPercent", @class = "form-control markupPercent", Value = Model.Markup } })
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Markup Value</b></label>
-                            @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @readonly = "readonly", @id = "markUpValue", @class = "form-control markUpValue", Value = Model.MarkupValue } })
-                        </div>
-                        <div class="form-group col-sm-4">
-                            @Html.LabelFor(model => model.SubTotal)
-                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @readonly = "readonly", @id = "subTotal", @class = "form-control subTotal", Value = Model.SubTotal } })
-
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Posted Date</b></label>
-                            @Html.TextBoxFor(model => model.PostedDate, new { @type = "datetime-local", @id = "posteddate", @class = "form-control posteddate", Required=true})
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            @Html.LabelFor(model => model.Description)
+                        <div class="form-group col-sm-6">
+                            <label>Description <span class="required">*</span></label>
                             @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                         </div>
-                        <div class="form-group col-sm-4">
+                        
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>Assertion Date <span class="required">*</span></label>
+                            @Html.TextBoxFor(model => model.AssertionDate, new { @type = "date", @id = "assertiondate", @class = "form-control assertiondate", Required = true })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Posted Date <span class="required">*</span></label>
+                            @Html.TextBoxFor(model => model.PostedDate, new { @type = "date", @id = "posteddate", @class = "form-control posteddate", Required = true })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>Quantity <span class="required">*</span></label>
+                            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @type = "number", @id = "qty", @class = "form-control qty", Value = Model.Qty.ToString("0") } })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Price <span class="required">*</span></label>
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @id = "price", @class = "form-control price", Value = Model.Price.ToString("0.00") } })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>Markup % <span class="required">*</span></label>
+                            @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @type = "number", @id = "markupPercent", @class = "form-control markupPercent", Value = Model.Markup.ToString("0.00") } })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label><b>Markup Value</b></label>
+                            @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @type = "number", @readonly = "readonly", @id = "markUpValue", @class = "form-control markUpValue", Value = Model.MarkupValue.ToString("0.00") } })
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            @Html.LabelFor(model => model.SubTotal)
+                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @type = "number", @readonly = "readonly", @id = "subTotal", @class = "form-control subTotal", Value = Model.SubTotal.ToString("0.00") } })
+
+                        </div>
+                        <div class="form-group col-sm-6">
                             @Html.LabelFor(model => model.Notes)
                             @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = 5 })
                         </div>

@@ -11,7 +11,13 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<style>
+    .required {
+        color:red;
+    }
+</style>
+
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Create Codep Update</h3>
@@ -25,15 +31,18 @@
             @Html.HiddenFor(model => model.UpdatedBy)
             <div class="form">
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Date Update</b></label>
-                        @Html.TextBoxFor(model => model.DateUpdate, new { @type = "datetime-local", @class = "form-control", @id = "dateupdate", Required = true })
+                    <div class="form-group col-sm-6">
+                        <label>Date Update <span class="required">*</span></label>
+                        @Html.TextBoxFor(model => model.DateUpdate, new { @type = "date", @class = "form-control", @id = "dateupdate", Required = true })
                     </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Date Log</b></label>
-                        @Html.TextBoxFor(model => model.DateLog, new { @type = "datetime-local", @class = "form-control", @id = "datelog", Required = true })
+                    <div class="form-group col-sm-6">
+                        <label>Date Log <span class="required">*</span></label>
+                        @Html.TextBoxFor(model => model.DateLog, new { @type = "date", @class = "form-control", @id = "datelog", Required = true })
                     </div>
-                    <div class="form-group col-sm-4">
+                    
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Update Type</b></label>
                         @Html.DropDownListFor(model => model.UpdateType,
                                 (
@@ -42,18 +51,18 @@
                                 }),
                                 new { @class = "form-control" })
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Admission</b></label>
                         @Html.DropDownListFor(model => model.IDAdmission, ViewBag.residentList as SelectList, new { @class = "form-control" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Update By</b></label>
                         @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control", Value = Session["Username"].ToString(), disabled = true } })
                     </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Update Summary</b></label>
+                    <div class="form-group col-sm-6">
+                        <label>Update Summary <span class="required">*</span></label>
                         @Html.TextAreaFor(model => model.UpdateSummary, new { @class = "form-control", @rows = 5, Required = true })
                     </div>
                 </div>

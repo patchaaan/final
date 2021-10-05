@@ -11,10 +11,10 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title" id="myModalLabel">Create Facility Report</h3>
+            <h4 class="modal-title" id="myModalLabel">Create Facility Report</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         @using (Html.BeginForm("Create", "FacilityReports", FormMethod.Post))
@@ -23,17 +23,20 @@
             <div class="modal-body">
                 <div class="form">
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Report Date:</b></label>
                             @Html.TextBoxFor(model => model.ReportDate, new { @type = "datetime-local", @class = "form-control", Required=true })
                             @Html.ValidationMessageFor(model => model.ReportDate, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Posted By:</b></label>
                             @Html.EditorFor(model => model.PostedBy, new { htmlAttributes = new { @class = "form-control", @Value = Session["Username"], disabled = true } })
                             @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-sm-4">
+                        
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
                             <label><b>Activity:</b></label>
                             @Html.TextAreaFor(model => model.Activity, new { @class = "form-control", @rows = 5 })
                             @Html.ValidationMessageFor(model => model.Activity, "", new { @class = "text-danger" })

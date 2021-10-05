@@ -100,6 +100,8 @@ namespace Icarus.Controllers
         public PartialViewResult EditPartial(int id)
         {
             tblRequest request = db.tblRequests.Find(id);
+            request.DateRequest = request.DateRequest.Date;
+            
             ViewBag.requests = new SelectList(db.tblRequestStatus, "IDRequestStatus", "Status");
             return PartialView("_EditPartial", request);
         }

@@ -37,7 +37,6 @@ namespace Icarus.Controllers
                     return View("_AssertionSummary", db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom).ToList());
                 }
                 else {
-                    Response.Write("<script>console.log('TESTING in ELSE ASSERTION')</script>");
                     return View("_AssertionSummary", db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom && x.AssertionDate <= dateto).ToList());
                 }
             }
@@ -51,10 +50,8 @@ namespace Icarus.Controllers
             {
                 if (datefrom != null && dateto == null)
                 {
-                    Response.Write("<script>alert("+datefrom+");</script>");
                     var report = new ActionAsPdf("AssertionSummary", new { datefrom, dateto })
                     {
-                        //FileName = Server.MapPath("~/Content/Relato.pdf"),
                         PageOrientation = Rotativa.Options.Orientation.Landscape,
                         PageSize = Rotativa.Options.Size.A4
                     };
@@ -63,11 +60,8 @@ namespace Icarus.Controllers
                 }
                 else
                 {
-                    Response.Write("<script>console.log('TESTING in ELSE ASSERTION GET')</script>");
-                    System.Diagnostics.Debug.WriteLine("Testing Reading");
                     var report = new ActionAsPdf("AssertionSummary", new { datefrom, dateto })
                     {
-                        //FileName = Server.MapPath("~/Content/Relato.pdf"),
                         PageOrientation = Rotativa.Options.Orientation.Landscape,
                         PageSize = Rotativa.Options.Size.A4
                     };

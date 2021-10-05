@@ -11,7 +11,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Create Request</h3>
@@ -26,58 +26,61 @@
 
             <div class="form">
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Date Requested <span style="color:red;">*</span></b></label>
                         @Html.TextBoxFor(model => model.DateRequest, new { @type = "date", @class = "form-control datetimepicker", Required = true })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Date Needed</b></label>
                         @Html.TextBoxFor(model => model.DateNeeded, new { @type = "date", @class = "form-control datetimepicker" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Date Approved</b></label>
                         @Html.TextBoxFor(model => model.DateApproved, new { @type = "date", @class = "form-control datetimepicker" })
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Date Accepted</b></label>
                         @Html.TextBoxFor(model => model.DateAcc, new { @type = "date", @class = "form-control datetimepicker" })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Budget <span style="color:red;">*</span></b></label>
                         @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @type = "number", @class = "form-control", Required = true } })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Request Status <span style="color:red;">*</span></b></label>
                         @Html.DropDownListFor(model => model.IDRequestStatus, (SelectList)ViewBag.requests, new { @class = "form-control" })
                     </div>
-                    
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Requestor Email</b></label>
                         @Html.EditorFor(model => model.RequestorEmail, new { htmlAttributes = new { @type = "email", @class = "form-control" } })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Approved By</b></label>
                         @Html.EditorFor(model => model.ApprovedBy, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
                     </div>
-                    <div class="form-group col-sm-4">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label><b>Request</b></label>
+                        @Html.TextAreaFor(model => model.Request, new { @class = "form-control", @rows = 5 })
+                    </div>
+                    <div class="form-group col-sm-6">
                         <label><b>Requested by: <span style="color:red;">*</span></b></label>
                         @Html.EditorFor(model => model.RequestedBy, new { htmlAttributes = new { @class = "form-control", Required = true } })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Request</b></label>
-                        @Html.TextAreaFor(model => model.Request, new { @class = "form-control", @rows = 5 })
-                    </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Approver Notes</b></label>
                         @Html.TextAreaFor(model => model.ApproverNotes, new { @class = "form-control", @rows = 5 })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Requestor Notes</b></label>
                         @Html.TextAreaFor(model => model.RequestorNotes, new { @class = "form-control", @rows = 5 })
                     </div>

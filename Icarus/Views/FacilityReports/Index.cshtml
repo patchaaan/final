@@ -91,19 +91,19 @@
             <thead style="background-color: #6C7AE0; color: white;">
                 <tr>
                     <th id="activityhead" class="tableheadleft" scope="col" width="12%">
-                        @Html.DisplayNameFor(model => model.ReportDate)
+                        Report Date
                     </th>
                     <th id="activityhead" scope="col">
                         @Html.DisplayNameFor(model => model.Activity)
                     </th>
                     @if (Session["isPG"].ToString() == "Y" || Session["isADG"].ToString() == "Y")
                     {
-                        <th id="activityhead" scope="col" width="10%"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th id="activityhead" scope="col" width="10%"> Posted by</th>
                         <th id="activityhead" class="tableheadright text-center" scope="col">Action</th>
                     }
                     else
                     {
-                        <th id="activityhead" class="tableheadright" width="10%" scope="col"> @Html.DisplayNameFor(model => model.PostedBy)</th>
+                        <th id="activityhead" class="tableheadright" width="10%" scope="col">Posted by</th>
                     }
                 </tr>
             </thead>

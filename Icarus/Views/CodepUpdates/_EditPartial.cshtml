@@ -2,23 +2,14 @@
 
 <script>
     $(document).ready(function () {
-        $('.dateupdate').val(new Date('@Model.DateUpdate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var dateupdate = new Date('@Model.DateUpdate'); // Or the date you'd like converted.
+        var updatedate = new Date(dateupdate.getTime() - (dateupdate.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $(".dateupdate").val(updatedate);
 
-        $('.datelog').val(new Date('@Model.DateLog').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var datelog = new Date('@Model.DateLog'); // Or the date you'd like converted.
+        var logdate = new Date(datelog.getTime() - (datelog.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $(".datelog").val(logdate);
+
 
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
@@ -30,7 +21,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Edit Codep Update</h3>
@@ -46,15 +37,18 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form">
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Date Update</b></label>
-                            @Html.TextBoxFor(model => model.DateUpdate, new { @type = "datetime-local", @class = "form-control dateupdate", @id = "dateupdate" })
+                        <div class="form-group col-sm-6">
+                            <label>Date Update <span class="required">*</span></label>
+                            @Html.TextBoxFor(model => model.DateUpdate, new { @type = "date", @class = "form-control dateupdate", @id = "dateupdate", Required = true })
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Date Log</b></label>
-                            @Html.TextBoxFor(model => model.DateLog, new { @type = "datetime-local", @class = "form-control datelog", @id = "datelog" })
+                        <div class="form-group col-sm-6">
+                            <label>Date Log <span class="required">*</span></label>
+                            @Html.TextBoxFor(model => model.DateLog, new { @type = "date", @class = "form-control datelog", @id = "datelog", Required = true })
                         </div>
-                        <div class="form-group col-sm-4">
+                        
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
                             <label><b>Update Log</b></label>
                             @Html.DropDownListFor(model => model.UpdateType,
                                     (
@@ -63,20 +57,20 @@
                                     }),
                                     new { @class = "form-control" })
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
-                            <label><b>Updated By</b></label>
-                            @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control", @Value = Session["Username"], disabled = true } })
-                        </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-sm-6">
                             <label><b>Admission</b></label>
                             @Html.DropDownListFor(model => model.IDAdmission, ViewBag.residentList as SelectList, new { @class = "form-control" })
                             <span>@ViewBag.admissionEdit</span>
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label><b>Update Summary</b></label>
-                            @Html.TextAreaFor(model => model.UpdateSummary, new { @class = "form-control", @rows = 5 })
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label><b>Updated By</b></label>
+                            @Html.EditorFor(model => model.UpdatedBy, new { htmlAttributes = new { @class = "form-control", @Value = Session["Username"], disabled = true } })
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Update Summary <span class="required">*</span></label>
+                            @Html.TextAreaFor(model => model.UpdateSummary, new { @class = "form-control", @rows = 5, Required = true })
                         </div>
                     </div>
                 </div>

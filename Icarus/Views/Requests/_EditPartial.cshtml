@@ -2,50 +2,39 @@
 
 <script>
     $(document).ready(function () {
-        $('#daterequest').val(new Date('@Model.DateRequest').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#dateneeded').val(new Date('@Model.DateNeeded').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#dateapproved').val(new Date('@Model.DateApproved').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-        $('#dateacc').val(new Date('@Model.DateAcc').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
+        var daterequest = new Date('@Model.DateRequest'); // Or the date you'd like converted.
+        var requestdate = new Date(daterequest.getTime() - (daterequest.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $(".daterequest").val(convert(daterequest));
 
+        var dateapproved = new Date('@Model.DateApproved'); // Or the date you'd like converted.
+        var approveddate = new Date(dateapproved.getTime() - (dateapproved.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $(".dateapproved").val(approveddate);
+
+        var dateaccepted = new Date('@Model.DateAcc'); // Or the date you'd like converted.
+        var accepteddate = new Date(dateaccepted.getTime() - (dateaccepted.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $(".dateaccepted").val(accepteddate);
+
+        var dateneeded = new Date('@Model.DateNeeded'); // Or the date you'd like converted.
+        var neededdate = new Date(dateneeded.getTime() - (dateneeded.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
+        $(".dateneeded").val(neededdate);
 
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
         });
+
         $(".close").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
         });
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<style>
+    .required {
+        color: red;
+    }
+</style>
+
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Edit Request</h3>
@@ -60,54 +49,63 @@
 
             <div class="form">
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Date Requested</b></label>
-                        @Html.TextBoxFor(model => model.DateRequest, new { @type = "datetime-local",@id="daterequest", @class = "form-control datetimepicker", Required = true })
+                    <div class="form-group col-sm-6">
+                        <label>Date Requested  <span style="color:red;">*</span></label>
+                        @Html.TextBoxFor(model => model.DateRequest, new { @type = "date", @id = "daterequest", @class = "form-control daterequest", Required = true })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Date Needed</b></label>
-                        @Html.TextBoxFor(model => model.DateNeeded, new { @type = "datetime-local",@id="dateneeded", @class = "form-control datetimepicker" })
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Requested by:</b></label>
-                        @Html.EditorFor(model => model.RequestedBy, new { htmlAttributes = new { @class = "form-control", Required = true } })
-
+                        @Html.TextBoxFor(model => model.DateNeeded, new { @type = "date", @id = "dateneeded", @class = "form-control dateneeded" })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
-                        <label><b>Budget</b></label>
-                        @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @type = "number", @class = "form-control", Required = true } })
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Request Status</b></label>
-                        @Html.DropDownListFor(model => model.IDRequestStatus, (SelectList)ViewBag.requests, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Date Approved</b></label>
-                        @Html.TextBoxFor(model => model.DateApproved, new { @type = "datetime-local",@id="dateapproved", @class = "form-control datetimepicker" })
+                        @Html.TextBoxFor(model => model.DateApproved, new { @type = "date", @id = "dateapproved", @class = "form-control dateapproved" })
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label><b>Date Accepted</b></label>
+                        @Html.TextBoxFor(model => model.DateAcc, new { @type = "date", @id = "dateacc", @class = "form-control dateaccepted" })
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Requestor Email</b></label>
                         @Html.EditorFor(model => model.RequestorEmail, new { htmlAttributes = new { @type = "email", @class = "form-control" } })
                     </div>
-                    <div class="form-group col-sm-4">
-                        <label><b>Date Accepted</b></label>
-                        @Html.TextBoxFor(model => model.DateAcc, new { @type = "datetime-local",@id="dateacc", @class = "form-control datetimepicker" })
+                    <div class="form-group col-sm-6">
+                        <label>Approved by: <span style="color:red;">*</span></label>
+                        @Html.EditorFor(model => model.ApprovedBy, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
+                    
                 </div>
                 <div class="form-row">
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
+                        <label>Requested by: <span style="color:red;">*</span></label>
+                        @Html.EditorFor(model => model.RequestedBy, new { htmlAttributes = new { @class = "form-control", Required = true } })
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label><b>Request Status</b></label>
+                        @Html.DropDownListFor(model => model.IDRequestStatus, (SelectList)ViewBag.requests, new { @class = "form-control" })
+                    </div>
+                    
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Request</b></label>
                         @Html.TextAreaFor(model => model.Request, new { @class = "form-control", @rows = 5 })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
+                        <label>Budget <span style="color:red;">*</span></label>
+                        @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @type = "number", @class = "form-control", Required = true } })
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
                         <label><b>Approver Notes</b></label>
                         @Html.TextAreaFor(model => model.ApproverNotes, new { @class = "form-control", @rows = 5 })
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <label><b>Requestor Notes</b></label>
                         @Html.TextAreaFor(model => model.RequestorNotes, new { @class = "form-control", @rows = 5 })
                     </div>

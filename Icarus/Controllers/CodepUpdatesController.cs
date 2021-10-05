@@ -166,26 +166,6 @@ namespace Icarus.Controllers
 
         }
 
-        // GET: CodepUpdates/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (Session["Username"] != null)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        vselCodepUpdateBrowse vselCodepUpdateBrowse = db.vselCodepUpdateBrowses.Find(id);
-        //        if (vselCodepUpdateBrowse == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(vselCodepUpdateBrowse);
-        //    }
-        //    return RedirectToAction("Login", "Login");
-
-        //}
-
         // POST: CodepUpdates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -170,6 +170,9 @@
                             ID CTC
                         </th>
                         <th id="head" scope="col">
+                            Assertion Date
+                        </th>
+                        <th id="head" scope="col">
                             Posted Date
                         </th>
                         <th id="head" scope="col">
@@ -218,9 +221,12 @@
                     @foreach (var item in ViewBag.AssertionsLists)
                     {
                         var postedDate = item.PostedDate == null ? "" : ((DateTime)item.PostedDate).ToShortDateString();
+                        var assertionDate = item.AssertionDate == null ? "" : ((DateTime)item.AssertionDate).ToShortDateString();
+
 
                         <tr>
                             <td id="td">@item.IDChargeToCodep</td>
+                            <td id="td">@assertionDate</td>
                             <td id="td">@postedDate</td>
                             <td id="td">@item.Description</td>
                             <td id="td">

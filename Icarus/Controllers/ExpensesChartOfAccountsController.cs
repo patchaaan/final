@@ -135,24 +135,6 @@ namespace Icarus.Controllers
             return RedirectToAction("Login", "Login");
         }
 
-        // GET: ExpensesChartOfAccounts/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (Session["Username"] != null) {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
-        //        if (tblExpensesChartOfAccount == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(tblExpensesChartOfAccount);
-        //    }
-        //    return RedirectToAction("Login", "Login");
-        //}
-
         // POST: ExpensesChartOfAccounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
