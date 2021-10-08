@@ -25,7 +25,13 @@
         alert("Error occured.");
     }
     $(document).ready(function () {
-        $('#editaddassertiondate').val(new Date('@Model.AssertionDate').toLocaleString("sv-SE", {
+        var newdate = new Date('@Model.AssertionDate'); // Or the date you'd like converted.
+        var chargedate = new Date(newdate.getTime() - (newdate.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
+        $("#editaddassertiondate").val(chargedate);
+        var newdate1 = new Date('@Model.PostedDate'); // Or the date you'd like converted.
+        var chargedate2 = new Date(newdate1.getTime() - (newdate1.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
+        $("#editaddassertiondateposted").val(chargedate2);
+        @*$('#editaddassertiondate').val(new Date('@Model.AssertionDate').toLocaleString("sv-SE", {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
@@ -41,7 +47,7 @@
             hour: "2-digit",
             minute: "2-digit",
             second: "2-digit"
-        }).replace(" ", "T"));
+        }).replace(" ", "T"));*@
 
         $('#assertionEditModal').on('hidden.bs.modal', function () {
             $(this).find('form').trigger('reset');
@@ -103,7 +109,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title" id="gridSystemModalLabel">Edit Assertion</h4>
@@ -120,68 +126,73 @@
             @Html.HiddenFor(model => model.IDChargeToCodep)
             <div class="modal-body">
                 <div class="row p-2">
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-sm-6">
+                        <label><b>Posted Date</b></label>
+                        @Html.TextBoxFor(model => model.PostedDate, new { @id = "editaddassertiondateposted", @type = "date", @class = "form-control editaddassertiondateposted", Required = true })
+                        <span id="editpostedDateMessage"></span>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <label><b>Assertion Date</b></label>
+                        @Html.TextBoxFor(model => model.AssertionDate, new { @id = "editaddassertiondate", @type = "date", @class = "form-control editaddassertiondate", Required = true })
+                        <span id="editassertiondate"></span>
+                    </div>
+                    
+                </div>
+                <div class="row p-2">
+                    <div class="col-md-6 col-sm-6">
                         <label><b>ID Admission</b></label>
                         @Html.DropDownListFor(model => model.IDAdmission, (SelectList)ViewBag.residentList, new { @id = "editadmission", @class = "form-control editadmission" })
                         <span style="color:red;" id="editadmissionMessage"></span>
                     </div>
-                    <div class="col-sm-4">
-                        <label><b>Qty</b></label>
-                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @id = "editqty", @type = "number", Value=Model.Qty, @class = "form-control editqty", @Min = "0", @Step = "1", oninput = "validity.valid||(value='');", Required = true } })
-                        <span style="color:red;" id="editqtyMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-sm-6">
                         <label><b>Assertion Category</b></label>
                         @Html.DropDownListFor(model => model.IDAssertionCategory, (SelectList)ViewBag.category, new { @id = "editcategory", @class = "form-control editcategory" })
                         <span style="color:red;" id="editassertionCategoryMessage"></span>
                     </div>
+                    
                 </div>
                 <div class="row p-2">
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-sm-6">
+                        <label><b>Qty</b></label>
+                        @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @id = "editqty", @type = "number", Value = Model.Qty.ToString("0"), @class = "form-control editqty", @Min = "0", @Step = "1", oninput = "validity.valid||(value='');", Required = true } })
+                        <span style="color:red;" id="editqtyMessage"></span>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
                         <label><b>Price</b></label>
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice",Value=Model.Price, @step="any", @type = "number", @class = "form-control editprice", Required = true } })
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice", Value = Model.Price.ToString("0.00"), @step = "any", @type = "number", @class = "form-control editprice", Required = true } })
                         <span id="editpriceMessage" style="color:red;"></span>
                     </div>
-                    <div class="col-sm-4">
+                </div>
+                <div class="row p-2">
+                    <div class="col-md-6 col-sm-6">
                         <label><b>Markup %</b></label>
-                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup",Value=Model.Markup, @step = "any", @type = "number", @class = "form-control editmarkup" } })
+                        @Html.EditorFor(model => model.Markup, new { htmlAttributes = new { @id = "editmarkup", Value = Model.Markup.ToString("0"), @step = "any", @type = "number", @class = "form-control editmarkup" } })
                         <span style="color:red;" id="editmarkupMessage"></span>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-sm-6">
                         <label><b>Markup Value</b></label>
-                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue",Value=Model.MarkupValue, @step = "any", @type = "number", @class = "form-control editmarkupvalue" } })
+                        @Html.EditorFor(model => model.MarkupValue, new { htmlAttributes = new { @id = "editmarkupvalue", Value = Model.MarkupValue.ToString("0.00"), @step = "any",  @type = "number", @class = "form-control editmarkupvalue", @readonly = "readonly" } })
                         <span style="color:red;" id="editmarkupValueMessage"></span>
                     </div>
                 </div>
                 <div class="row p-2">
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-sm-6">
                         <label><b>Subtotal</b></label>
-                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", @step = "any", Value =Model.SubTotal, @class = "form-control editsubtotal"} })
+                        @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @id = "editsubtotal", @type = "number", @step = "any", Value = Model.SubTotal.ToString("0.00"), @class = "form-control editsubtotal", @readonly = "readonly" } })
                         <span style="color:red;" id="editsubtotalMessage"></span>
                     </div>
-                    <div class="col-sm-4">
-                        <label><b>Posted Date</b></label>
-                        @Html.TextBoxFor(model => model.PostedDate, new { @id = "editaddassertiondateposted", @type = "datetime-local", @class = "form-control editaddassertiondateposted", Required = true })
-                        <span id="editpostedDateMessage"></span>
-                    </div>
-                    <div class="col-sm-4">
-                        <label><b>Assrtion Date</b></label>
-                        @Html.TextBoxFor(model => model.AssertionDate, new { @id = "editaddassertiondate", @type = "datetime-local", @class = "form-control editaddassertiondate", Required = true })
-                        <span id="editassertiondate"></span>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-sm-6" style="display:none;">
                         <label><b>ID ChargeToCodep</b></label>
-                        @Html.EditorFor(model => model.IDChargeToCodep, new { htmlAttributes = new { @id = "editidctc", @type = "number", Value=Model.IDChargeToCodep, @class = "form-control editidctc", disabled = true } })
+                        @Html.EditorFor(model => model.IDChargeToCodep, new { htmlAttributes = new { @id = "editidctc", @type = "number", Value = Model.IDChargeToCodep, @class = "form-control editidctc", disabled = true } })
                         <span style="color:red;" id="editIDCharge"></span>
                     </div>
-                    <div class="form-group col-sm-4">
+                    <div class="col-md-6 col-sm-6">
                         @Html.LabelFor(model => model.Description)
                         @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @id = "editdescription", @class = "form-control editdescription" } })
                     </div>
-                    <div class="col-sm-4">
+                </div>
+                <div class="row p-2">
+                    <div class="col-md-6 col-sm-6">
                         <label><b>Notes</b></label>
                         @Html.TextAreaFor(model => model.Notes, new { @id = "editnote", @class = "form-control editassertionnote", @rows = 5 })
                         <span style="color:red;" id="editnotesMessage"></span>
@@ -193,10 +204,5 @@
                 <button type="submit" class="btn btn-primary editassertionbutton">Save</button>
             </div>
         }
-        @*<div id="progress" class="loader">
-            <div class="center">
-                <img src="~/Content/loader.gif" />
-            </div>
-        </div>*@
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
