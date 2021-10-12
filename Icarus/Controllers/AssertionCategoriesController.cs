@@ -20,11 +20,19 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                int idac = db.tblAssertionCategories.Max(x => x.IDAssertionCategory);
-                tblAssertionCategory assertioncat = new tblAssertionCategory();
-                assertioncat.IDAssertionCategory = idac + 1;
-                ViewData["Category"] = assertioncat;
-                return View(db.tblAssertionCategories.ToList());
+                try
+                {
+                    int idac = db.tblAssertionCategories.Max(x => x.IDAssertionCategory);
+                    tblAssertionCategory assertioncat = new tblAssertionCategory();
+                    assertioncat.IDAssertionCategory = idac + 1;
+                    ViewData["Category"] = assertioncat;
+                    return View(db.tblAssertionCategories.ToList());
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return HttpNotFound();
             }
             else
             {
@@ -32,43 +40,7 @@ namespace Icarus.Controllers
             }
         }
 
-        // GET: AssertionCategories/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-                if (tblAssertionCategory == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblAssertionCategory);
-            }
-
-            return RedirectToAction("Login", "Login");
-        }
-
-        // GET: AssertionCategories/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    return View();
-                }
-                return RedirectToAction("Index","AssertionCategories");
-            }
-            return RedirectToAction("Login", "Login");
-        }
-
         // POST: AssertionCategories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDAssertionCategory,Category")] tblAssertionCategory tblAssertionCategory)
@@ -76,9 +48,16 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (ModelState.IsValid)
                 {
-                    db.tblAssertionCategories.Add(tblAssertionCategory);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.tblAssertionCategories.Add(tblAssertionCategory);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
 
                 return View(tblAssertionCategory);
@@ -86,38 +65,23 @@ namespace Icarus.Controllers
             return RedirectToAction("Login", "Login");
         }
 
-        // GET: AssertionCategories/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    if (id == null)
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-                    if (tblAssertionCategory == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    return View(tblAssertionCategory);
-                }
-                return RedirectToAction("Index","AssertionCategories");
-            }
-            return RedirectToAction("Login", "Login");
-        }
-
         [HttpGet]
         public PartialViewResult EditPartial(int id)
         {
-            tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+            tblAssertionCategory tblAssertionCategory = new tblAssertionCategory();
+            try
+            {
+                tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                return PartialView("_EditPartial", tblAssertionCategory);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditPartial", tblAssertionCategory);
         }
 
         // POST: AssertionCategories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDAssertionCategory,Category")] tblAssertionCategory tblAssertionCategory)
@@ -125,9 +89,16 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblAssertionCategory).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.Entry(tblAssertionCategory).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return View(tblAssertionCategory);
             }
@@ -140,10 +111,17 @@ namespace Icarus.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             if (Session["Username"] != null) {
-                tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
-                db.tblAssertionCategories.Remove(tblAssertionCategory);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    tblAssertionCategory tblAssertionCategory = db.tblAssertionCategories.Find(id);
+                    db.tblAssertionCategories.Remove(tblAssertionCategory);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
         }

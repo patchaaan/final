@@ -19,66 +19,31 @@ namespace Icarus.Controllers
         public ActionResult Index()
         {
             if (Session["Username"] != null) {
-                int codepup = db.tblCodepUpdates.Max(x => x.IDUpdate);
-                tblCodepUpdate codepupdate = new tblCodepUpdate();
-                codepupdate.IDAdmission = codepup + 1;
-                ViewData["CodepUpdate"] = codepupdate;
-                var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                return View(db.vselCodepUpdateBrowses.ToList().OrderByDescending(x => x.IDUpdate).ToList());
-            }
-            return RedirectToAction("Login", "Login");
-        }
-
-        // GET: CodepUpdates/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["Username"] != null) {
-
-                if (id == null)
+                try
                 {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
-                if (codepUpdate == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(codepUpdate);
-            }
-            return RedirectToAction("Login", "Login");
-        }
-
-        // GET: CodepUpdates/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null)
-            {
-                if(Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isPG"].ToString() == "Y")
-                {
+                    int codepup = db.tblCodepUpdates.Max(x => x.IDUpdate);
+                    tblCodepUpdate codepupdate = new tblCodepUpdate();
+                    codepupdate.IDAdmission = codepup + 1;
+                    ViewData["CodepUpdate"] = codepupdate;
                     var residents = db.vAdmissionBrowses.Select(
-                        s => new {
-                            Text = s.Resident,
-                            Value = s.IDAdmission
-                        }
-                    ).ToList();
+                            s => new
+                            {
+                                Text = s.Resident,
+                                Value = s.IDAdmission
+                            }
+                        ).ToList();
                     ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                    return View();
+                    return View(db.vselCodepUpdateBrowses.ToList().OrderByDescending(x => x.IDUpdate).ToList());
                 }
-                return RedirectToAction("Index","CodepUpdates");
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
-
         }
 
         // POST: CodepUpdates/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDUpdate,DateUpdate,DateLog,UpdateType,UpdatedBy,UpdateSummary,IDAdmission")] tblCodepUpdate tblCodepUpdate)
@@ -87,10 +52,17 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tblCodepUpdate.UpdatedBy = Session["Username"].ToString();
-                    db.tblCodepUpdates.Add(tblCodepUpdate);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        tblCodepUpdate.UpdatedBy = Session["Username"].ToString();
+                        db.tblCodepUpdates.Add(tblCodepUpdate);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
 
                 return RedirectToAction("Index", "CodepUpdates");
@@ -110,20 +82,27 @@ namespace Icarus.Controllers
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                     }
-                    tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
-                    if (codepUpdate == null)
+                    try
                     {
-                        return HttpNotFound();
+                        tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
+                        if (codepUpdate == null)
+                        {
+                            return HttpNotFound();
+                        }
+                        var residents = db.vAdmissionBrowses.Select(
+                                s => new
+                                {
+                                    Text = s.Resident,
+                                    Value = s.IDAdmission
+                                }
+                            ).ToList();
+                        ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                        return View(codepUpdate);
                     }
-                    var residents = db.vAdmissionBrowses.Select(
-                            s => new
-                            {
-                                Text = s.Resident,
-                                Value = s.IDAdmission
-                            }
-                        ).ToList();
-                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                    return View(codepUpdate);
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Index","CodepUpdates");
             }
@@ -133,21 +112,29 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditPartial(int id)
         {
-            tblCodepUpdate update = db.tblCodepUpdates.Find(id);
-            var residents = db.vAdmissionBrowses.Select(
-                            s => new
-                            {
-                                Text = s.Resident,
-                                Value = s.IDAdmission
-                            }
-                        ).ToList();
-            ViewBag.residentList = new SelectList(residents, "Value", "Text");
+            tblCodepUpdate update = new tblCodepUpdate();
+            try
+            {
+                update = db.tblCodepUpdates.Find(id);
+                var residents = db.vAdmissionBrowses.Select(
+                                s => new
+                                {
+                                    Text = s.Resident,
+                                    Value = s.IDAdmission
+                                }
+                            ).ToList();
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                return PartialView("_EditPartial", update);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditPartial", update);
+
         }
 
         // POST: CodepUpdates/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDUpdate,DateUpdate,DateLog,UpdateType,UpdatedBy,UpdateSummary,IDAdmission")] tblCodepUpdate tblCodepUpdate)
@@ -156,9 +143,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblCodepUpdate).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.Entry(tblCodepUpdate).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Index", "CodepUpdates");
             }
@@ -173,10 +167,17 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
-                db.tblCodepUpdates.Remove(codepUpdate);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    tblCodepUpdate codepUpdate = db.tblCodepUpdates.Find(id);
+                    db.tblCodepUpdates.Remove(codepUpdate);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
 

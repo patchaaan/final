@@ -20,14 +20,21 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-                var report = new ViewAsPdf(db.vrptCollectibles.ToList())
+                try
                 {
-                    PageOrientation = Rotativa.Options.Orientation.Landscape,
-                    PageSize = Rotativa.Options.Size.A4,
-                    CustomSwitches = footer
-                };
-                return report;
+                    string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                    var report = new ViewAsPdf(db.vrptCollectibles.ToList())
+                    {
+                        PageOrientation = Rotativa.Options.Orientation.Landscape,
+                        PageSize = Rotativa.Options.Size.A4,
+                        CustomSwitches = footer
+                    };
+                    return report;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
         }

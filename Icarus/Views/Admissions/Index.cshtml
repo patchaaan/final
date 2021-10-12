@@ -93,6 +93,14 @@
         $("#createModal").modal().show();
     }
 
+    function ResidentDetails(id) {
+        var url = $("#detailsModal").data("url");
+        $.get(url + "/" + id, function (data) {
+            $("#detailsModal").html(data);
+            $("#detailsModal").modal().show();
+        });
+    }
+
     function store(id){
         $(".generatebillingid").val(id);
         $('.generatebillingbutton').removeAttr("type").attr("type", "submit");
@@ -126,18 +134,19 @@
         <input class="form-control col-sm-4" id="myInput" type="search" placeholder="Search" aria-label="Search">
         @if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
         {
-        <div class="d-flex">
-            @if (Session["isAAG"].ToString() == "Y") {
-                using (Html.BeginForm("GenerateBilling", "Admissions", FormMethod.Get, new { target = "_blank" }))
+            <div class="d-flex">
+                @if (Session["isAAG"].ToString() == "Y")
                 {
-                    <div class="form">
-                        <input style="display:none;" type="number" name="id" id="generatebillingid" class="generatebillingid" />
-                        <button class="btn mr-1 generatebillingbutton" id="generatebillingbutton" type="button" style="background-color:#4E58A2;color:white;">
-                            <span>Generate Billing</span>
-                        </button>
-                    </div>
+                    using (Html.BeginForm("GenerateBilling", "Admissions", FormMethod.Get, new { target = "_blank" }))
+                    {
+                        <div class="form">
+                            <input style="display:none;" type="number" name="id" id="generatebillingid" class="generatebillingid" />
+                            <button class="btn mr-1 generatebillingbutton" id="generatebillingbutton" type="button" style="background-color:#4E58A2;color:white;">
+                                <span>Generate Billing</span>
+                            </button>
+                        </div>
+                    }
                 }
-            }
                 <a class="btn ml-1" style="background-color:#4E58A2;color:white;" onclick="Add()">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     <span>&nbsp;Add Admission</span>
@@ -218,14 +227,14 @@
                             }
                         </td>
                         <td>
-                            @Html.ActionLink(
+                            @*@Html.ActionLink(
                                 linkText: item.Resident.ToString(),
-                                actionName: "Details",
+                                actionName: "DetailsPartial",
                                 controllerName: "Residents",
                                 routeValues: new { id = item.IDResident },
                                 htmlAttributes: null
-                            )
-
+                            )*@
+                            <a style="text-decoration:underline;color:blue;cursor:pointer;" ondblclick="ResidentDetails(@item.IDResident)">@item.Resident.ToString()</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Phase)
@@ -271,6 +280,8 @@
     </div>
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         @Html.Partial("_CreatePartial", ViewData["Admissions"])
+    </div>
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-url="@Url.Action("DetailsPartial","Residents")">
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

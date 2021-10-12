@@ -22,7 +22,7 @@
     });
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title" id="myModalLabel">Edit Vital Sign</h3>
@@ -36,25 +36,27 @@
             <div class="modal-body">
                 <div class="form">
                     <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-md-6 col-sm-6">
                             @Html.LabelFor(model => model.Performed)
-                            @Html.TextBoxFor(model => model.Performed, new { @id = "performed", @type = "datetime-local", @class = "form-control", Required=true})
+                            @Html.TextBoxFor(model => model.Performed, new { @id = "performed", @type = "datetime-local", @class = "form-control", Required = true })
                         </div>
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-md-6 col-sm-6">
                             <label><b>Blood Pressure (mmHg/diastolic)</b></label>
                             @Html.EditorFor(model => model.BloodPressure, new { htmlAttributes = new { @class = "form-control", Required = true } })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 col-sm-6">
                             <label><b>Temperature (°C)</b></label>
                             @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control", Required = true } })
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-sm-4">
+                        <div class="form-group col-md-6 col-sm-6">
                             <label><b>Pulse Rate (BPM)</b></label>
                             @Html.TextBoxFor(model => model.PulseRate, new { @class = "form-control", Required = true })
                         </div>
-                        <div class="form-group col-sm-4">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 col-sm-6">
                             <label><b>Weight (kg)</b></label>
                             @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", Required = true } })
                         </div>

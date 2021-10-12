@@ -21,27 +21,34 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (datefrom != null && dateto == null)
+                try
                 {
-                    string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-                    var report = new ViewAsPdf(db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate.Date == datefrom).OrderBy(x => x.AssertionDate).ToList())
+                    if (datefrom != null && dateto == null)
                     {
-                        PageOrientation = Rotativa.Options.Orientation.Landscape,
-                        PageSize = Rotativa.Options.Size.A4,
-                        CustomSwitches = footer
-                    };
-                    return report;
+                        string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                        var report = new ViewAsPdf(db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate.Date == datefrom).OrderBy(x => x.AssertionDate).ToList())
+                        {
+                            PageOrientation = Rotativa.Options.Orientation.Landscape,
+                            PageSize = Rotativa.Options.Size.A4,
+                            CustomSwitches = footer
+                        };
+                        return report;
+                    }
+                    else
+                    {
+                        string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                        var report = new ViewAsPdf(db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom && x.AssertionDate <= dateto).OrderBy(x => x.AssertionDate).ToList())
+                        {
+                            PageOrientation = Rotativa.Options.Orientation.Landscape,
+                            PageSize = Rotativa.Options.Size.A4,
+                            CustomSwitches = footer
+                        };
+                        return report;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-                    var report = new ViewAsPdf(db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom && x.AssertionDate <= dateto).OrderBy(x => x.AssertionDate).ToList())
-                    {
-                        PageOrientation = Rotativa.Options.Orientation.Landscape,
-                        PageSize = Rotativa.Options.Size.A4,
-                        CustomSwitches = footer
-                    };
-                    return report;
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
             }
             return RedirectToAction("Login", "Login");

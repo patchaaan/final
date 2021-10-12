@@ -190,7 +190,7 @@
                         Account
                     </th>
                     <th scope="col">
-                        EncodedBy
+                        Encoded By
                     </th>
                     <th scope="col">
                         Amount
@@ -214,6 +214,8 @@
                 @foreach (var item in Model)
                 {
                     var id = item.IDExpense;
+                    var datePosted = item.DatePosted == null ? "" : ((DateTime)item.DatePosted).ToShortDateString();
+                    var dateExpense = item.ExpenseDate == null ? "" : ((DateTime)item.ExpenseDate).ToShortDateString();
 
                     <tr id="item">
                         <td scope="row" style="min-width:75px !important;">
@@ -221,11 +223,11 @@
                             @*<span onClick="window.location='/Expenses/Details/@item.IDExpense'" style="color:blue;text-decoration: underline;cursor:pointer;">@item.IDExpense</span>*@
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ExpenseDate)
+                            @dateExpense
                         </td>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.DatePosted)
+                            @datePosted
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ORNumber)

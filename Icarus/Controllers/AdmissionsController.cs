@@ -23,31 +23,41 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                var residents = db.tblResidents.OrderByDescending(x => x.IDResident).Select(
-                    s => new
-                    {
-                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
-                        Value = s.IDResident
-                    }).ToList();
-                ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
-                var admis = db.tblAdmissions.ToList().OrderByDescending(x => x.IDAdmission).FirstOrDefault();
+                try
+                {
+                    var residents = db.tblResidents.OrderByDescending(x => x.IDResident).Select(
+                        s => new
+                        {
+                            Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
+                            Value = s.IDResident
+                        }).ToList();
+                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                    ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
+                    var admis = db.tblAdmissions.ToList().OrderByDescending(x => x.IDAdmission).FirstOrDefault();
 
-                if (admis == null) {
-                    tblAdmission admission = new tblAdmission();
-                    admission.IDAdmission = 1;
-                    ViewData["Admissions"] = admission;
+                    if (admis == null)
+                    {
+                        tblAdmission admission = new tblAdmission();
+                        admission.IDAdmission = 1;
+                        ViewData["Admissions"] = admission;
+                    }
+                    else
+                    {
+                        tblAdmission admission = new tblAdmission();
+                        admission.IDAdmission = admis.IDAdmission + 1;
+                        ViewData["Admissions"] = admission;
+                    }
+
+                    var totalbilling = db.vAdmissionBrowses.ToList().Select(x => x.TotalBilling).ToList().Sum();
+                    ViewBag.totalActive = db.vAdmissionBrowses.Where(x => x.IsActive == "Y").ToList().Count();
+                    ViewBag.totalbilling = Math.Round((Double)totalbilling, 2);
+                    return View(db.vAdmissionBrowses.ToList().OrderByDescending(p => p.IDAdmission).ToList());
                 }
-                else {
-                    tblAdmission admission = new tblAdmission();
-                    admission.IDAdmission = admis.IDAdmission + 1;
-                    ViewData["Admissions"] = admission;
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
-                
-                var totalbilling = db.vAdmissionBrowses.ToList().Select(x => x.TotalBilling).ToList().Sum();
-                ViewBag.totalActive = db.vAdmissionBrowses.Where(x => x.IsActive == "Y").ToList().Count();
-                ViewBag.totalbilling = Math.Round((Double)totalbilling, 2);
-                return View(db.vAdmissionBrowses.ToList().OrderByDescending(p => p.IDAdmission).ToList());
+                return HttpNotFound();
             }
             else
             {
@@ -58,47 +68,57 @@ namespace Icarus.Controllers
         [HttpGet]
         public ActionResult GenerateBilling(int? id) {
             if (Session["Username"] != null) {
-                DateTime today = DateTime.Today.AddDays(-30);
-                tblAdmissionBilling billing = db.tblAdmissionBillings.Where(x => x.IDAdmission == id).OrderByDescending(x => x.BillingDate).FirstOrDefault();
-                if (billing == null)
+                try
                 {
-                    ViewBag.Billing = null;
-                    IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
-                    ViewData["Assertions"] = assertions;
-                    ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
-                    ViewBag.SumAll = assertions.Sum(x => x.SubTotal);
-                }
-                else {
-                    ViewBag.Billing = billing;
-                    //DateTime billingdate = new DateTime(billing.BillingDate.Year, billing.BillingDate.Month, billing.BillingDate.Day);
-                    IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate >= billing.BillingDate.Date.AddDays(-30) && x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
-                    ViewData["Assertions"] = assertions;
-                    ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
-                    ViewBag.SumAll = assertions.Sum(x => x.SubTotal) + billing.Amount;
+                    DateTime today = DateTime.Today.AddDays(-30);
+                    tblAdmissionBilling billing = db.tblAdmissionBillings.Where(x => x.IDAdmission == id).OrderByDescending(x => x.BillingDate).FirstOrDefault();
+                    if (billing == null)
+                    {
+                        ViewBag.Billing = null;
+                        IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
+                        ViewData["Assertions"] = assertions;
+                        ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
+                        ViewBag.SumAll = assertions.Sum(x => x.SubTotal);
+                    }
+                    else
+                    {
+                        ViewBag.Billing = billing;
+                        //DateTime billingdate = new DateTime(billing.BillingDate.Year, billing.BillingDate.Month, billing.BillingDate.Day);
+                        IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.AssertionDate >= billing.BillingDate.Date.AddDays(-30) && x.AssertionDate <= DateTime.Today && x.IDAdmission == id).ToList();
+                        ViewData["Assertions"] = assertions;
+                        ViewBag.TotalAssertion = assertions.Sum(x => x.SubTotal);
+                        ViewBag.SumAll = assertions.Sum(x => x.SubTotal) + billing.Amount;
 
-                }
-                tblPayment payment = db.tblPayments.Where(x => x.IDAdmission == id).OrderByDescending(x => x.PaidDate).FirstOrDefault();
-                //vAdmissionBrowse browse = db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault();
-                tblStaff staff = db.tblStaffs.Find(Int32.Parse(Session["ID"].ToString()));
-                ViewBag.PreparedBy = staff.Firstname.ToString() + " " + staff.Lastname.ToString();
-                if (payment != null)
-                {
-                    ViewBag.PaidDate = payment.PaidDate.ToString("MM/dd/yyyy");
-                    ViewBag.TotalPaid = Math.Round((Double)payment.TotalPaid, 2);
-                }
-                else {
-                    ViewBag.PaidDate = null;
-                    ViewBag.TotalPaid = null;
-                }
+                    }
+                    tblPayment payment = db.tblPayments.Where(x => x.IDAdmission == id).OrderByDescending(x => x.PaidDate).FirstOrDefault();
+                    //vAdmissionBrowse browse = db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault();
+                    tblStaff staff = db.tblStaffs.Find(Int32.Parse(Session["ID"].ToString()));
+                    ViewBag.PreparedBy = staff.Firstname.ToString() + " " + staff.Lastname.ToString();
+                    if (payment != null)
+                    {
+                        ViewBag.PaidDate = payment.PaidDate.ToString("MM/dd/yyyy");
+                        ViewBag.TotalPaid = Math.Round((Double)payment.TotalPaid, 2);
+                    }
+                    else
+                    {
+                        ViewBag.PaidDate = null;
+                        ViewBag.TotalPaid = null;
+                    }
 
-                string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-                var report = new ViewAsPdf(db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault())
+                    string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                    var report = new ViewAsPdf(db.vAdmissionBrowses.Where(x => x.IDAdmission == id).FirstOrDefault())
+                    {
+                        PageOrientation = Rotativa.Options.Orientation.Portrait,
+                        PageSize = Rotativa.Options.Size.A4,
+                        CustomSwitches = footer
+                    };
+                    return report;
+                }
+                catch (Exception e)
                 {
-                    PageOrientation = Rotativa.Options.Orientation.Portrait,
-                    PageSize = Rotativa.Options.Size.A4,
-                    CustomSwitches = footer
-                };
-                return report;
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return HttpNotFound();
             }
             else {
                 return RedirectToAction("Login", "Login");
@@ -118,7 +138,14 @@ namespace Icarus.Controllers
                 {
                     return HttpNotFound();
                 }
-                return View("AdmissionDetails", tblAdmission);
+                try {
+                    return View("AdmissionDetails", tblAdmission);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return HttpNotFound();
             }
             else
             {
@@ -136,106 +163,113 @@ namespace Icarus.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
-                tblAdmission admission = db.tblAdmissions.Find(id);
-                IEnumerable<tblAdmissionBilling> admissionBilling = db.tblAdmissionBillings.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionBilling).ToList();
-                tblAdmissionBilling adBilling = new tblAdmissionBilling();
-                adBilling.IDAdmission = admission.IDAdmission;
-
-                IEnumerable<tblAssertionCategory> assertionListsCategory = db.tblAssertionCategories.ToList();
-                IEnumerable<tblAssertion> assertionLists = db.tblAssertions.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAssertion).ToList();
-                tblAssertion assertion = new tblAssertion();
-                assertion.IDAdmission = admission.IDAdmission;
-
-                IEnumerable<tblPayment> payments = db.tblPayments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDPayment).ToList();
-                IEnumerable<tblPaymentMethod> paymentMethod = db.tblPaymentMethods.ToList();
-
-                IEnumerable<tblAdmissionVitalSign> vitalSignsLists = db.tblAdmissionVitalSigns.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDVitalSign).ToList();
-                tblAdmissionVitalSign vitalSigns = new tblAdmissionVitalSign();
-                vitalSigns.IDAdmission = admission.IDAdmission;
-
-                IEnumerable<tblAdmissionCommLog> commLogList = db.tblAdmissionCommLogs.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionCommLog).ToList();
-                tblAdmissionCommLog commLog = new tblAdmissionCommLog();
-                commLog.IDAdmission = admission.IDAdmission;
-
-                tblResident resident = db.tblResidents.SingleOrDefault(x => x.IDResident == admission.IDResident);
-
-                tblAdmissionAttachment attachments = new tblAdmissionAttachment();
-                attachments.IDAdmission = admission.IDAdmission;
-
-                IEnumerable<tblAdmissionAttachment> attachmentLists = db.tblAdmissionAttachments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmAttachment).ToList();
-                IEnumerable<tblAdmissionAttachmentType> attachmentTypes = db.tblAdmissionAttachmentTypes.ToList();
-
-                ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
-
-                ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
-
-                ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
-
-                ViewBag.attachmentType = new SelectList(db.tblAdmissionAttachmentTypes, "IDAttachmentType", "AttachmentType");
-
-                ViewBag.residentName = resident.Firstname + " " + resident.Nickname + " " + resident.Lastname;
-
-                ViewData["attachmentTypes"] = db.tblAdmissionAttachmentTypes.ToList();
-
-                ViewData["AssertionCategories"] = assertionListsCategory;
-                ViewData["PaymentMethod"] = paymentMethod;
-                ViewData["AdmissionBilling"] = admissionBilling;
-                ViewData["AssertionsLists"] = assertionLists;
-                ViewData["vitalSigns"] = vitalSignsLists;
-                ViewData["CommLogLists"] = commLogList;
-                ViewData["AttachmentLists"] = attachmentLists;
-
-                ViewBag.admissionBillingLists = true;
-                ViewBag.assertionLists = true;
-                ViewBag.vitalSignsLists = true;
-                ViewBag.commLogCheck = true;
-                ViewBag.attachmentList = true;
-
-
-                if (!attachmentLists.Any() || attachmentLists == null)
+                try
                 {
-                    ViewBag.attachmentList = false;
-                }
+                    tblAdmission admission = db.tblAdmissions.Find(id);
+                    IEnumerable<tblAdmissionBilling> admissionBilling = db.tblAdmissionBillings.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionBilling).ToList();
+                    tblAdmissionBilling adBilling = new tblAdmissionBilling();
+                    adBilling.IDAdmission = admission.IDAdmission;
 
-                if (!admissionBilling.Any() || admissionBilling == null)
+                    IEnumerable<tblAssertionCategory> assertionListsCategory = db.tblAssertionCategories.ToList();
+                    IEnumerable<tblAssertion> assertionLists = db.tblAssertions.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAssertion).ToList();
+                    tblAssertion assertion = new tblAssertion();
+                    assertion.IDAdmission = admission.IDAdmission;
+
+                    IEnumerable<tblPayment> payments = db.tblPayments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDPayment).ToList();
+                    IEnumerable<tblPaymentMethod> paymentMethod = db.tblPaymentMethods.ToList();
+
+                    IEnumerable<tblAdmissionVitalSign> vitalSignsLists = db.tblAdmissionVitalSigns.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDVitalSign).ToList();
+                    tblAdmissionVitalSign vitalSigns = new tblAdmissionVitalSign();
+                    vitalSigns.IDAdmission = admission.IDAdmission;
+
+                    IEnumerable<tblAdmissionCommLog> commLogList = db.tblAdmissionCommLogs.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmissionCommLog).ToList();
+                    tblAdmissionCommLog commLog = new tblAdmissionCommLog();
+                    commLog.IDAdmission = admission.IDAdmission;
+
+                    tblResident resident = db.tblResidents.SingleOrDefault(x => x.IDResident == admission.IDResident);
+
+                    tblAdmissionAttachment attachments = new tblAdmissionAttachment();
+                    attachments.IDAdmission = admission.IDAdmission;
+
+                    IEnumerable<tblAdmissionAttachment> attachmentLists = db.tblAdmissionAttachments.ToList().Where(x => x.IDAdmission == id).OrderByDescending(y => y.IDAdmAttachment).ToList();
+                    IEnumerable<tblAdmissionAttachmentType> attachmentTypes = db.tblAdmissionAttachmentTypes.ToList();
+
+                    ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
+
+                    ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+
+                    ViewBag.paymentMethods = new SelectList(db.tblPaymentMethods, "IDPaymentMethod", "PaymentMethod");
+
+                    ViewBag.attachmentType = new SelectList(db.tblAdmissionAttachmentTypes, "IDAttachmentType", "AttachmentType");
+
+                    ViewBag.residentName = resident.Firstname + " " + resident.Nickname + " " + resident.Lastname;
+
+                    ViewData["attachmentTypes"] = db.tblAdmissionAttachmentTypes.ToList();
+
+                    ViewData["AssertionCategories"] = assertionListsCategory;
+                    ViewData["PaymentMethod"] = paymentMethod;
+                    ViewData["AdmissionBilling"] = admissionBilling;
+                    ViewData["AssertionsLists"] = assertionLists;
+                    ViewData["vitalSigns"] = vitalSignsLists;
+                    ViewData["CommLogLists"] = commLogList;
+                    ViewData["AttachmentLists"] = attachmentLists;
+
+                    ViewBag.admissionBillingLists = true;
+                    ViewBag.assertionLists = true;
+                    ViewBag.vitalSignsLists = true;
+                    ViewBag.commLogCheck = true;
+                    ViewBag.attachmentList = true;
+
+
+                    if (!attachmentLists.Any() || attachmentLists == null)
+                    {
+                        ViewBag.attachmentList = false;
+                    }
+
+                    if (!admissionBilling.Any() || admissionBilling == null)
+                    {
+                        ViewBag.admissionBillingLists = false;
+                    }
+
+
+                    if (!assertionLists.Any() || assertionLists == null)
+                    {
+                        ViewBag.assertionLists = false;
+                    }
+
+                    if (!vitalSignsLists.Any() || vitalSignsLists == null)
+                    {
+                        ViewBag.vitalSignsLists = false;
+                    }
+
+                    if (!commLogList.Any() || commLogList == null)
+                    {
+                        ViewBag.commLogCheck = false;
+                    }
+
+
+                    ViewBag.generatedBy = Session["Username"];
+
+                    AdmissionDetails ad = new AdmissionDetails();
+                    ad.Admissions = admission;
+                    ad.AdmissionBilling = adBilling;
+                    ad.Assertion = assertion;
+                    ad.VitalSigns = vitalSigns;
+                    ad.CommLog = commLog;
+                    ad.Payments = payments;
+                    ad.Attachments = attachments;
+
+                    if (admission == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", admission.IDAdmission));
+                    return View(ad);
+                }
+                catch (Exception e)
                 {
-                    ViewBag.admissionBillingLists = false;
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
-
-
-                if (!assertionLists.Any() || assertionLists == null)
-                {
-                    ViewBag.assertionLists = false;
-                }
-
-                if (!vitalSignsLists.Any() || vitalSignsLists == null)
-                {
-                    ViewBag.vitalSignsLists = false;
-                }
-
-                if (!commLogList.Any() || commLogList == null)
-                {
-                    ViewBag.commLogCheck = false;
-                }
-
-
-                ViewBag.generatedBy = Session["Username"];
-
-                AdmissionDetails ad = new AdmissionDetails();
-                ad.Admissions = admission;
-                ad.AdmissionBilling = adBilling;
-                ad.Assertion = assertion;
-                ad.VitalSigns = vitalSigns;
-                ad.CommLog = commLog;
-                ad.Payments = payments;
-                ad.Attachments = attachments;
-
-                if (admission == null)
-                {
-                    return HttpNotFound();
-                }
-                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", admission.IDAdmission));
-                return View(ad);
             }
             return RedirectToAction("Login", "Login");
 
@@ -248,10 +282,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.tblAssertions.Add(tblAssertion);
-                    db.SaveChanges();
-                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
-                    return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
+                    try {
+                        db.tblAssertions.Add(tblAssertion);
+                        db.SaveChanges();
+                        db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
+                        return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
             }
             else
@@ -268,10 +308,20 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblAssertion assertions = db.tblAssertions.Find(id);
-                db.tblAssertions.Remove(assertions);
-                db.SaveChanges();
-                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", assertions.IDAdmission));
+                tblAssertion assertions = new tblAssertion();
+
+                try
+                {
+                    assertions = db.tblAssertions.Find(id);
+                    db.tblAssertions.Remove(assertions);
+                    db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", assertions.IDAdmission));
+                    return RedirectToAction("Details", new { id = assertions.IDAdmission });
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Details", new { id = assertions.IDAdmission });
             }
             else
@@ -287,9 +337,17 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblAdmissionVitalSign vitalSign = db.tblAdmissionVitalSigns.Find(id);
-                db.tblAdmissionVitalSigns.Remove(vitalSign);
-                db.SaveChanges();
+                tblAdmissionVitalSign vitalSign = new tblAdmissionVitalSign();
+                try {
+                    vitalSign = db.tblAdmissionVitalSigns.Find(id);
+                    db.tblAdmissionVitalSigns.Remove(vitalSign);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = vitalSign.IDAdmission });
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Details", new { id = vitalSign.IDAdmission });
             }
             else
@@ -305,9 +363,17 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblAdmissionCommLog commlog = db.tblAdmissionCommLogs.Find(id);
-                db.tblAdmissionCommLogs.Remove(commlog);
-                db.SaveChanges();
+                tblAdmissionCommLog commlog = new tblAdmissionCommLog();
+                try {
+                    commlog = db.tblAdmissionCommLogs.Find(id);
+                    db.tblAdmissionCommLogs.Remove(commlog);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = commlog.IDAdmission });
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Details", new { id = commlog.IDAdmission });
             }
             else
@@ -325,11 +391,18 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tblAdmissionBilling.GeneratedBy = Session["Username"].ToString();
-                    db.tblAdmissionBillings.Add(tblAdmissionBilling);
-                    db.SaveChanges();
-                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAdmissionBilling.IDAdmission));
-                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionBilling.IDAdmission });
+                    
+                    try {
+                        tblAdmissionBilling.GeneratedBy = Session["Username"].ToString();
+                        db.tblAdmissionBillings.Add(tblAdmissionBilling);
+                        db.SaveChanges();
+                        db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAdmissionBilling.IDAdmission));
+                        return RedirectToAction("Details", "Admissions", new { id = tblAdmissionBilling.IDAdmission });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
             }
             else
@@ -348,10 +421,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tblAdmissionCommLog.PostedBy = Session["Username"].ToString();
-                    db.tblAdmissionCommLogs.Add(tblAdmissionCommLog);
-                    db.SaveChanges();
-                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionCommLog.IDAdmission });
+                    try {
+                        tblAdmissionCommLog.PostedBy = Session["Username"].ToString();
+                        db.tblAdmissionCommLogs.Add(tblAdmissionCommLog);
+                        db.SaveChanges();
+                        return RedirectToAction("Details", "Admissions", new { id = tblAdmissionCommLog.IDAdmission });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
             }
             else
@@ -370,10 +449,15 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.tblAdmissionVitalSigns.Add(tblAdmissionVitalSign);
-                    db.SaveChanges();
-                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionVitalSign.IDAdmission });
-
+                    try {
+                        db.tblAdmissionVitalSigns.Add(tblAdmissionVitalSign);
+                        db.SaveChanges();
+                        return RedirectToAction("Details", "Admissions", new { id = tblAdmissionVitalSign.IDAdmission });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
             }
             else
@@ -385,85 +469,21 @@ namespace Icarus.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreatePayments([Bind(Include = "IDPayment,PaidDate,IDAdmission,TotalPaid,IDPaymentMethod,Bank,CheckNo,CheckDate,Notes,isVerified,PostedDate")] tblPayment tblPayment)
-        {
-            if (Session["Username"] != null)
-            {
-                if (ModelState.IsValid)
-                {
-                    db.tblPayments.Add(tblPayment);
-                    db.SaveChanges();
-                    return RedirectToAction("Details", "Admissions", new { id = tblPayment.IDAdmission });
-                }
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            return RedirectToAction("Details", "Admissions", new { id = tblPayment.IDAdmission });
-
-        }
-
-        // GET: Admissions/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    var residents = db.tblResidents.Select(
-                    s => new
-                    {
-                        Text = s.Firstname + " '" + s.Nickname + "' " + s.Lastname,
-                        Value = s.IDResident
-                    }).ToList();
-                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                    ViewBag.ranks = new SelectList(db.tblRanks, "IDRank", "Rank");
-                    return View();
-                }
-                return RedirectToAction("Index","Admissions");
-            }
-            else {
-                return RedirectToAction("Login", "Login");
-            }
-        }
-
-        // POST: Admissions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDAdmission,IDResident,AdmissionDate,TerminationDate,TreatmentFee,isActive,Notes,TotalBilling,TotalPaid,OverallBalance,StopTFBilling,Status,IDRank,Phase")] tblAdmission tblAdmission)
-        {
-            if (Session["Username"] != null)
-            {
-                if (ModelState.IsValid)
-                {
-                    db.tblAdmissions.Add(tblAdmission);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            else {
-                return RedirectToAction("Login", "Login");
-            }
-            
-            return View(tblAdmission);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult CreateAttachment([Bind(Include = "IDAdmAttachment,IDAdmission,Description,Filename,UploadedFile,IDAttachmentType")] tblAdmissionAttachment tblAdmissionAttachment, HttpPostedFileBase file)
         {
             if (Session["Username"] != null)
             {
                 if (ModelState.IsValid)
                 {
-                    db.tblAdmissionAttachments.Add(tblAdmissionAttachment);
-                    db.SaveChanges();
-                    return RedirectToAction("Details", "Admissions", new { id = tblAdmissionAttachment.IDAdmission });
-
+                    try {
+                        db.tblAdmissionAttachments.Add(tblAdmissionAttachment);
+                        db.SaveChanges();
+                        return RedirectToAction("Details", "Admissions", new { id = tblAdmissionAttachment.IDAdmission });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
             }
             else
@@ -474,28 +494,7 @@ namespace Icarus.Controllers
             return RedirectToAction("Details", "Admissions", new { id = tblAdmissionAttachment.IDAdmission });
         }
 
-        // GET: Admissions/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["Username"] == null)
-            {
-                return RedirectToAction("Login","Login");
-            }
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tblAdmission admission = db.tblAdmissions.SingleOrDefault(m => m.IDAdmission == id);
-            if (admission == null)
-            {
-                return HttpNotFound();
-            }
-            return View(admission);
-        }
-
         // POST: Admissions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDAdmission,IDResident,AdmissionDate,TerminationDate,IsActive,Notes,StopTFBilling,TreatmentFee,TotalPaid,TotalBilling,OverallBalance,Phase,IDRank,Status")] tblAdmission tbladmission)
@@ -503,9 +502,16 @@ namespace Icarus.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(tbladmission).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Details","Admissions", new { id = tbladmission.IDAdmission});
+                try {
+                    db.Entry(tbladmission).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Admissions", new { id = tbladmission.IDAdmission });
+                }
+                catch (Exception e) {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return RedirectToAction("Details", "Admissions", new { id = tbladmission.IDAdmission });
+
             }
             return View(tbladmission);
         }
@@ -513,7 +519,15 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditCommLogPartial(int id)
         {
-            tblAdmissionCommLog commlog = db.tblAdmissionCommLogs.Find(id);
+            tblAdmissionCommLog commlog = new tblAdmissionCommLog();
+            try {
+                commlog = db.tblAdmissionCommLogs.Find(id);
+                return PartialView("_EditcommLogPartial", commlog);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditcommLogPartial", commlog);
         }
 
@@ -525,8 +539,15 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblAdmissionCommLog).State = EntityState.Modified;
-                    db.SaveChanges();
+                    try {
+                        db.Entry(tblAdmissionCommLog).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Details", "Admissions", new { id = tblAdmissionCommLog.IDAdmission });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                     return RedirectToAction("Details", "Admissions", new { id = tblAdmissionCommLog.IDAdmission });
                 }
             }
@@ -541,8 +562,16 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditAssertionPartial(int id)
         {
-            tblAssertion assertion = db.tblAssertions.Find(id);
-            ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+            tblAssertion assertion = new tblAssertion();
+            try {
+                assertion = db.tblAssertions.Find(id);
+                ViewBag.assertions = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                return PartialView("_EditAssertionPartial", assertion);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditAssertionPartial", assertion);
         }
 
@@ -552,9 +581,17 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tblAssertion).State = EntityState.Modified;
-                db.SaveChanges();
-                db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
+                try
+                {
+                    db.Entry(tblAssertion).State = EntityState.Modified;
+                    db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
+                    return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Details", "Admissions", new { id = tblAssertion.IDAdmission });
             }
             return View(tblAssertion);
@@ -563,7 +600,14 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditVitalSignPartial(int id)
         {
-            tblAdmissionVitalSign vitalsign = db.tblAdmissionVitalSigns.Find(id);
+            tblAdmissionVitalSign vitalsign = new tblAdmissionVitalSign();
+            try {
+                vitalsign = db.tblAdmissionVitalSigns.Find(id);
+                return PartialView("_EditVitalSignPartial", vitalsign);
+            }
+            catch (Exception e) {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditVitalSignPartial", vitalsign);
         }
 
@@ -575,10 +619,15 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblAdmissionVitalSign).State = EntityState.Modified;
-                    db.SaveChanges();
+                    try {
+                        db.Entry(tblAdmissionVitalSign).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Details", "Admissions", new { id = tblAdmissionVitalSign.IDAdmission });
+                    }
+                    catch (Exception e) {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                     return RedirectToAction("Details", "Admissions", new { id = tblAdmissionVitalSign.IDAdmission });
-
                 }
             }
             return View(tblAdmissionVitalSign);
@@ -613,7 +662,7 @@ namespace Icarus.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.error = "Error " + e;
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
             }
             return RedirectToAction("Details", "Admissions", new { id = dbfiles.IDAdmission });
         }
@@ -623,47 +672,31 @@ namespace Icarus.Controllers
         public ActionResult DeleteAttachment(int id) {
             if (Session["Username"] != null)
             {
-                tblAdmissionAttachment attachment = db.tblAdmissionAttachments.Find(id);
-                string file_name = attachment.Filename.ToString();
-                string path = Server.MapPath("~/Content/uploads" + file_name);
-                FileInfo file = new FileInfo(path);
-                if (file.Exists)//check file exsit or not  
-                {
-                    file.Delete();
+                int temp_id = 0;
+                try {
+                    tblAdmissionAttachment attachment = db.tblAdmissionAttachments.Find(id);
+                    temp_id = attachment.IDAdmission;
+                    string file_name = attachment.Filename.ToString();
+                    string path = Server.MapPath("~/Content/uploads" + file_name);
+                    FileInfo file = new FileInfo(path);
+                    if (file.Exists)//check file exsit or not  
+                    {
+                        file.Delete();
+                    }
+                    db.tblAdmissionAttachments.Remove(attachment);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Admissions", new { id = attachment.IDAdmission });
                 }
-                db.tblAdmissionAttachments.Remove(attachment);
-                db.SaveChanges();
-                return RedirectToAction("Details", "Admissions", new { id = attachment.IDAdmission });
+                catch (Exception e) {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return RedirectToAction("Details", "Admissions", new { id = temp_id });
             }
             else
             {
                 return RedirectToAction("Login", "Login");
             }
         }
-
-
-
-        // GET: Admissions/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (Session["Username"] != null)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        tblAdmission tbladmission = db.tblAdmissions.Find(id);
-        //        if (tbladmission == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(tbladmission);
-        //    }
-        //    else {
-        //        return RedirectToAction("Login", "Login");
-        //    }
-
-        //}
 
         // POST: Admissions/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -672,9 +705,15 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblAdmission admission = db.tblAdmissions.Find(id);
-                db.tblAdmissions.Remove(admission);
-                db.SaveChanges();
+                try {
+                    tblAdmission admission = db.tblAdmissions.Find(id);
+                    db.tblAdmissions.Remove(admission);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e) {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Index");
             }
             else {

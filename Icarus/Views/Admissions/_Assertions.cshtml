@@ -278,7 +278,6 @@
                     @Html.HiddenFor(model => model.IDAdmission)
                     <form>
                         <div class="modal-body">
-
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label><b>Assertion Category</b></label>
@@ -306,7 +305,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Price <span class="required">*</span></label>
-                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @Value = "0", @class = "form-control price", required = true } })
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @type = "number", @step="any", @class = "form-control price", required = true } })
                                 </div>
                                 
                             </div>

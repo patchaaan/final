@@ -159,7 +159,7 @@
                     </div>
                     <div class="col-md-6 col-sm-6">
                         <label><b>Price</b></label>
-                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice", Value = Model.Price.ToString("0.00"), @step = "any", @type = "number", @class = "form-control editprice", Required = true } })
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @id = "editprice", Value = Model.Price.ToString("0.00"), @type = "number", step="any", @class = "form-control editprice", Required = true } })
                         <span id="editpriceMessage" style="color:red;"></span>
                     </div>
                 </div>
