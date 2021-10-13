@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 
@@ -21,53 +17,24 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    int chart = db.tblExpensesChartOfAccounts.Max(x => x.IDAccount);
-                    tblExpensesChartOfAccount chartOfAccount = new tblExpensesChartOfAccount();
-                    chartOfAccount.IDAccount = chart + 1;
-                    ViewData["Chart"] = chartOfAccount;
-                    return View(db.tblExpensesChartOfAccounts.ToList());
+                    try {
+                        int chart = db.tblExpensesChartOfAccounts.Max(x => x.IDAccount);
+                        tblExpensesChartOfAccount chartOfAccount = new tblExpensesChartOfAccount();
+                        chartOfAccount.IDAccount = chart + 1;
+                        ViewData["Chart"] = chartOfAccount;
+                        return View(db.tblExpensesChartOfAccounts.ToList());
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Index","Residents");
             }
             return RedirectToAction("Login", "Login");
         }
 
-        // GET: ExpensesChartOfAccounts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
-                if (tblExpensesChartOfAccount == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblExpensesChartOfAccount);
-            }
-            return RedirectToAction("Login", "Login");
-
-        }
-
-        // GET: ExpensesChartOfAccounts/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null) {
-                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    return View();
-                }
-                return RedirectToAction("Index", "Residents");
-            }
-            return RedirectToAction("Login", "Login");
-
-        }
-
         // POST: ExpensesChartOfAccounts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDAccount,AccountCode,Account")] tblExpensesChartOfAccount tblExpensesChartOfAccount)
@@ -75,30 +42,18 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (ModelState.IsValid)
                 {
-                    db.tblExpensesChartOfAccounts.Add(tblExpensesChartOfAccount);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.tblExpensesChartOfAccounts.Add(tblExpensesChartOfAccount);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
 
-                return View(tblExpensesChartOfAccount);
-            }
-            return RedirectToAction("Login", "Login");
-
-        }
-
-        // GET: ExpensesChartOfAccounts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
-                if (tblExpensesChartOfAccount == null)
-                {
-                    return HttpNotFound();
-                }
                 return View(tblExpensesChartOfAccount);
             }
             return RedirectToAction("Login", "Login");
@@ -108,13 +63,20 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditPartial(int id)
         {
-            tblExpensesChartOfAccount chartofaccount = db.tblExpensesChartOfAccounts.Find(id);
+            tblExpensesChartOfAccount chartofaccount = new tblExpensesChartOfAccount();
+            try
+            {
+                chartofaccount = db.tblExpensesChartOfAccounts.Find(id);
+                return PartialView("_EditPartial", chartofaccount);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditPartial", chartofaccount);
         }
 
         // POST: ExpensesChartOfAccounts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDAccount,AccountCode,Account")] tblExpensesChartOfAccount tblExpensesChartOfAccount)
@@ -124,9 +86,16 @@ namespace Icarus.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        db.Entry(tblExpensesChartOfAccount).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
+                        try
+                        {
+                            db.Entry(tblExpensesChartOfAccount).State = EntityState.Modified;
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Exception " + e);
+                        }
                     }
                     return View(tblExpensesChartOfAccount);
                 }
@@ -141,10 +110,17 @@ namespace Icarus.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             if (Session["Username"] != null) {
-                tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
-                db.tblExpensesChartOfAccounts.Remove(tblExpensesChartOfAccount);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    tblExpensesChartOfAccount tblExpensesChartOfAccount = db.tblExpensesChartOfAccounts.Find(id);
+                    db.tblExpensesChartOfAccounts.Remove(tblExpensesChartOfAccount);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
 

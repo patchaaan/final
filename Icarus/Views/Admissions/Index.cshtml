@@ -105,13 +105,13 @@
         $(".generatebillingid").val(id);
         $('.generatebillingbutton').removeAttr("type").attr("type", "submit");
         document.getElementById(id).style.border = "1px solid blue";
-        if (oldid != null) {
-            document.getElementById(oldid).style.border = "none";
-        }
         if (oldid == id) {
             document.getElementById(id).style.border = "none";
             $('.generatebillingbutton').removeAttr("submit").attr("type", "button");
-            return oldid = 0;
+            return oldid = null;
+        }
+        if (oldid != null) {
+            document.getElementById(oldid).style.border = "none";
         }
         oldid = id;
     }
@@ -127,7 +127,6 @@
         });
     });
 </script>
-
 
 <div class="pl-5 pr-5">
     <div class="d-flex mb-2 mt-2 justify-content-between">
@@ -153,7 +152,6 @@
                 </a>
             </div>
         }
-
     </div>
     <hr>
     <div class="admission-holder">
@@ -205,7 +203,6 @@
                             Overall Balance
                         </th>
                     }
-
                 </tr>
             </thead>
             <tbody id="myTable">
@@ -227,13 +224,6 @@
                             }
                         </td>
                         <td>
-                            @*@Html.ActionLink(
-                                linkText: item.Resident.ToString(),
-                                actionName: "DetailsPartial",
-                                controllerName: "Residents",
-                                routeValues: new { id = item.IDResident },
-                                htmlAttributes: null
-                            )*@
                             <a style="text-decoration:underline;color:blue;cursor:pointer;" ondblclick="ResidentDetails(@item.IDResident)">@item.Resident.ToString()</a>
                         </td>
                         <td>

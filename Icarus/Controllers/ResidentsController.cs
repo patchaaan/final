@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 
@@ -20,37 +17,23 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                int res = db.tblResidents.Max(x => x.IDResident);
-                tblResident resident = new tblResident();
-                resident.IDResident = res + 1;
-                ViewData["Resident"] = resident;
-                return View(db.tblResidents.ToList().OrderByDescending(p => p.IDResident).ToList());
+                try
+                {
+                    int res = db.tblResidents.Max(x => x.IDResident);
+                    tblResident resident = new tblResident();
+                    resident.IDResident = res + 1;
+                    ViewData["Resident"] = resident;
+                    return View(db.tblResidents.ToList().OrderByDescending(p => p.IDResident).ToList());
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             else {
                 return RedirectToAction("Login", "Login");
             }
-        }
-
-        // GET: Residents/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblResident tblResident = db.tblResidents.Find(id);
-                if (tblResident == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblResident);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
+            return HttpNotFound();
         }
 
         [HttpGet]
@@ -60,26 +43,8 @@ namespace Icarus.Controllers
             return PartialView("_DetailsPartial", resident);
         }
 
-        // GET: Residents/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
-                    return View();
-                }
-                return RedirectToAction("Index", "Residents");
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            
-        }
 
         // POST: Residents/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDResident,Lastname,Firstname,Middlename,Nickname,Birthdate,Age,Sex,Codep,Relationship,ContactNumber,EmailAddress")] tblResident tblResident)
@@ -88,45 +53,23 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.tblResidents.Add(tblResident);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.tblResidents.Add(tblResident);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
-
                 return View(tblResident);
             }
             else
             {
                 return RedirectToAction("Login", "Login");
             }
-            
-        }
-
-        // GET: Residents/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    if (id == null)
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    tblResident tblResident = db.tblResidents.Find(id);
-                    if (tblResident == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    return View(tblResident);
-                }
-                return RedirectToAction("Index", "Residents");
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            
         }
 
         [HttpGet]
@@ -137,8 +80,6 @@ namespace Icarus.Controllers
         }
 
         // POST: Residents/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDResident,Lastname,Firstname,Middlename,Nickname,Birthdate,Age,Sex,Codep,Relationship,ContactNumber,EmailAddress")] tblResident tblResident)
@@ -147,32 +88,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblResident).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                return View(tblResident);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            
-        }
-
-        // GET: Residents/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblResident tblResident = db.tblResidents.Find(id);
-                if (tblResident == null)
-                {
-                    return HttpNotFound();
+                    try
+                    {
+                        db.Entry(tblResident).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return View(tblResident);
             }
@@ -190,9 +115,17 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblResident tblResident = db.tblResidents.Find(id);
-                db.tblResidents.Remove(tblResident);
-                db.SaveChanges();
+                try
+                {
+                    tblResident tblResident = db.tblResidents.Find(id);
+                    db.tblResidents.Remove(tblResident);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Index");
             }
             else

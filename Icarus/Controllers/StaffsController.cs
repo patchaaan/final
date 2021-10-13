@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 
@@ -20,110 +17,57 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                int staff = db.tblStaffs.Max(x => x.IDStaff);
-                tblStaff modelstaff = new tblStaff();
-                modelstaff.IDStaff = staff + 1;
-                ViewData["Staff"] = modelstaff;
-                return View(db.tblStaffs.ToList().OrderBy(p => p.Lastname).ToList());
+                try
+                {
+                    int staff = db.tblStaffs.Max(x => x.IDStaff);
+                    tblStaff modelstaff = new tblStaff();
+                    modelstaff.IDStaff = staff + 1;
+                    ViewData["Staff"] = modelstaff;
+                    return View(db.tblStaffs.ToList().OrderBy(p => p.Lastname).ToList());
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return HttpNotFound();
             }
             else
             {
                 return RedirectToAction("Login", "Login");
             }
-        }
-
-        // GET: Staffs/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblStaff tblStaff = db.tblStaffs.Find(id);
-                if (tblStaff == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(tblStaff);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            
-        }
-
-        // GET: Staffs/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    return View();
-                }
-                return RedirectToAction("Index","Staffs");
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            
         }
 
         // POST: Staffs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult Create([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password,isADG,isEDG,isPG,isAAG")] tblStaff tblStaff)
         {
                 if (ModelState.IsValid)
                 {
-                    var checkAcount = db.tblStaffs.Where(x => x.Username.Contains(tblStaff.Username)).FirstOrDefault();
-                    if (tblStaff.Password.Length < 8) {
-                        return Json("Password");
-                    }
-                    if (checkAcount != null)
+                    try
                     {
-                        return Json(false);
+                        var checkAcount = db.tblStaffs.Where(x => x.Username.Contains(tblStaff.Username)).FirstOrDefault();
+                        if (tblStaff.Password.Length < 8)
+                        {
+                            return Json("Password");
+                        }
+                        if (checkAcount != null)
+                        {
+                            return Json(false);
+                        }
+                        else
+                        {
+                            db.tblStaffs.Add(tblStaff);
+                            db.SaveChanges();
+                            return Json(true);
+                        }
                     }
-                    else {
-                        db.tblStaffs.Add(tblStaff);
-                        db.SaveChanges();
-                        return Json(true);
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
                     }
                 }
                 return Json(tblStaff);
-            
-        }
-
-        // GET: Staffs/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (Session["Username"] != null)
-            {
-                if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
-                {
-                    if (id == null)
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    tblStaff tblStaff = db.tblStaffs.Find(id);
-                    if (tblStaff == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    return View(tblStaff);
-                }
-                return RedirectToAction("Index","Staffs");
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
             
         }
 
@@ -143,8 +87,6 @@ namespace Icarus.Controllers
         }
 
         // POST: Staffs/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IDStaff,Lastname,Firstname,ContactNo,DateHired,DateTerminated,Status,Notes,Username,Email,Password,isADG,isEDG,isPG,isAAG")] tblStaff tblStaff)
@@ -153,30 +95,37 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var checkAcount = db.tblStaffs.AsNoTracking().Where(x => x.Username == tblStaff.Username).FirstOrDefault();
-                    if (tblStaff.Password.Length < 8)
+                    try
                     {
-                        return Json("Password");
-                    }
-                    else if (checkAcount != null && tblStaff.IDStaff != checkAcount.IDStaff)
-                    {
-                        return Json(false);
-                    }
-                    else
-                    {
-                        db.Entry(tblStaff).State = EntityState.Modified;
-                        db.SaveChanges();
-                        if (tblStaff.IDStaff.ToString() == Session["ID"].ToString())
+                        var checkAcount = db.tblStaffs.AsNoTracking().Where(x => x.Username == tblStaff.Username).FirstOrDefault();
+                        if (tblStaff.Password.Length < 8)
                         {
-                            Session["isAAG"] = tblStaff.isAAG.ToString();
-                            Session["isADG"] = tblStaff.isADG.ToString();
-                            Session["isEDG"] = tblStaff.isEDG.ToString();
-                            Session["isPG"] = tblStaff.isPG.ToString();
-                            Session["Username"] = tblStaff.Username.ToString();
-                            Session["Password"] = tblStaff.Password.ToString();
-                            Session["ID"] = tblStaff.IDStaff.ToString();
+                            return Json("Password");
                         }
-                        return Json(true);
+                        else if (checkAcount != null && tblStaff.IDStaff != checkAcount.IDStaff)
+                        {
+                            return Json(false);
+                        }
+                        else
+                        {
+                            db.Entry(tblStaff).State = EntityState.Modified;
+                            db.SaveChanges();
+                            if (tblStaff.IDStaff.ToString() == Session["ID"].ToString())
+                            {
+                                Session["isAAG"] = tblStaff.isAAG.ToString();
+                                Session["isADG"] = tblStaff.isADG.ToString();
+                                Session["isEDG"] = tblStaff.isEDG.ToString();
+                                Session["isPG"] = tblStaff.isPG.ToString();
+                                Session["Username"] = tblStaff.Username.ToString();
+                                Session["Password"] = tblStaff.Password.ToString();
+                                Session["ID"] = tblStaff.IDStaff.ToString();
+                            }
+                            return Json(true);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
                     }
                 }
                 return RedirectToAction("Index");
@@ -188,13 +137,6 @@ namespace Icarus.Controllers
             
         }
 
-
-        //[HttpPost, ActionName("EditUsername")]
-        //public JsonResult EditUsername()
-        //{
-        //    return JsonResult = null;
-        //}
-
         // POST: Staffs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -202,9 +144,17 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblStaff tblStaff = db.tblStaffs.Find(id);
-                db.tblStaffs.Remove(tblStaff);
-                db.SaveChanges();
+                try
+                {
+                    tblStaff tblStaff = db.tblStaffs.Find(id);
+                    db.tblStaffs.Remove(tblStaff);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Index");
             }
             else

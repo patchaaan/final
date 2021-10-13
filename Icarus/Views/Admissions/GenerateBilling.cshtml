@@ -1,6 +1,5 @@
 ﻿@model Icarus.Models.vAdmissionBrowse
 
-
 @{
     ViewBag.Title = "GenerateBilling";
     Layout = "~/Views/Shared/_Layout2.cshtml";
@@ -25,17 +24,20 @@
     });
 </script>
 <style>
-    /*img {
-        background-image: url("~/Content/logo.png");
+    .header-title {
+        font-size: 24px;
+        margin-top: -5%;
+    }
+    .image-logo {
         height: 100px;
-        width: 100px;
-    }*/
+        width: 140px;
+    }
 </style>
 
 <div class="mr-5 ml-5" style="margin-top: 5%;">
     <div>
-        <img src="../../Content/logo.png" style="height:100px;width:140px;"/>
-        <span style="font-size: 24px;margin-top:-5%;">Bridges of Hope Drug and Alcohol Rehabilitation Center - Cebu</span>
+        <img class="image-logo" src="../../Content/logo.png"/>
+        <span class="header-title">Bridges of Hope Drug and Alcohol Rehabilitation Center - Cebu</span>
     </div>
     <div class="text-center">
         <h4>Billing Statement</h4>
@@ -258,10 +260,10 @@
     <br />
     <br />
 
-    <div class="row col-xs-12">
-        <div class="col-xs-6 mr-0 ml-0 pr-0 pl-0" style="width: 150px; margin-left:100px;float:left;">
+    <div class="row col-sm-12">
+        <div class="col-xs-6 mr-0 ml-0 pr-0 pl-0" style="width: 200px; margin-left:100px;float:left;">
             <label style="margin-bottom: 0px;">@ViewBag.PreparedBy</label>
-            <hr style="border-top: 1px solid black;margin-bottom:2px;margin-top:2px;width:150px;" />
+            <hr style="border-top: 1px solid black;margin-bottom:2px;margin-top:2px;width:200px;" />
             <label>Prepared By</label>
         </div>
         <div class="col-xs-6 mr-0 ml-0 pr-0 pl-0" style="width: 150px;margin-right:100px;float:right;">

@@ -31,23 +31,6 @@
         var newdate1 = new Date('@Model.PostedDate'); // Or the date you'd like converted.
         var chargedate2 = new Date(newdate1.getTime() - (newdate1.getTimezoneOffset() * 60000)).toISOString().substring(0,10);
         $("#editaddassertiondateposted").val(chargedate2);
-        @*$('#editaddassertiondate').val(new Date('@Model.AssertionDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));
-
-        $('#editaddassertiondateposted').val(new Date('@Model.PostedDate').toLocaleString("sv-SE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).replace(" ", "T"));*@
 
         $('#assertionEditModal').on('hidden.bs.modal', function () {
             $(this).find('form').trigger('reset');

@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using Icarus.Models;
 using Rotativa;
 using System.IO;
-using System.Security.Cryptography;
 namespace Icarus.Controllers
 {
     public class AdmissionsController : Controller

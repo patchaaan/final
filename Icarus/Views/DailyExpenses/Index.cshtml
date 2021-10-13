@@ -62,20 +62,6 @@
                 <td>@item.Amount</td>
             </tr>
             }
-            @**<tr>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>Total</td>
-                <td>@String.Format("{0:n2}", @Model.Sum(x => x.Cost))</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td class="text-right">@String.Format("{0:n2}", @Model.Sum(x => x.Margin))</td>
-            </tr>*@
         </tbody>
     </table>
 </div>

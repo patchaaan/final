@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 using Rotativa;
@@ -21,27 +17,34 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (datefrom != null && dateto == null)
+                try
                 {
-                    string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-                    var report = new ViewAsPdf(db.vrptPayments.ToList().Where(x => x.PaidDate == datefrom && x.IsVerified == "Y").OrderBy(x => x.PaidDate).ToList())
+                    if (datefrom != null && dateto == null)
                     {
-                        PageOrientation = Rotativa.Options.Orientation.Landscape,
-                        PageSize = Rotativa.Options.Size.A4,
-                        CustomSwitches = footer
-                    };
-                    return report;
+                        string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                        var report = new ViewAsPdf(db.vrptPayments.ToList().Where(x => x.PaidDate == datefrom && x.IsVerified == "Y").OrderBy(x => x.PaidDate).ToList())
+                        {
+                            PageOrientation = Rotativa.Options.Orientation.Landscape,
+                            PageSize = Rotativa.Options.Size.A4,
+                            CustomSwitches = footer
+                        };
+                        return report;
+                    }
+                    else
+                    {
+                        string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+                        var report = new ViewAsPdf(db.vrptPayments.ToList().Where(x => x.PaidDate >= datefrom && x.PaidDate <= dateto && x.IsVerified == "Y").OrderBy(x => x.PaidDate).ToList())
+                        {
+                            PageOrientation = Rotativa.Options.Orientation.Landscape,
+                            PageSize = Rotativa.Options.Size.A4,
+                            CustomSwitches = footer
+                        };
+                        return report;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    string footer = "--footer-center \"Printed on: " + DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" + " --footer-line --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-                    var report = new ViewAsPdf(db.vrptPayments.ToList().Where(x => x.PaidDate >= datefrom && x.PaidDate <= dateto && x.IsVerified == "Y").OrderBy(x => x.PaidDate).ToList())
-                    {
-                        PageOrientation = Rotativa.Options.Orientation.Landscape,
-                        PageSize = Rotativa.Options.Size.A4,
-                        CustomSwitches = footer
-                    };
-                    return report;
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
             }
             return RedirectToAction("Login", "Login");

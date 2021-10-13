@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 
@@ -24,19 +23,29 @@ namespace Icarus.Controllers
             {
                 if (Session["isADG"].ToString() == "Y" || Session["isEDG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y")
                 {
-                    var total = db.tblExpenses.ToList().Select(x => x.Amount).ToList().Sum();
-                    ViewBag.totalAmount = Math.Round((Double)total, 2);
+                    try
+                    {
+                        var total = db.tblExpenses.ToList().Select(x => x.Amount).ToList().Sum();
+                        ViewBag.totalAmount = Math.Round((Double)total, 2);
 
-                    if (start != null && end != null)
+                        if (start != null && end != null)
+                        {
+                            return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderByDescending(y => y.ExpenseDate).ToList());
+                        }
+                        else if (start != null && end == null)
+                        {
+                            return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start).ToList().OrderBy(y => y.ExpenseDate).ToList());
+                        }
+                        else
+                        {
+                            var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
+                            var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
+                            return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IDExpense).ToList());
+                        }
+                    }
+                    catch (Exception e)
                     {
-                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start && x.ExpenseDate <= end).ToList().OrderByDescending(y => y.ExpenseDate).ToList());
-                    } else if (start != null && end == null) {
-                        return View(db.vExpensesBrowses.Where(x => x.ExpenseDate >= start).ToList().OrderBy(y => y.ExpenseDate).ToList());
-                    } else
-                    {
-                        var firstDay = new DateTime(DateTime.Now.Year, 1, 1);
-                        var secondDay = new DateTime(DateTime.Now.Year, 12, 31);
-                        return View(db.vExpensesBrowses.Where(y => y.ExpenseDate >= firstDay && y.ExpenseDate <= secondDay).ToList().OrderByDescending(y => y.IDExpense).ToList());
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
                     }
                 }
                 return RedirectToAction("Index","Residents");
@@ -55,12 +64,19 @@ namespace Icarus.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                tblExpens tblExpens = db.tblExpenses.Find(id);
-                if (tblExpens == null)
+                try
                 {
-                    return HttpNotFound();
+                    tblExpens tblExpens = db.tblExpenses.Find(id);
+                    if (tblExpens == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblExpens);
                 }
-                return View(tblExpens);
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
         }
@@ -70,29 +86,38 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null) {
                 if (Session["isAAG"].ToString() == "Y" || Session["isADG"].ToString() == "Y") {
-                    var account = db.tblExpensesChartOfAccounts.Select(
-                            s => new {
-                                Text = s.Account + "      " + s.AccountCode,
-                                Value = s.IDAccount
-                            }
-                        ).ToList();
-                    var residents = db.vAdmissionBrowses.Select(
-                            s => new {
-                                Text = s.Resident,
-                                Value = s.IDAdmission
-                            }
-                        ).ToList();
-                    int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
-                    int idExp = db.tblExpenses.Max(x => x.IDExpense);
-                    tblExpens expenses = new tblExpens();
-                    expenses.IDExpense = idExp + 1;
-                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                    ViewBag.accountsList = new SelectList(account, "Value", "Text");
-                    ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-                    ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
-                    ViewBag.lastIDCTC = idCTC + 1;
-                    ViewBag.lastIDEXP = idExp + 1;
-                    return View(expenses);
+                    try
+                    {
+                        var account = db.tblExpensesChartOfAccounts.Select(
+                                s => new
+                                {
+                                    Text = s.Account + "      " + s.AccountCode,
+                                    Value = s.IDAccount
+                                }
+                            ).ToList();
+                        var residents = db.vAdmissionBrowses.Select(
+                                s => new
+                                {
+                                    Text = s.Resident,
+                                    Value = s.IDAdmission
+                                }
+                            ).ToList();
+                        int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
+                        int idExp = db.tblExpenses.Max(x => x.IDExpense);
+                        tblExpens expenses = new tblExpens();
+                        expenses.IDExpense = idExp + 1;
+                        ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                        ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                        ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                        ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                        ViewBag.lastIDCTC = idCTC + 1;
+                        ViewBag.lastIDEXP = idExp + 1;
+                        return View(expenses);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Index","Residents");
             }
@@ -100,8 +125,6 @@ namespace Icarus.Controllers
         }
 
         // POST: Expenses/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDExpense,DatePosted,ExpenseDate,ORNumber,IDVendor,Particulars,WithReceipt,IDAccount,EncodedBy,IsVerified,ChargeToCodep,VATSales,VATAmount,VATExempt,Amount,PostedDate,ChargedToCodep,TIN")] tblExpens tblExpens)
@@ -109,11 +132,18 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (ModelState.IsValid)
                 {
-                    tblExpens.EncodedBy = Session["Username"].ToString();
-                    tblExpens.DatePosted = tblExpens.PostedDate;
-                    db.tblExpenses.Add(tblExpens);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        tblExpens.EncodedBy = Session["Username"].ToString();
+                        tblExpens.DatePosted = tblExpens.PostedDate;
+                        db.tblExpenses.Add(tblExpens);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return View(tblExpens);
             }
@@ -124,13 +154,20 @@ namespace Icarus.Controllers
         public JsonResult CreateAssertion(tblAssertion tblAssertion) {
             if (ModelState.IsValid)
             {
-                using (ICARUSDBEntities icarus = new ICARUSDBEntities())
+                try
                 {
-                    db.tblAssertions.Add(tblAssertion);
-                    db.SaveChanges();
-                    db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
-                    int id = tblAssertion.IDAssertion;
-                    return Json(id, JsonRequestBehavior.AllowGet);
+                    using (ICARUSDBEntities icarus = new ICARUSDBEntities())
+                    {
+                        db.tblAssertions.Add(tblAssertion);
+                        db.SaveChanges();
+                        db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
+                        int id = tblAssertion.IDAssertion;
+                        return Json(id, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
             }
             return Json("Failed", JsonRequestBehavior.AllowGet);
@@ -141,9 +178,16 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.tblExpensesForAssertions.Add(tblExpensesForAssertion);
-                db.SaveChanges();
-                return Json("Success", JsonRequestBehavior.AllowGet);
+                try
+                {
+                    db.tblExpensesForAssertions.Add(tblExpensesForAssertion);
+                    db.SaveChanges();
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return Json("Failed", JsonRequestBehavior.AllowGet);
         }
@@ -153,9 +197,16 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tblExpensesForAssertion).State = EntityState.Modified;
-                db.SaveChanges();
-                return Json("Success", JsonRequestBehavior.AllowGet);
+                try
+                {
+                    db.Entry(tblExpensesForAssertion).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return Json("Failed", JsonRequestBehavior.AllowGet);
         }
@@ -165,57 +216,67 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null) {
                 if (Session["isADG"].ToString() == "Y" || Session["isAAG"].ToString() == "Y") {
-                    if (id == null)
+                    try
                     {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    tblExpens tblExpens = db.tblExpenses.Find(id);
-                    int idexpense = tblExpens.IDExpense;
-                    if (tblExpens == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    tblExpensesForAssertion expenseasertion = db.tblExpensesForAssertions.Where(x => x.IDExpense == tblExpens.IDExpense).FirstOrDefault();
-                    if (expenseasertion == null)
-                    {
-                        tblExpensesForAssertion newexpense = new tblExpensesForAssertion();
-                        int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
-                        newexpense.IDChargeToCodep = idCTC + 1;
-                        newexpense.IDExpense = idexpense;
-                        ViewBag.idctc = idCTC + 1;
-                        ViewBag.idexp = tblExpens.IDExpense;
-                        ViewBag.EmptyAssertion = true;
-                        ViewData["Assertions"] = null;
-                    }
-                    else {
-                        IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
-                        ViewBag.EmptyAssertion = false;
-                        ViewBag.idctc = expenseasertion.IDChargeToCodep;
-                        ViewBag.idexp = expenseasertion.IDExpense;
-                        ViewBag.assertioncategory = expenseasertion.IDAssertionCategory;
-                        ViewBag.description = expenseasertion.Description;
-                        ViewBag.chargeDate = expenseasertion.ChargeDate;
-                        ViewData["Assertions"] = assertions;
-                    }
+                        if (id == null)
+                        {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        }
+                        tblExpens tblExpens = db.tblExpenses.Find(id);
+                        int idexpense = tblExpens.IDExpense;
+                        if (tblExpens == null)
+                        {
+                            return HttpNotFound();
+                        }
+                        tblExpensesForAssertion expenseasertion = db.tblExpensesForAssertions.Where(x => x.IDExpense == tblExpens.IDExpense).FirstOrDefault();
+                        if (expenseasertion == null)
+                        {
+                            tblExpensesForAssertion newexpense = new tblExpensesForAssertion();
+                            int idCTC = db.tblExpensesForAssertions.Max(x => x.IDChargeToCodep);
+                            newexpense.IDChargeToCodep = idCTC + 1;
+                            newexpense.IDExpense = idexpense;
+                            ViewBag.idctc = idCTC + 1;
+                            ViewBag.idexp = tblExpens.IDExpense;
+                            ViewBag.EmptyAssertion = true;
+                            ViewData["Assertions"] = null;
+                        }
+                        else
+                        {
+                            IEnumerable<tblAssertion> assertions = db.tblAssertions.ToList().Where(x => x.IDChargeToCodep == expenseasertion.IDChargeToCodep).ToList();
+                            ViewBag.EmptyAssertion = false;
+                            ViewBag.idctc = expenseasertion.IDChargeToCodep;
+                            ViewBag.idexp = expenseasertion.IDExpense;
+                            ViewBag.assertioncategory = expenseasertion.IDAssertionCategory;
+                            ViewBag.description = expenseasertion.Description;
+                            ViewBag.chargeDate = expenseasertion.ChargeDate;
+                            ViewData["Assertions"] = assertions;
+                        }
 
-                    ViewData["ExpenseAssertion"] = expenseasertion;
-                    var account = db.tblExpensesChartOfAccounts.Select(
-                            s => new {
-                                Text = s.Account + "      " + s.AccountCode,
-                                Value = s.IDAccount
-                            }
-                        ).ToList();
-                    var residents = db.vAdmissionBrowses.Select(
-                            s => new {
-                                Text = s.Resident,
-                                Value = s.IDAdmission
-                            }
-                        ).ToList();
-                    ViewBag.residentList = new SelectList(residents, "Value", "Text");
-                    ViewBag.accountsList = new SelectList(account, "Value", "Text");
-                    ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
-                    ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-                    return View(tblExpens);
+                        ViewData["ExpenseAssertion"] = expenseasertion;
+                        var account = db.tblExpensesChartOfAccounts.Select(
+                                s => new
+                                {
+                                    Text = s.Account + "      " + s.AccountCode,
+                                    Value = s.IDAccount
+                                }
+                            ).ToList();
+                        var residents = db.vAdmissionBrowses.Select(
+                                s => new
+                                {
+                                    Text = s.Resident,
+                                    Value = s.IDAdmission
+                                }
+                            ).ToList();
+                        ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                        ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                        ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                        ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                        return View(tblExpens);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Index", "Residents");
             }
@@ -227,10 +288,17 @@ namespace Icarus.Controllers
         {
             if (ModelState.IsValid)
             {
+                try
+                {
                     db.Entry(tblAssertion).State = EntityState.Modified;
                     db.SaveChanges();
                     db.Database.ExecuteSqlCommand("[dbo].[spRecalcAdmissionBalance] @IDAdmission", new SqlParameter("IDAdmission", tblAssertion.IDAdmission));
-                return Json("Sucess");
+                    return Json("Sucess");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return Json("Failed");
         }
@@ -238,23 +306,34 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult DetailsPartial(int id)
         {
-            tblExpens expense = db.tblExpenses.Find(id);
-            var account = db.tblExpensesChartOfAccounts.Select(
-                        s => new {
-                            Text = s.Account + "      " + s.AccountCode,
-                            Value = s.IDAccount
+            tblExpens expense = new tblExpens();
+            try
+            {
+                expense = db.tblExpenses.Find(id);
+                var account = db.tblExpensesChartOfAccounts.Select(
+                            s => new
+                            {
+                                Text = s.Account + "      " + s.AccountCode,
+                                Value = s.IDAccount
+                            }
+                        ).ToList();
+                var residents = db.vAdmissionBrowses.Select(
+                        s => new
+                        {
+                            Text = s.Resident,
+                            Value = s.IDAdmission
                         }
                     ).ToList();
-            var residents = db.vAdmissionBrowses.Select(
-                    s => new {
-                        Text = s.Resident,
-                        Value = s.IDAdmission
-                    }
-                ).ToList();
-            ViewBag.residentList = new SelectList(residents, "Value", "Text");
-            ViewBag.accountsList = new SelectList(account, "Value", "Text");
-            ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-            ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                return PartialView("_DetailsPartial", expense);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_DetailsPartial", expense);
         }
 
@@ -262,23 +341,34 @@ namespace Icarus.Controllers
         [HttpGet]
         public PartialViewResult EditAssertionPartial(int id)
         {
-            var account = db.tblExpensesChartOfAccounts.Select(
-                        s => new {
-                            Text = s.Account + "      " + s.AccountCode,
-                            Value = s.IDAccount
+            tblAssertion tblAssertion = new tblAssertion();
+            try
+            {
+                var account = db.tblExpensesChartOfAccounts.Select(
+                            s => new
+                            {
+                                Text = s.Account + "      " + s.AccountCode,
+                                Value = s.IDAccount
+                            }
+                        ).ToList();
+                var residents = db.vAdmissionBrowses.Select(
+                        s => new
+                        {
+                            Text = s.Resident,
+                            Value = s.IDAdmission
                         }
                     ).ToList();
-            var residents = db.vAdmissionBrowses.Select(
-                    s => new {
-                        Text = s.Resident,
-                        Value = s.IDAdmission
-                    }
-                ).ToList();
-            ViewBag.residentList = new SelectList(residents, "Value", "Text");
-            ViewBag.accountsList = new SelectList(account, "Value", "Text");
-            ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
-            ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
-            tblAssertion tblAssertion = db.tblAssertions.Find(id);
+                ViewBag.residentList = new SelectList(residents, "Value", "Text");
+                ViewBag.accountsList = new SelectList(account, "Value", "Text");
+                ViewBag.vendors = new SelectList(db.tblVendors, "IDVendor", "Vendor");
+                ViewBag.category = new SelectList(db.tblAssertionCategories, "IDAssertionCategory", "Category");
+                tblAssertion = db.tblAssertions.Find(id);
+                return PartialView("_EditAssertionPartial", tblAssertion);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception " + e);
+            }
             return PartialView("_EditAssertionPartial", tblAssertion);
         }
 
@@ -292,28 +382,17 @@ namespace Icarus.Controllers
             if (Session["Username"] != null) {
                 if (ModelState.IsValid)
                 {
-                    tblExpens.EncodedBy = Session["Username"].ToString();
-                    db.Entry(tblExpens).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                return View(tblExpens);
-            }
-            return RedirectToAction("Login", "Login");
-        }
-
-        // GET: Expenses/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (Session["Username"] != null) {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                tblExpens tblExpens = db.tblExpenses.Find(id);
-                if (tblExpens == null)
-                {
-                    return HttpNotFound();
+                    try
+                    {
+                        tblExpens.EncodedBy = Session["Username"].ToString();
+                        db.Entry(tblExpens).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return View(tblExpens);
             }
@@ -326,10 +405,17 @@ namespace Icarus.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             if (Session["Username"] != null) {
-                tblExpens tblExpens = db.tblExpenses.Find(id);
-                db.tblExpenses.Remove(tblExpens);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    tblExpens tblExpens = db.tblExpenses.Find(id);
+                    db.tblExpenses.Remove(tblExpens);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
             }
             return RedirectToAction("Login", "Login");
         }

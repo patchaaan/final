@@ -10,7 +10,6 @@
         var logdate = new Date(datelog.getTime() - (datelog.getTimezoneOffset() * 60000)).toISOString().substring(0, 10);
         $(".datelog").val(logdate);
 
-
         $(".cancelButton").on("click", function () {
             $(".modal-dialog").find('form').trigger('reset');
         });

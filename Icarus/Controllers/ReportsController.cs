@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 using Rotativa;
@@ -32,12 +27,20 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (datefrom != null && dateto == null)
+                try
                 {
-                    return View("_AssertionSummary", db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom).ToList());
+                    if (datefrom != null && dateto == null)
+                    {
+                        return View("_AssertionSummary", db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom).ToList());
+                    }
+                    else
+                    {
+                        return View("_AssertionSummary", db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom && x.AssertionDate <= dateto).ToList());
+                    }
                 }
-                else {
-                    return View("_AssertionSummary", db.vrptAssertionSummaries.ToList().Where(x => x.AssertionDate >= datefrom && x.AssertionDate <= dateto).ToList());
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
             }
             return RedirectToAction("Login", "Login");
@@ -48,24 +51,31 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                if (datefrom != null && dateto == null)
+                try
                 {
-                    var report = new ActionAsPdf("AssertionSummary", new { datefrom, dateto })
+                    if (datefrom != null && dateto == null)
                     {
-                        PageOrientation = Rotativa.Options.Orientation.Landscape,
-                        PageSize = Rotativa.Options.Size.A4
-                    };
-                    return report;
-                    
+                        var report = new ActionAsPdf("AssertionSummary", new { datefrom, dateto })
+                        {
+                            PageOrientation = Rotativa.Options.Orientation.Landscape,
+                            PageSize = Rotativa.Options.Size.A4
+                        };
+                        return report;
+
+                    }
+                    else
+                    {
+                        var report = new ActionAsPdf("AssertionSummary", new { datefrom, dateto })
+                        {
+                            PageOrientation = Rotativa.Options.Orientation.Landscape,
+                            PageSize = Rotativa.Options.Size.A4
+                        };
+                        return report;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    var report = new ActionAsPdf("AssertionSummary", new { datefrom, dateto })
-                    {
-                        PageOrientation = Rotativa.Options.Orientation.Landscape,
-                        PageSize = Rotativa.Options.Size.A4
-                    };
-                    return report;
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
                 }
             }
             return RedirectToAction("Login", "Login");

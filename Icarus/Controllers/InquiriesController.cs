@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Icarus.Models;
 
@@ -20,11 +19,19 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                int inq = db.tblInquiries.Max(x => x.IDInquiry);
-                tblInquiry inquiry = new tblInquiry();
-                inquiry.IDInquiry = inq + 1;
-                ViewData["Inquiry"] = inquiry;
-                return View(db.tblInquiries.ToList().OrderByDescending(x => x.IDInquiry).ToList());
+                try
+                {
+                    int inq = db.tblInquiries.Max(x => x.IDInquiry);
+                    tblInquiry inquiry = new tblInquiry();
+                    inquiry.IDInquiry = inq + 1;
+                    ViewData["Inquiry"] = inquiry;
+                    return View(db.tblInquiries.ToList().OrderByDescending(x => x.IDInquiry).ToList());
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return HttpNotFound();
             }
             else {
                 return RedirectToAction("Login", "Login");
@@ -41,23 +48,32 @@ namespace Icarus.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                tblInquiry tblInquiry = db.tblInquiries.Find(id);
-                IEnumerable<tblInquiryCommLog> inqcommlog = db.tblInquiryCommLogs.ToList().Where(x => x.IDInquiry == tblInquiry.IDInquiry).ToList();
-                tblInquiryCommLog inquirylog = new tblInquiryCommLog();
-                inquirylog.IDInquiry = tblInquiry.IDInquiry;
-                ViewData["Inquiry"] = inquirylog;
-                ViewData["CommLogs"] = inqcommlog;
-                ViewBag.inqlog = true;
-
-                if (!inqcommlog.Any() || inqcommlog == null) {
-                    ViewBag.inqlog = false;
-                }
-
-                if (tblInquiry == null)
+                try
                 {
-                    return HttpNotFound();
+                    tblInquiry tblInquiry = db.tblInquiries.Find(id);
+                    IEnumerable<tblInquiryCommLog> inqcommlog = db.tblInquiryCommLogs.ToList().Where(x => x.IDInquiry == tblInquiry.IDInquiry).ToList();
+                    tblInquiryCommLog inquirylog = new tblInquiryCommLog();
+                    inquirylog.IDInquiry = tblInquiry.IDInquiry;
+                    ViewData["Inquiry"] = inquirylog;
+                    ViewData["CommLogs"] = inqcommlog;
+                    ViewBag.inqlog = true;
+
+                    if (!inqcommlog.Any() || inqcommlog == null)
+                    {
+                        ViewBag.inqlog = false;
+                    }
+
+                    if (tblInquiry == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblInquiry);
                 }
-                return View(tblInquiry);
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return HttpNotFound();
             }
             else
             {
@@ -66,22 +82,8 @@ namespace Icarus.Controllers
             
         }
 
-        // GET: Inquiries/Create
-        public ActionResult Create()
-        {
-            if (Session["Username"] != null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Login");
-            }
-        }
 
         // POST: Inquiries/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IDInquiry,InquiryDate,Codep,ContactNo,Prospect,Details,FollowupOn,IDInquiryStatus")] tblInquiry tblInquiry)
@@ -90,12 +92,18 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.tblInquiries.Add(tblInquiry);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        db.tblInquiries.Add(tblInquiry);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
-
-                return View(tblInquiry);
+                return RedirectToAction("Index");
             }
             else
             {
@@ -111,9 +119,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.tblInquiryCommLogs.Add(commlog);
-                    db.SaveChanges();
-                    return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                    try
+                    {
+                        db.tblInquiryCommLogs.Add(commlog);
+                        db.SaveChanges();
+                        return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
 
                 return RedirectToAction("Details", new { id = commlog.IDInquiry });
@@ -133,12 +148,20 @@ namespace Icarus.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                tblInquiry tblInquiry = db.tblInquiries.Find(id);
-                if (tblInquiry == null)
+                try
                 {
-                    return HttpNotFound();
+                    tblInquiry tblInquiry = db.tblInquiries.Find(id);
+                    if (tblInquiry == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(tblInquiry);
                 }
-                return View(tblInquiry);
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return RedirectToAction("Index");
             }
             else
             {
@@ -164,9 +187,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(tblInquiry).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Details", new { id = tblInquiry.IDInquiry });
+                    try
+                    {
+                        db.Entry(tblInquiry).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Details", new { id = tblInquiry.IDInquiry });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Details", new { id = tblInquiry.IDInquiry });
             }
@@ -184,9 +214,16 @@ namespace Icarus.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(commlog).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                    try
+                    {
+                        db.Entry(commlog).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Exception " + e);
+                    }
                 }
                 return RedirectToAction("Details", new { id = commlog.IDInquiry });
             }
@@ -196,28 +233,6 @@ namespace Icarus.Controllers
             }
         }
 
-        // GET: Inquiries/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (Session["Username"] != null)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        tblInquiry tblInquiry = db.tblInquiries.Find(id);
-        //        if (tblInquiry == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(tblInquiry);
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login", "Login");
-        //    }
-        //}
-
         // POST: Inquiries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -225,9 +240,17 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblInquiry tblInquiry = db.tblInquiries.Find(id);
-                db.tblInquiries.Remove(tblInquiry);
-                db.SaveChanges();
+                try
+                {
+                    tblInquiry tblInquiry = db.tblInquiries.Find(id);
+                    db.tblInquiries.Remove(tblInquiry);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
                 return RedirectToAction("Index");
             }
             else
@@ -242,10 +265,20 @@ namespace Icarus.Controllers
         {
             if (Session["Username"] != null)
             {
-                tblInquiryCommLog commlog = db.tblInquiryCommLogs.Find(id);
-                db.tblInquiryCommLogs.Remove(commlog);
-                db.SaveChanges();
-                return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                int com_id = 0;
+                try
+                {
+                    tblInquiryCommLog commlog = db.tblInquiryCommLogs.Find(id);
+                    com_id = commlog.IDInquiry;
+                    db.tblInquiryCommLogs.Remove(commlog);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = commlog.IDInquiry });
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine("Exception " + e);
+                }
+                return RedirectToAction("Details", new { id = com_id });
             }
             else
             {
